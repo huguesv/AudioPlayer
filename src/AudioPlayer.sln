@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CB40172-B4DD-49DC-B586-ABA23B22172F}"
+	ProjectSection(SolutionItems) = preProject
+		Common\Common.AssemblyInfo.cs = Common\Common.AssemblyInfo.cs
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+		..\SCREENSHOTS.md = ..\SCREENSHOTS.md
+		Common\stylecop.json = Common\stylecop.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Audio.Player", "Woohoo.Audio.Player\Woohoo.Audio.Player.csproj", "{D6CB0464-CA77-441F-A68A-E4E963DC3614}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Audio.Core", "Woohoo.Audio.Core\Woohoo.Audio.Core.csproj", "{0430A957-39ED-4A09-A666-84F34770767C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Audio.Playback", "Woohoo.Audio.Playback\Woohoo.Audio.Playback.csproj", "{599FBD15-8C44-4460-BFDF-B120497A49B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Audio.Core.UnitTest", "Woohoo.Audio.Core.UnitTest\Woohoo.Audio.Core.UnitTest.csproj", "{E48A5746-EC43-49BC-BE30-B4ED8731C0FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Sdl3", "Woohoo.Sdl3\Woohoo.Sdl3.csproj", "{4C02FE30-D930-45FF-BEAA-80962CC0043F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Platform.Windows", "Woohoo.Platform.Windows\Woohoo.Platform.Windows.csproj", "{41061A65-56EA-DB83-C921-75B594282512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Platform.MacOS", "Woohoo.Platform.MacOS\Woohoo.Platform.MacOS.csproj", "{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6CB0464-CA77-441F-A68A-E4E963DC3614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CB0464-CA77-441F-A68A-E4E963DC3614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CB0464-CA77-441F-A68A-E4E963DC3614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CB0464-CA77-441F-A68A-E4E963DC3614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0430A957-39ED-4A09-A666-84F34770767C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0430A957-39ED-4A09-A666-84F34770767C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0430A957-39ED-4A09-A666-84F34770767C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0430A957-39ED-4A09-A666-84F34770767C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{599FBD15-8C44-4460-BFDF-B120497A49B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{599FBD15-8C44-4460-BFDF-B120497A49B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{599FBD15-8C44-4460-BFDF-B120497A49B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{599FBD15-8C44-4460-BFDF-B120497A49B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E48A5746-EC43-49BC-BE30-B4ED8731C0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E48A5746-EC43-49BC-BE30-B4ED8731C0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E48A5746-EC43-49BC-BE30-B4ED8731C0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E48A5746-EC43-49BC-BE30-B4ED8731C0FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C02FE30-D930-45FF-BEAA-80962CC0043F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C02FE30-D930-45FF-BEAA-80962CC0043F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C02FE30-D930-45FF-BEAA-80962CC0043F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C02FE30-D930-45FF-BEAA-80962CC0043F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41061A65-56EA-DB83-C921-75B594282512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41061A65-56EA-DB83-C921-75B594282512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41061A65-56EA-DB83-C921-75B594282512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41061A65-56EA-DB83-C921-75B594282512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DAA4161-CBB7-46C2-B509-56AD163DE7EE}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+TaskbarList
+ITaskbarList
+ITaskbarList2
+ITaskbarList3
+ITaskbarList4
+SetThreadExecutionState

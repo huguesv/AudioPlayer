@@ -1,0 +1,368 @@
+<Window
+    x:Class="Woohoo.Audio.Player.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
+    xmlns:converters="using:Woohoo.Audio.Player.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Woohoo.Audio.Player.ViewModels"
+    xmlns:vmd="using:Woohoo.Audio.Player.ViewModels.DesignTime"
+    Title="Audio Player"
+    Width="500"
+    Height="400"
+    d:DesignHeight="400"
+    d:DesignWidth="500"
+    x:DataType="vm:MainWindowViewModel"
+    DragDrop.AllowDrop="True"
+    Icon="/Assets/disc_114465-128px.ico"
+    mc:Ignorable="d">
+
+    <!--  https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Accents/BaseResources.xaml  -->
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vmd:DesignMainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Woohoo.Audio.Player/Views/MediaIcons.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
+            <converters:IsEqualConverter x:Key="IsEqualConverter" />
+            <MenuFlyout x:Key="SharedMenuFlyout" Placement="TopEdgeAlignedLeft">
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.NowPlaying}"
+                    Header="Now Playing"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.Playlist}"
+                    Header="Playlist"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerAmplitude}"
+                    Header="Amplitude Graph"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequency}"
+                    Header="Frequencies Graph"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
+                    Header="Frequencies Bands"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
+                    ToggleType="Radio" />
+            </MenuFlyout>
+            <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="File">
+                <NativeMenu>
+                    <NativeMenuItem Command="{Binding BrowseCommand}" Header="Open..." />
+                    <NativeMenuItemSeparator />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Playback">
+                <NativeMenu>
+                    <NativeMenuItem Command="{Binding PlayPauseCommand}" Header="Play / Pause" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Command="{Binding PreviousTrackCommand}" Header="Previous Track" />
+                    <NativeMenuItem Command="{Binding NextTrackCommand}" Header="Next Track" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Command="{Binding SkipBackCommand}" Header="Skip Back 15s" />
+                    <NativeMenuItem Command="{Binding SkipForwardCommand}" Header="Skip Forward 15s" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Command="{Binding MuteCommand}" Header="Mute / Unmute" />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="View">
+                <NativeMenu>
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.NowPlaying}"
+                        Header="Now Playing"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
+                        ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.Playlist}"
+                        Header="Playlist"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
+                        ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.VisualizerAmplitude}"
+                        Header="Amplitude Graph"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
+                        ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.VisualizerFrequency}"
+                        Header="Frequencies Graph"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
+                        ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
+                        Header="Frequencies Bands"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
+                        ToggleType="Radio" />
+                </NativeMenu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
+
+    <Grid RowDefinitions="*,Auto,Auto,Auto">
+        <Grid Grid.Row="0" IsVisible="{Binding !IsTipVisible}">
+            <ListBox
+                DoubleTapped="GestureBorder_DoubleTapped"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
+                ItemsSource="{Binding Tracks}"
+                SelectedItem="{Binding SelectedTrack}">
+                <ListBox.KeyBindings>
+                    <KeyBinding Command="{Binding PlaySelectedTrackCommand}" Gesture="Enter" />
+                </ListBox.KeyBindings>
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListBox.Styles>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Background="Transparent" Text="{Binding Title}" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                Background="Transparent"
+                                Text="{Binding FileSize, Converter={StaticResource PositionToLabelConverter}}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel
+                VerticalAlignment="Center"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
+                Orientation="Vertical">
+                <TextBlock
+                    Grid.Row="2"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    Text="{Binding CueSheetName}"
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Grid.Row="3"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    Text="{Binding CurrentTrackTitle}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+            <ScottPlot:AvaPlot Name="WavePlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}" />
+            <ScottPlot:AvaPlot
+                Name="FftPlot"
+                Margin="10"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}" />
+            <ScottPlot:AvaPlot Name="BandPlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}" />
+        </Grid>
+        <TextBlock
+            Grid.Row="0"
+            Margin="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding IsTipVisible}"
+            Text="Open a cue file or a zip containing a cue file"
+            TextWrapping="Wrap" />
+        <Grid Grid.Row="1" ColumnDefinitions="75,*,75">
+            <TextBlock
+                Grid.Column="0"
+                Margin="10,20,10,10"
+                Text="{Binding CurrentTrackPosition, Converter={StaticResource PositionToLabelConverter}}" />
+            <ProgressBar
+                Grid.Column="1"
+                Margin="0,20,0,10"
+                Maximum="{Binding CurrentTrackEndPosition}"
+                Value="{Binding CurrentTrackPosition}" />
+            <TextBlock
+                Grid.Column="2"
+                Margin="10,20,10,10"
+                HorizontalAlignment="Right"
+                Text="{Binding CurrentTrackEndPosition, Converter={StaticResource PositionToLabelConverter}}" />
+        </Grid>
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                MinWidth="40"
+                MinHeight="40"
+                Margin="5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="Previous"
+                Command="{Binding PreviousTrackCommand}"
+                ToolTip.Tip="Previous Track">
+                <Canvas Width="32" Height="32">
+                    <StaticResource ResourceKey="Previous" />
+                </Canvas>
+            </Button>
+            <Button
+                MinWidth="40"
+                MinHeight="40"
+                Margin="5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="Seek Backward 15"
+                Command="{Binding SkipBackCommand}"
+                ToolTip.Tip="Skip Back 15s">
+                <Canvas Width="32" Height="32">
+                    <StaticResource ResourceKey="SeekBackward15" />
+                </Canvas>
+            </Button>
+            <Button
+                MinWidth="40"
+                MinHeight="40"
+                Margin="5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="Play/Pause"
+                Command="{Binding PlayPauseCommand}"
+                ToolTip.Tip="Play/Pause">
+                <Grid>
+                    <Canvas
+                        Width="32"
+                        Height="32"
+                        IsVisible="{Binding !IsPlaying}">
+                        <StaticResource ResourceKey="Play" />
+                    </Canvas>
+                    <Canvas
+                        Width="32"
+                        Height="32"
+                        IsVisible="{Binding IsPlaying}">
+                        <StaticResource ResourceKey="Pause" />
+                    </Canvas>
+                </Grid>
+            </Button>
+            <Button
+                MinWidth="40"
+                MinHeight="40"
+                Margin="5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="Seek Forward 15"
+                Command="{Binding SkipForwardCommand}"
+                ToolTip.Tip="Skip Forward 15s">
+                <Canvas Width="32" Height="32">
+                    <StaticResource ResourceKey="SeekForward15" />
+                </Canvas>
+            </Button>
+            <Button
+                MinWidth="40"
+                MinHeight="40"
+                Margin="5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="Next"
+                Command="{Binding NextTrackCommand}"
+                ToolTip.Tip="Next Track">
+                <Canvas Width="32" Height="32">
+                    <StaticResource ResourceKey="Next" />
+                </Canvas>
+            </Button>
+        </StackPanel>
+        <Grid
+            Grid.Row="3"
+            Margin="10"
+            ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+            <Button
+                Grid.Column="0"
+                Command="{Binding BrowseCommand}"
+                Content="Open..."
+                ToolTip.Tip="Open .cue or .zip file">
+                <Grid>
+                    <Viewbox Width="16" Height="16">
+                        <Canvas Width="32" Height="32">
+                            <StaticResource ResourceKey="AddPlaylist" />
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Button>
+            <Button
+                x:Name="ChangeViewButton"
+                Grid.Column="1"
+                Margin="5,0,0,0"
+                Flyout="{StaticResource SharedMenuFlyout}"
+                ToolTip.Tip="Change View">
+                <Grid>
+                    <Viewbox Width="16" Height="16">
+                        <Canvas Width="32" Height="32">
+                            <StaticResource ResourceKey="Eye" />
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Button>
+            <TextBlock
+                Grid.Column="2"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding CurrentTrackTitle}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
+            <Button
+                Grid.Column="3"
+                Margin="10,0,10,0"
+                AutomationProperties.Name="Mute/Unmute"
+                Command="{Binding MuteCommand}"
+                ToolTip.Tip="Mute/Unmute">
+                <Grid>
+                    <Viewbox
+                        Width="16"
+                        Height="16"
+                        IsVisible="{Binding !IsMuted}">
+                        <Canvas Width="32" Height="32">
+                            <StaticResource ResourceKey="VolumeLow" />
+                        </Canvas>
+                    </Viewbox>
+                    <Viewbox
+                        Width="16"
+                        Height="16"
+                        IsVisible="{Binding IsMuted}">
+                        <Canvas Width="32" Height="32">
+                            <StaticResource ResourceKey="Mute" />
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Button>
+            <Slider
+                Grid.Column="4"
+                Width="100"
+                VerticalAlignment="Center"
+                Maximum="100"
+                ToolTip.Tip="Volume"
+                Value="{Binding Volume}" />
+            <TextBlock
+                Grid.Column="5"
+                Width="40"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Text="{Binding Volume, StringFormat={}{0}%}"
+                TextAlignment="Right" />
+        </Grid>
+    </Grid>
+</Window>
