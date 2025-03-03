@@ -11,7 +11,8 @@ jobs:
         dotnet-runtime: [win-x64, osx-x64, osx-arm64]
     runs-on: ubuntu-latest
     env:
-      binariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      versionName: v0
+      binariesName: Woohoo.Audio.Player-${{ versionName }}-${{ matrix.dotnet-runtime }}
       bundleName: Woohoo.Audio.Player.app
       bundleIconName: Woohoo.Audio.Player.icns
     steps:
@@ -46,7 +47,7 @@ jobs:
         mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/MacOS
         mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/Resources
         cp src/Woohoo.Audio.Player/MacOS/Info.plist bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/Info.plist
-        cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Resources/${{ env.bundleIconName }}
+        cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/Resources/${{ env.bundleIconName }}
         cp -a bin/Release/Woohoo.Audio.Player/net9.0/${{ matrix.dotnet-runtime }}/publish bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/MacOS
 
     - name: Display MacOS bundle folder contents
