@@ -8,8 +8,12 @@ on:
 
 jobs:
   build:
+    name: Build
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}}}
     env:
       solutionFile: src/AudioPlayer.sln
 
