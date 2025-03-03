@@ -291,8 +291,8 @@
             ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
             <Button
                 Grid.Column="0"
+                AutomationProperties.Name="Open"
                 Command="{Binding BrowseCommand}"
-                Content="Open..."
                 ToolTip.Tip="Open .cue or .zip file">
                 <Grid>
                     <Viewbox Width="16" Height="16">
@@ -306,6 +306,7 @@
                 x:Name="ChangeViewButton"
                 Grid.Column="1"
                 Margin="5,0,0,0"
+                AutomationProperties.Name="Change View"
                 Flyout="{StaticResource SharedMenuFlyout}"
                 ToolTip.Tip="Change View">
                 <Grid>
