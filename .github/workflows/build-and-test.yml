@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest]
 
-    runs-on: ${{ matrix.os }}}}
+    runs-on: ${{ matrix.os }}
     env:
       solutionFile: src/AudioPlayer.sln
 
