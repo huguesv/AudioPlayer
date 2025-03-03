@@ -16,7 +16,6 @@ using Woohoo.Audio.Player.ViewModels;
 
 public partial class MainWindow : Window
 {
-    private static readonly bool StylePlot = true;
     private readonly double[] plotPsd;
     private readonly double[] plotWave;
     private readonly double[] plotBands;
@@ -29,21 +28,12 @@ public partial class MainWindow : Window
 
         this.AddHandler(DragDrop.DropEvent, this.OnDrop);
 
-        if (StylePlot)
+        if (App.Current is not null)
         {
-            var hiddenColor = ScottPlot.Colors.Yellow;
-            if (Application.Current?.TryGetResource("SystemRegionBrush", this.ActualThemeVariant, out var brush) == true)
-            {
-                if (brush is SolidColorBrush solidBrush)
-                {
-                    hiddenColor = ScottPlot.Color.FromARGB(solidBrush.Color.A << 24 | solidBrush.Color.R << 16 | solidBrush.Color.G << 8 | solidBrush.Color.B);
-                }
-            }
-
-            this.FftPlot.Plot.DataBackground.Color = hiddenColor;
-            this.WavePlot.Plot.DataBackground.Color = hiddenColor;
-            this.BandPlot.Plot.DataBackground.Color = hiddenColor;
+            App.Current.ActualThemeVariantChanged += this.Current_ActualThemeVariantChanged;
         }
+
+        this.StylePlots();
 
         this.plotPsd = new double[257];
         this.plotWave = new double[441];
@@ -157,5 +147,26 @@ public partial class MainWindow : Window
             this.WavePlot.Refresh();
             this.BandPlot.Refresh();
         }
+    }
+
+    private void Current_ActualThemeVariantChanged(object? sender, EventArgs e)
+    {
+        this.StylePlots();
+    }
+
+    private void StylePlots()
+    {
+        var regionColor = ScottPlot.Colors.Yellow;
+        if (Application.Current?.TryGetResource("SystemRegionBrush", this.ActualThemeVariant, out var brush) == true)
+        {
+            if (brush is SolidColorBrush solidBrush)
+            {
+                regionColor = ScottPlot.Color.FromARGB(solidBrush.Color.A << 24 | solidBrush.Color.R << 16 | solidBrush.Color.G << 8 | solidBrush.Color.B);
+            }
+        }
+
+        this.FftPlot.Plot.DataBackground.Color = regionColor;
+        this.WavePlot.Plot.DataBackground.Color = regionColor;
+        this.BandPlot.Plot.DataBackground.Color = regionColor;
     }
 }
