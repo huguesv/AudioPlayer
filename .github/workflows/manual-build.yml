@@ -1,0 +1,65 @@
+name: Manual Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      matrix:
+        dotnet-runtime: [win-x64, osx-x64, osx-arm64]
+    runs-on: ubuntu-latest
+    env:
+      binariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      bundleName: Woohoo.Audio.Player.app
+      bundleIconName: Woohoo.Audio.Player.icns
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Build / Publish
+      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f net9.0 -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+
+    - name: Zip binaries
+      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/net9.0/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/net9.0/${{ env.binariesName }}.zip *
+
+    - name: Upload binaries artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.dotnet-runtime }}
+        path: bin/Release/Woohoo.Audio.Player/net9.0/${{ env.binariesName }}.zip
+        
+    - name: Build MacOS bundle
+      if: ${{ startsWith(matrix.dotnet-runtime, 'osx') }}
+      run: |
+        mkdir bin/bundle
+        mkdir bin/bundle/${{ env.binariesName }}
+        mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}
+        mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents
+        mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/MacOS
+        mkdir bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/Resources
+        cp src/Woohoo.Audio.Player/MacOS/Info.plist bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/Info.plist
+        cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Resources/${{ env.bundleIconName }}
+        cp -a bin/Release/Woohoo.Audio.Player/net9.0/${{ matrix.dotnet-runtime }}/publish bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/MacOS
+
+    - name: Display MacOS bundle folder contents
+      if: ${{ startsWith(matrix.dotnet-runtime, 'osx') }}
+      run: ls -R bin/bundle/${{ env.binariesName }}
+
+    - name: Build MacOS dmg      
+      uses: L-Super/create-dmg-actions@v1.0.3
+      if: ${{ startsWith(matrix.dotnet-runtime, 'osx') }}
+      with:
+        dmg_name: ${{ env.binariesName }}
+        src_dir: bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}     
+
+    - name: Display MacOS bundle folder contents again
+      if: ${{ startsWith(matrix.dotnet-runtime, 'osx') }}
+      run: ls -R bin/bundle/${{ env.binariesName }}
