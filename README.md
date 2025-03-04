@@ -19,7 +19,13 @@ This is currently NOT supported:
 - Playing music from other formats such as wav, mp3, flac, ogg, etc. Just use
   a regular music player for that.
 
+## Desktop Player
+
 ![Audio Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Audio Player on Windows Screenshot")
+
+## Console Player
+
+![Windows Terminal](images/windows-cli.png?raw=true "Windows Terminal")
 
 For more screenshots, see the [SCREENSHOTS.md](SCREENSHOTS.md) file.
 
@@ -43,7 +49,7 @@ Binaries are not available for MacOS yet. You'll need to [build it from sources]
 Windows may prevent you from launching the application, since it is not signed.
 You can still run it by clicking on "More info" and then "Run anyway".
 
-## Usage
+## Usage (Desktop Player)
 
 1. Click the **Open cue or zip file** button at the bottom left of the application.
    Also available from the **File** menu on MacOS.
@@ -61,6 +67,25 @@ You can still run it by clicking on "More info" and then "Run anyway".
    between different views: currently playing, playlist, waveform view and
    spectrum views.
 
+## Usage (Console Player)
+
+1. Open a terminal window.
+1. Run the executable and pass in a single argument that is a path to a .cue
+   file or a .zip file that contains a .cue file.
+   ```shell
+   Woohoo.Audio.Player.Cli "Guacamelee! Super Turbo Championship Edition (USA) (Official Soundtrack) (PC Game Bundle).zip"
+   ```
+1. Press the following keys to control the player:
+   - `Q` to quit.
+   - `P` to pause playback.
+   - `R` to resume playback.
+   - `Up` to increase volume.
+   - `Down` to decrease volume.
+   - `Left` to go to the previous track.
+   - `Right` to go to the next track.
+   - `-` to seek backward.
+   - `+` to seek forward.
+
 ## Building
 
 Install the [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0).
@@ -71,7 +96,7 @@ To build the application, use the following command from the `\src` folder:
 dotnet build
 ```
 
-To run the application, use the following command from the `\src` folder:
+To run the desktop player, use the following command from the `\src` folder:
 ```
 dotnet run --project Woohoo.Audio.Player
 ```

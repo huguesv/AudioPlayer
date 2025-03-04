@@ -1,5 +1,7 @@
 # Audio Player Screenshots
 
+## Desktop Player
+
 Windows - Dark Theme
 
 ![Windows Dark Now Playing](images/windows-dark-nowplaying.png?raw=true "Windows Dark Now Playing")
@@ -27,3 +29,9 @@ Linux - Dark Theme
 Linux - Light Theme
 
 ![Linux Light Amplitude](images/linux-light-amplitude.png?raw=true "Linux Light Amplitude")
+
+## Console Player
+
+Windows Terminal
+
+![Windows Terminal](images/windows-cli.png?raw=true "Windows Terminal")

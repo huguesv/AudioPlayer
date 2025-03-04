@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Platform.Windows", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Platform.MacOS", "Woohoo.Platform.MacOS\Woohoo.Platform.MacOS.csproj", "{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woohoo.Audio.Player.Cli", "Woohoo.Audio.Player.Cli\Woohoo.Audio.Player.Cli.csproj", "{EC78644A-B38C-409C-87EA-35657C8B9203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6B75E16-262F-41CF-B4DF-29C7AF43C64C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC78644A-B38C-409C-87EA-35657C8B9203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC78644A-B38C-409C-87EA-35657C8B9203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC78644A-B38C-409C-87EA-35657C8B9203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC78644A-B38C-409C-87EA-35657C8B9203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
