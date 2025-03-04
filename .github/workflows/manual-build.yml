@@ -76,7 +76,7 @@ jobs:
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
       with:
         dmg_name: ${{ env.binariesName }}
-        src_dir: bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}     
+        src_dir: bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}     
 
     - name: Upload MacOS dmg artifact
       uses: actions/upload-artifact@v4
