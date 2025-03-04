@@ -10,8 +10,10 @@ jobs:
       matrix:
         dotnet-runtime:
           - target: win-x64
+            mac-bundle: ${{ false }}
             runs-on: ubuntu-latest
           - target: osx-arm64
+            mac-bundle: ${{ true }}
             runs-on: macos-latest
     runs-on: ${{ matrix.dotnet-runtime.runs-on }}
     env:
@@ -41,7 +43,7 @@ jobs:
         path: bin/Release/Woohoo.Audio.Player/net9.0/${{ env.binariesName }}.zip
         
     - name: Build MacOS bundle
-      if: ${{ startsWith(matrix.dotnet-runtime.target, 'osx') }}
+      if: ${{ matrix.dotnet-runtime.mac-bundle }}
       run: |
         mkdir bin/bundle
         mkdir bin/bundle/${{ env.binariesName }}
@@ -54,16 +56,19 @@ jobs:
         cp -a bin/Release/Woohoo.Audio.Player/net9.0/${{ matrix.dotnet-runtime.target }}/publish/. bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}/Contents/MacOS
 
     - name: Display MacOS bundle folder contents
-      if: ${{ startsWith(matrix.dotnet-runtime.target, 'osx') }}
+      if: ${{ matrix.dotnet-runtime.mac-bundle }}
       run: ls -R bin/bundle/${{ env.binariesName }}
 
     - name: Build MacOS dmg      
       uses: L-Super/create-dmg-actions@v1.0.3
-      if: ${{ startsWith(matrix.dotnet-runtime.target, 'osx') }}
+      if: ${{ matrix.dotnet-runtime.mac-bundle }}
       with:
         dmg_name: ${{ env.binariesName }}
         src_dir: bin/bundle/${{ env.binariesName }}/${{ env.bundleName }}     
 
-    - name: Display MacOS bundle folder contents again
-      if: ${{ startsWith(matrix.dotnet-runtime.target, 'osx') }}
-      run: ls -R bin/bundle/${{ env.binariesName }}
+    - name: Upload bundle artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ matrix.dotnet-runtime.mac-bundle }}
+      with:
+        name: ${{ matrix.dotnet-runtime.target }}-bundle
+        path: ${{ env.binariesName }}.dmg
