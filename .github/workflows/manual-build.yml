@@ -11,8 +11,7 @@ jobs:
         dotnet-runtime: [win-x64, osx-x64, osx-arm64]
     runs-on: ubuntu-latest
     env:
-      versionName: v0
-      binariesName: Woohoo.Audio.Player-${{ versionName }}-${{ matrix.dotnet-runtime }}
+      binariesName: Woohoo.Audio.Player-${{ matrix.dotnet-runtime }}
       bundleName: Woohoo.Audio.Player.app
       bundleIconName: Woohoo.Audio.Player.icns
     steps:
