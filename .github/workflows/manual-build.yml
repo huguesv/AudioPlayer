@@ -14,7 +14,7 @@ jobs:
             runs-on: ubuntu-latest
           - target: osx-arm64
             mac-bundle: ${{ true }}
-            runs-on: macos-latest
+            runs-on: ubuntu-latest
     runs-on: ${{ matrix.dotnet-runtime.runs-on }}
     env:
       binariesName: Woohoo.Audio.Player-${{ matrix.dotnet-runtime.target }}
@@ -71,16 +71,16 @@ jobs:
         name: ${{ matrix.dotnet-runtime.target }}-bundle
         path: bin/bundle/${{ env.binariesName }}-bundle.zip
 
-    - name: Build MacOS dmg      
-      uses: L-Super/create-dmg-actions@v1.0.3
-      if: ${{ matrix.dotnet-runtime.mac-bundle }}
-      with:
-        dmg_name: ${{ env.binariesName }}
-        src_dir: bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}     
-
-    - name: Upload MacOS dmg artifact
-      uses: actions/upload-artifact@v4
-      if: ${{ matrix.dotnet-runtime.mac-bundle }}
-      with:
-        name: ${{ matrix.dotnet-runtime.target }}-dmg
-        path: ${{ env.binariesName }}.dmg
+#    - name: Build MacOS dmg      
+#      uses: L-Super/create-dmg-actions@v1.0.3
+#      if: ${{ matrix.dotnet-runtime.mac-bundle }}
+#      with:
+#        dmg_name: ${{ env.binariesName }}
+#        src_dir: bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}     
+#
+#    - name: Upload MacOS dmg artifact
+#      uses: actions/upload-artifact@v4
+#      if: ${{ matrix.dotnet-runtime.mac-bundle }}
+#      with:
+#        name: ${{ matrix.dotnet-runtime.target }}-dmg
+#        path: ${{ env.binariesName }}.dmg
