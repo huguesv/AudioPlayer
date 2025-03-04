@@ -35,3 +35,7 @@ Linux - Light Theme
 Windows Terminal
 
 ![Windows Terminal](images/windows-cli.png?raw=true "Windows Terminal")
+
+MacOS Terminal
+
+![MacOS Terminal](images/macos-cli.png?raw=true "MacOS Terminal")
