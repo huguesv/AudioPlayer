@@ -16,7 +16,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     env:
-      solutionFile: src/AudioPlayer.sln
+      solutionFile: src/AudioPlayer.slnx
 
     steps:
     - uses: actions/checkout@v4
