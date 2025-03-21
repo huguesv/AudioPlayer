@@ -40,13 +40,13 @@ jobs:
     - name: Desktop App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.dotnet-runtime }}
+        name: desktop-${{ matrix.dotnet-runtime }}
         path: bin/Release/Woohoo.Audio.Player/net9.0/${{ env.desktopBinariesName }}.zip
 
     - name: Console App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.dotnet-runtime }}
+        name: console-${{ matrix.dotnet-runtime }}
         path: bin/Release/Woohoo.Audio.Player.Cli/net9.0/${{ env.consoleBinariesName }}.zip
 
   release:
