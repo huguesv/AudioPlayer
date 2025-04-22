@@ -1,5 +1,7 @@
 # Audio Player
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/huguesv/AudioPlayer/build-and-test.yml)
+
 This is an audio player for Windows, Linux and MacOS.
 
 It is designed to play audio CDs dumped to raw bin/cue files.
