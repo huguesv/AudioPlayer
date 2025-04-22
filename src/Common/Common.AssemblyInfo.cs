@@ -3,7 +3,7 @@
 
 [assembly: AssemblyCompany("Hugues Valois")]
 [assembly: AssemblyProduct("Audio Player")]
-[assembly: AssemblyCopyright("2025")]
+[assembly: AssemblyCopyright("Copyright (c) Hugues Valois 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("0.2.0.0")]
