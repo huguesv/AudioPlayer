@@ -38,13 +38,13 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="ScottPlot.Avalonia" />
+    <PackageReference Include="Woohoo.Platform.MacOS" />
+    <PackageReference Include="Woohoo.Platform.Windows" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
     <ProjectReference Include="..\Woohoo.Audio.Playback\Woohoo.Audio.Playback.csproj" />
-    <ProjectReference Include="..\Woohoo.Platform.MacOS\Woohoo.Platform.MacOS.csproj" />
-    <ProjectReference Include="..\Woohoo.Platform.Windows\Woohoo.Platform.Windows.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,8 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
     <ProjectReference Include="..\Woohoo.Audio.Playback\Woohoo.Audio.Playback.csproj" />
-    <ProjectReference Include="..\Woohoo.Platform.MacOS\Woohoo.Platform.MacOS.csproj" />
-    <ProjectReference Include="..\Woohoo.Platform.Windows\Woohoo.Platform.Windows.csproj" />
   </ItemGroup>
 
   <ItemGroup>

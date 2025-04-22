@@ -13,7 +13,5 @@
   <Project Path="Woohoo.Audio.Playback/Woohoo.Audio.Playback.csproj" />
   <Project Path="Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj" />
   <Project Path="Woohoo.Audio.Player/Woohoo.Audio.Player.csproj" />
-  <Project Path="Woohoo.Platform.MacOS/Woohoo.Platform.MacOS.csproj" />
-  <Project Path="Woohoo.Platform.Windows/Woohoo.Platform.Windows.csproj" />
   <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
 </Solution>
