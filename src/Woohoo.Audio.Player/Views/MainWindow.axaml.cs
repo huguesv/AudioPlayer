@@ -169,4 +169,26 @@ public partial class MainWindow : Window
         this.WavePlot.Plot.DataBackground.Color = regionColor;
         this.BandPlot.Plot.DataBackground.Color = regionColor;
     }
+
+    private void Window_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+        if (e.Key == Key.F11)
+        {
+            if (this.WindowState == WindowState.FullScreen)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.FullScreen;
+            }
+        }
+        else if (e.Key == Key.Escape)
+        {
+            if (this.WindowState == WindowState.FullScreen)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+        }
+    }
 }

@@ -17,6 +17,7 @@
     x:DataType="vm:MainWindowViewModel"
     DragDrop.AllowDrop="True"
     Icon="/Assets/disc_114465-128px.ico"
+    KeyUp="Window_KeyUp"
     mc:Ignorable="d">
 
     <!--  https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Accents/BaseResources.xaml  -->
