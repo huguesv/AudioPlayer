@@ -87,37 +87,9 @@ public partial class MainWindowViewModel : ViewModelBase
         this.CurrentTrackPosition = 0;
         this.CurrentTrackEndPosition = 0;
         this.CurrentTrackTitle = string.Empty;
-
-        this.BrowseCommand = new AsyncRelayCommand(this.BrowseAsync);
-        this.PreviousTrackCommand = new RelayCommand(this.PreviousTrack, () => this.IsCueSheetOpen && this.CurrentTrack > 0 && this.Tracks.Count > 0);
-        this.PlayPauseCommand = new RelayCommand(this.PlayPause, () => this.IsCueSheetOpen && this.Tracks.Count > 0);
-        this.NextTrackCommand = new RelayCommand(this.NextTrack, () => this.IsCueSheetOpen && this.CurrentTrack < this.Tracks.Count - 1);
-        this.SkipForwardCommand = new RelayCommand(this.SkipForward, () => this.IsCueSheetOpen);
-        this.SkipBackCommand = new RelayCommand(this.SkipBack, () => this.IsCueSheetOpen);
-        this.PlaySelectedTrackCommand = new RelayCommand(this.PlaySelectedTrack, () => this.SelectedTrack is not null);
-        this.MuteCommand = new RelayCommand(this.Mute);
-        this.ChangeViewCommand = new RelayCommand<ViewType>(this.ChangeView);
     }
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
-
-    public IRelayCommand BrowseCommand { get; }
-
-    public IRelayCommand PreviousTrackCommand { get; }
-
-    public IRelayCommand PlayPauseCommand { get; }
-
-    public IRelayCommand NextTrackCommand { get; }
-
-    public IRelayCommand SkipForwardCommand { get; }
-
-    public IRelayCommand SkipBackCommand { get; }
-
-    public IRelayCommand PlaySelectedTrackCommand { get; }
-
-    public IRelayCommand MuteCommand { get; }
-
-    public IRelayCommand<ViewType> ChangeViewCommand { get; }
 
     public int Volume
     {
@@ -131,6 +103,102 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     public SdlAudioPlayer Player => this.player;
+
+    public bool CanPlayPause() => this.IsCueSheetOpen && this.Tracks.Count > 0;
+
+    public bool CanPlayPreviousTrack() => this.IsCueSheetOpen && this.CurrentTrack > 0 && this.Tracks.Count > 0;
+
+    public bool CanPlayNextTrack() => this.IsCueSheetOpen && this.CurrentTrack < this.Tracks.Count - 1;
+
+    public bool CanPlaySelectedTrack() => this.SelectedTrack is not null;
+
+    public bool CanSkipForwardOrBack() => this.IsCueSheetOpen;
+
+    [RelayCommand]
+    public void ChangeView(ViewType view)
+    {
+        this.View = view;
+    }
+
+    [RelayCommand]
+    public async Task BrowseAsync()
+    {
+        var filePaths = await this.filePickerService.GetFilePathsAsync(
+            Localized.BrowseDialogTitle,
+            allowMultiple: false,
+            [new FilePickerFileType("Albums") { Patterns = ["*.cue", "*.zip"] }]);
+        if (filePaths.Length > 0)
+        {
+            this.Open(filePaths);
+        }
+    }
+
+    [RelayCommand]
+    public void Mute()
+    {
+        this.IsMuted = !this.IsMuted;
+        this.player.Volume = this.IsMuted ? 0 : this.Volume;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPlayPause))]
+    public void PlayPause()
+    {
+        if (this.player.IsPlaying)
+        {
+            this.player.Pause();
+            this.IsPlaying = false;
+        }
+        else
+        {
+            this.player.Resume();
+            this.IsPlaying = true;
+        }
+
+        this.UpdateCommandUI();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPlayPreviousTrack))]
+    public void PlayPreviousTrack()
+    {
+        if (this.CurrentTrack - 1 < 0)
+        {
+            return;
+        }
+
+        this.PlayTrack(this.CurrentTrack - 1);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPlayNextTrack))]
+    public void PlayNextTrack()
+    {
+        if (this.CurrentTrack + 1 >= this.Tracks.Count)
+        {
+            return;
+        }
+
+        this.PlayTrack(this.CurrentTrack + 1);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPlaySelectedTrack))]
+    public void PlaySelectedTrack()
+    {
+        if (this.SelectedTrack is not null)
+        {
+            this.PlayTrack(this.Tracks.IndexOf(this.SelectedTrack));
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSkipForwardOrBack))]
+    public void SkipBack()
+    {
+        this.player.SkipBack(TimeSpan.FromSeconds(15));
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSkipForwardOrBack))]
+    public void SkipForward()
+    {
+        this.player.SkipForward(TimeSpan.FromSeconds(15));
+    }
 
     public void Open(params IEnumerable<string> filePaths)
     {
@@ -149,102 +217,6 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void ChangeView(ViewType view)
-    {
-        this.View = view;
-    }
-
-    private void UpdateCommandUI()
-    {
-        this.NextTrackCommand.NotifyCanExecuteChanged();
-        this.PreviousTrackCommand.NotifyCanExecuteChanged();
-        this.PlayPauseCommand.NotifyCanExecuteChanged();
-        this.SkipBackCommand.NotifyCanExecuteChanged();
-        this.SkipForwardCommand.NotifyCanExecuteChanged();
-        this.PlaySelectedTrackCommand.NotifyCanExecuteChanged();
-
-        if (this.IsPlaying)
-        {
-            this.powerManagementService.PreventSleep();
-        }
-        else
-        {
-            this.powerManagementService.RestoreSleep();
-        }
-    }
-
-    private async Task BrowseAsync()
-    {
-        var filePaths = await this.filePickerService.GetFilePathsAsync(
-            Localized.BrowseDialogTitle,
-            allowMultiple: false,
-            [new FilePickerFileType("Albums") { Patterns = ["*.cue", "*.zip"] }]);
-        if (filePaths.Length > 0)
-        {
-            this.Open(filePaths);
-        }
-    }
-
-    private void Mute()
-    {
-        this.IsMuted = !this.IsMuted;
-        this.player.Volume = this.IsMuted ? 0 : this.Volume;
-    }
-
-    private void PlaySelectedTrack()
-    {
-        if (this.SelectedTrack is not null)
-        {
-            this.PlayTrack(this.Tracks.IndexOf(this.SelectedTrack));
-        }
-    }
-
-    private void PreviousTrack()
-    {
-        if (this.CurrentTrack - 1 < 0)
-        {
-            return;
-        }
-
-        this.PlayTrack(this.CurrentTrack - 1);
-    }
-
-    private void PlayPause()
-    {
-        if (this.player.IsPlaying)
-        {
-            this.player.Pause();
-            this.IsPlaying = false;
-        }
-        else
-        {
-            this.player.Resume();
-            this.IsPlaying = true;
-        }
-
-        this.UpdateCommandUI();
-    }
-
-    private void NextTrack()
-    {
-        if (this.CurrentTrack + 1 >= this.Tracks.Count)
-        {
-            return;
-        }
-
-        this.PlayTrack(this.CurrentTrack + 1);
-    }
-
-    private void SkipBack()
-    {
-        this.player.SkipBack(TimeSpan.FromSeconds(15));
-    }
-
-    private void SkipForward()
-    {
-        this.player.SkipForward(TimeSpan.FromSeconds(15));
-    }
-
     private void Played(byte[] buffer, int count, int position, bool eof)
     {
         Dispatcher.UIThread.InvokeAsync(() =>
@@ -256,7 +228,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
             if (eof)
             {
-                this.NextTrack();
+                this.PlayNextTrack();
             }
 
             if (eof || oldIsPlaying != this.IsPlaying)
@@ -370,5 +342,24 @@ public partial class MainWindowViewModel : ViewModelBase
 #endif
 
         this.UpdateCommandUI();
+    }
+
+    private void UpdateCommandUI()
+    {
+        this.PlayNextTrackCommand.NotifyCanExecuteChanged();
+        this.PlayPreviousTrackCommand.NotifyCanExecuteChanged();
+        this.PlayPauseCommand.NotifyCanExecuteChanged();
+        this.SkipBackCommand.NotifyCanExecuteChanged();
+        this.SkipForwardCommand.NotifyCanExecuteChanged();
+        this.PlaySelectedTrackCommand.NotifyCanExecuteChanged();
+
+        if (this.IsPlaying)
+        {
+            this.powerManagementService.PreventSleep();
+        }
+        else
+        {
+            this.powerManagementService.RestoreSleep();
+        }
     }
 }

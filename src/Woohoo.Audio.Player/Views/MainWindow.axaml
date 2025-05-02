@@ -84,8 +84,8 @@
                 <NativeMenu>
                     <NativeMenuItem Command="{Binding PlayPauseCommand}" Header="Play / Pause" />
                     <NativeMenuItemSeparator />
-                    <NativeMenuItem Command="{Binding PreviousTrackCommand}" Header="Previous Track" />
-                    <NativeMenuItem Command="{Binding NextTrackCommand}" Header="Next Track" />
+                    <NativeMenuItem Command="{Binding PlayPreviousTrackCommand}" Header="Previous Track" />
+                    <NativeMenuItem Command="{Binding PlayNextTrackCommand}" Header="Next Track" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Command="{Binding SkipBackCommand}" Header="Skip Back 15s" />
                     <NativeMenuItem Command="{Binding SkipForwardCommand}" Header="Skip Forward 15s" />
@@ -216,7 +216,7 @@
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Previous"
-                Command="{Binding PreviousTrackCommand}"
+                Command="{Binding PlayPreviousTrackCommand}"
                 ToolTip.Tip="Previous Track">
                 <Canvas Width="32" Height="32">
                     <StaticResource ResourceKey="Previous" />
@@ -279,7 +279,7 @@
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Next"
-                Command="{Binding NextTrackCommand}"
+                Command="{Binding PlayNextTrackCommand}"
                 ToolTip.Tip="Next Track">
                 <Canvas Width="32" Height="32">
                     <StaticResource ResourceKey="Next" />
