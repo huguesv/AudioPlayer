@@ -20,7 +20,7 @@
     <Using Include="System.Security.Cryptography" />
     <Using Include="System.Text" />
     <Using Include="System.Xml" />
-    <Using Include="FluentAssertions" />
+    <Using Include="AwesomeAssertions" />
     <Using Include="Xunit" />
   </ItemGroup>
 
