@@ -35,8 +35,6 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-
-        RegisterViewModels();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -63,11 +61,6 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    private static void RegisterViewModels()
-    {
-        ViewLocator.Register<MainWindowViewModel, MainWindow>();
     }
 
     private static void RegisterServices(ServiceCollection collection)
