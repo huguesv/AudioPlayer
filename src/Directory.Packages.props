@@ -10,7 +10,7 @@
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.2" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.2" />
     <PackageVersion Include="AwesomeAssertions" Version="9.1.0" />
-    <PackageVersion Include="AwesomeAssertions.Analyzers" Version="9.0.0" />
+    <PackageVersion Include="AwesomeAssertions.Analyzers" Version="9.0.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FftSharp" Version="2.2.0" />
