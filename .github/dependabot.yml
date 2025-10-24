@@ -9,3 +9,8 @@ updates:
     avalonia:
       patterns:
         - "Avalonia*"
+    test:
+      patterns:
+        - "xunit*"
+        - "Microsoft.NET.Test.Sdk"
+        - "AwesomeAssertions*"
