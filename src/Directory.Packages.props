@@ -17,7 +17,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
-    <PackageVersion Include="ppy.SDL3-CS" Version="2025.828.0" />
+    <PackageVersion Include="ppy.SDL3-CS" Version="2025.920.0" />
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.57" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
