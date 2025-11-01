@@ -31,62 +31,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IMetadataProvider? metadataProvider;
     private readonly SdlAudioPlayer player;
 
-    [ObservableProperty]
-    private bool isTipVisible;
-
-    [ObservableProperty]
-    private bool isAlbumArtVisible;
-
-    [ObservableProperty]
-    private bool isCueSheetOpen;
-
-    [ObservableProperty]
-    private string cueSheetName;
-
-    [ObservableProperty]
-    private string cueSheetFileName;
-
-    [ObservableProperty]
-    private string cueSheetContainerPath;
-
-    [ObservableProperty]
-    private int currentTrack;
-
-    [ObservableProperty]
-    private long currentTrackPosition;
-
-    [ObservableProperty]
-    private long currentTrackEndPosition;
-
-    [ObservableProperty]
-    private string currentTrackTitle;
-
-    [ObservableProperty]
-    private string complexAlbumTitle;
-
-    [ObservableProperty]
-    private string albumArtUrl;
-
-    [ObservableProperty]
-    private string albumTitle;
-
-    [ObservableProperty]
-    private string albumPerformer;
-
-    [ObservableProperty]
-    private bool isPlaying;
-
-    [ObservableProperty]
-    private bool isMuted;
-
-    [ObservableProperty]
-    private ViewType view;
-
-    [ObservableProperty]
-    private TrackViewModel? selectedTrack;
-
     private int volume;
-
     private IMusicContainer? container;
 
     public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider)
@@ -112,6 +57,60 @@ public partial class MainWindowViewModel : ViewModelBase
         this.AlbumTitle = string.Empty;
         this.AlbumPerformer = string.Empty;
     }
+
+    [ObservableProperty]
+    public partial bool IsTipVisible { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAlbumArtVisible { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsCueSheetOpen { get; set; }
+
+    [ObservableProperty]
+    public partial string CueSheetName { get; set; }
+
+    [ObservableProperty]
+    public partial string CueSheetFileName { get; set; }
+
+    [ObservableProperty]
+    public partial string CueSheetContainerPath { get; set; }
+
+    [ObservableProperty]
+    public partial int CurrentTrack { get; set; }
+
+    [ObservableProperty]
+    public partial long CurrentTrackPosition { get; set; }
+
+    [ObservableProperty]
+    public partial long CurrentTrackEndPosition { get; set; }
+
+    [ObservableProperty]
+    public partial string CurrentTrackTitle { get; set; }
+
+    [ObservableProperty]
+    public partial string ComplexAlbumTitle { get; set; }
+
+    [ObservableProperty]
+    public partial string AlbumArtUrl { get; set; }
+
+    [ObservableProperty]
+    public partial string AlbumTitle { get; set; }
+
+    [ObservableProperty]
+    public partial string AlbumPerformer { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsPlaying { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMuted { get; set; }
+
+    [ObservableProperty]
+    public partial ViewType View { get; set; }
+
+    [ObservableProperty]
+    public partial TrackViewModel? SelectedTrack { get; set; }
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
 

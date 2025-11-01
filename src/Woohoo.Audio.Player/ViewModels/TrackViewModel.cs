@@ -7,24 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 public partial class TrackViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private string fileName;
-
-    [ObservableProperty]
-    private long fileSize;
-
-    [ObservableProperty]
-    private int trackNumber;
-
-    [ObservableProperty]
-    private string title;
-
-    [ObservableProperty]
-    private string performer;
-
-    [ObservableProperty]
-    private string songwriter;
-
     public TrackViewModel()
     {
         this.FileName = string.Empty;
@@ -32,4 +14,22 @@ public partial class TrackViewModel : ViewModelBase
         this.Performer = string.Empty;
         this.Songwriter = string.Empty;
     }
+
+    [ObservableProperty]
+    public partial string FileName { get; set; }
+
+    [ObservableProperty]
+    public partial long FileSize { get; set; }
+
+    [ObservableProperty]
+    public partial int TrackNumber { get; set; }
+
+    [ObservableProperty]
+    public partial string Title { get; set; }
+
+    [ObservableProperty]
+    public partial string Performer { get; set; }
+
+    [ObservableProperty]
+    public partial string Songwriter { get; set; }
 }
