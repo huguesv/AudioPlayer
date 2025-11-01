@@ -61,9 +61,41 @@ internal class ZipEntrySeekableStream : Stream
     {
         this.EnsureNotDisposed();
 
-        var bytesRead = this.stream.Read(buffer, offset, count);
-        this.position += bytesRead;
-        return bytesRead;
+        try
+        {
+            return ReadFromStream();
+        }
+        catch (InvalidDataException)
+        {
+            // Sometimes the DeflateStream throws InvalidDataException
+            // for unknown reason. Try again by reopening the stream.
+            this.stream.Close();
+            this.stream = this.entry.Open();
+            if (this.position > 0)
+            {
+                Advance(this.stream, this.position);
+            }
+
+            try
+            {
+                return ReadFromStream();
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        catch
+        {
+            return 0;
+        }
+
+        int ReadFromStream()
+        {
+            var bytesRead = this.stream.Read(buffer, offset, count);
+            this.position += bytesRead;
+            return bytesRead;
+        }
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -98,21 +130,6 @@ internal class ZipEntrySeekableStream : Stream
         }
 
         return this.position;
-
-        static void Advance(Stream s, long bytesToSkip)
-        {
-            byte[] buffer = new byte[4096];
-            while (bytesToSkip > 0)
-            {
-                int bytesRead = s.Read(buffer, 0, (int)Math.Min(buffer.Length, bytesToSkip));
-                if (bytesRead == 0)
-                {
-                    break;
-                }
-
-                bytesToSkip -= bytesRead;
-            }
-        }
     }
 
     public override void SetLength(long value)
@@ -123,6 +140,21 @@ internal class ZipEntrySeekableStream : Stream
     public override void Write(byte[] buffer, int offset, int count)
     {
         throw new NotSupportedException();
+    }
+
+    private static void Advance(Stream s, long bytesToSkip)
+    {
+        byte[] buffer = new byte[4096];
+        while (bytesToSkip > 0)
+        {
+            int bytesRead = s.Read(buffer, 0, (int)Math.Min(buffer.Length, bytesToSkip));
+            if (bytesRead == 0)
+            {
+                break;
+            }
+
+            bytesToSkip -= bytesRead;
+        }
     }
 
     [MemberNotNull(nameof(stream))]
