@@ -173,15 +173,41 @@ public partial class MainWindow : Window
 
     private void Window_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
     {
-        if (e.Key == Key.F11)
+        if (e.Key == Key.MediaPlayPause)
+        {
+            if (this.DataContext is MainWindowViewModel vm)
+            {
+                vm.PlayPauseCommand.Execute(null);
+                e.Handled = true;
+            }
+        }
+        else if (e.Key == Key.MediaPreviousTrack)
+        {
+            if (this.DataContext is MainWindowViewModel vm)
+            {
+                vm.PlayPreviousTrackCommand.Execute(null);
+                e.Handled = true;
+            }
+        }
+        else if (e.Key == Key.MediaNextTrack)
+        {
+            if (this.DataContext is MainWindowViewModel vm)
+            {
+                vm.PlayNextTrackCommand.Execute(null);
+                e.Handled = true;
+            }
+        }
+        else if (e.Key == Key.F11)
         {
             if (this.WindowState == WindowState.FullScreen)
             {
                 this.WindowState = WindowState.Normal;
+                e.Handled = true;
             }
             else
             {
                 this.WindowState = WindowState.FullScreen;
+                e.Handled = true;
             }
         }
         else if (e.Key == Key.Escape)
@@ -189,6 +215,7 @@ public partial class MainWindow : Window
             if (this.WindowState == WindowState.FullScreen)
             {
                 this.WindowState = WindowState.Normal;
+                e.Handled = true;
             }
         }
     }

@@ -274,19 +274,13 @@
                 Command="{Binding PlayPauseCommand}"
                 ToolTip.Tip="Play/Pause">
                 <Grid>
-                    <Viewbox Width="40" Height="40">
-                        <Canvas
-                            Width="32"
-                            Height="32"
-                            IsVisible="{Binding !IsPlaying}">
+                    <Viewbox Width="40" Height="40" IsVisible="{Binding !IsPlaying, Mode=OneWay}">
+                        <Canvas Width="32" Height="32">
                             <StaticResource ResourceKey="Play" />
                         </Canvas>
                     </Viewbox>
-                    <Viewbox Width="40" Height="40">
-                        <Canvas
-                            Width="32"
-                            Height="32"
-                            IsVisible="{Binding IsPlaying}">
+                    <Viewbox Width="40" Height="40" IsVisible="{Binding IsPlaying, Mode=OneWay}">
+                        <Canvas Width="32" Height="32">
                             <StaticResource ResourceKey="Pause" />
                         </Canvas>
                     </Viewbox>
