@@ -26,6 +26,11 @@ public record class CueTime
     /// </summary>
     public int Frames { get; set; }
 
+    public int ToSectors()
+    {
+        return (((this.Minutes * 60) + this.Seconds) * 75) + this.Frames;
+    }
+
     public override string ToString()
     {
         return $"{this.Minutes:D2}:{this.Seconds:D2}:{this.Frames:D2}";

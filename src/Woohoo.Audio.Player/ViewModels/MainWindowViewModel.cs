@@ -17,18 +17,26 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.Cue.Serialization;
+using Woohoo.Audio.Core.CueToolsDatabase;
+using Woohoo.Audio.Core.CueToolsDatabase.Models;
 using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Playback;
 using Woohoo.Audio.Player.Services;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private static readonly bool AllowQueryDatabase = true;
+
     private readonly IFilePickerService filePickerService;
     private readonly IPowerManagementService powerManagementService;
+    private readonly CTDBClient? databaseClient;
     private readonly SdlAudioPlayer player;
 
     [ObservableProperty]
     private bool isTipVisible;
+
+    [ObservableProperty]
+    private bool isAlbumArtVisible;
 
     [ObservableProperty]
     private bool isCueSheetOpen;
@@ -55,6 +63,18 @@ public partial class MainWindowViewModel : ViewModelBase
     private string currentTrackTitle;
 
     [ObservableProperty]
+    private string complexAlbumTitle;
+
+    [ObservableProperty]
+    private string albumArtUrl;
+
+    [ObservableProperty]
+    private string albumTitle;
+
+    [ObservableProperty]
+    private string albumPerformer;
+
+    [ObservableProperty]
     private bool isPlaying;
 
     [ObservableProperty]
@@ -70,10 +90,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private IMusicContainer? container;
 
-    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService)
+    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, CTDBClient? databaseClient)
     {
         this.filePickerService = filePickerService;
         this.powerManagementService = powerManagementService;
+        this.databaseClient = databaseClient;
 
         this.player = new SdlAudioPlayer(this.Played);
         this.volume = this.player.Volume;
@@ -87,6 +108,10 @@ public partial class MainWindowViewModel : ViewModelBase
         this.CurrentTrackPosition = 0;
         this.CurrentTrackEndPosition = 0;
         this.CurrentTrackTitle = string.Empty;
+        this.ComplexAlbumTitle = string.Empty;
+        this.AlbumArtUrl = string.Empty;
+        this.AlbumTitle = string.Empty;
+        this.AlbumPerformer = string.Empty;
     }
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
@@ -285,6 +310,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
         this.Tracks.Clear();
 
+        bool shouldQueryDatabase = true;
+
         foreach (var file in cueSheet.Files)
         {
             foreach (var track in file.Tracks)
@@ -297,6 +324,11 @@ public partial class MainWindowViewModel : ViewModelBase
                 if (!this.container.FileExists(file.FileName))
                 {
                     continue;
+                }
+
+                if (!string.IsNullOrEmpty(track.Title))
+                {
+                    shouldQueryDatabase = false;
                 }
 
                 TrackViewModel trackViewModel = new()
@@ -313,6 +345,20 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
 
+        this.AlbumArtUrl = string.Empty;
+        this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
+        this.AlbumTitle = cueSheet.Title ?? this.CueSheetName;
+        this.AlbumPerformer = cueSheet.Performer ?? string.Empty;
+
+        if (string.IsNullOrEmpty(this.AlbumPerformer))
+        {
+            this.ComplexAlbumTitle = this.AlbumTitle;
+        }
+        else
+        {
+            this.ComplexAlbumTitle = $"{this.AlbumPerformer} - {this.AlbumTitle}";
+        }
+
         this.IsTipVisible = false;
         this.IsCueSheetOpen = true;
 
@@ -322,6 +368,85 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
         this.UpdateCommandUI();
+
+        if (AllowQueryDatabase && shouldQueryDatabase)
+        {
+            this.QueryDatabase(cueSheet);
+        }
+    }
+
+    private void QueryDatabase(CueSheet cueSheet)
+    {
+        if (this.databaseClient is null)
+        {
+            return;
+        }
+
+        var container = this.container;
+        if (container is null)
+        {
+            return;
+        }
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var response = await this.databaseClient.QueryAsync(
+                    CTDBTocCalculator.GetTocFromCue(cueSheet, container),
+                    ctdb: true,
+                    fuzzy: true,
+                    metadataSearch: CTDBMetadataSearch.Extensive,
+                    cancellationToken: CancellationToken.None);
+
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    var metadata = response?.Metadatas?.FirstOrDefault(md => md.Tracks?.Length == this.Tracks.Count);
+                    if (metadata is not null)
+                    {
+                        this.UpdateMetadataFromDatabase(metadata);
+                    }
+                });
+            }
+            catch
+            {
+            }
+        });
+    }
+
+    private void UpdateMetadataFromDatabase(CTDBResponseMeta metadata)
+    {
+        for (int i = 0; i < this.Tracks.Count; i++)
+        {
+            var track = this.Tracks[i];
+            var dbTrack = metadata.Tracks?[i];
+            if (dbTrack is not null)
+            {
+                track.Title = BestString(dbTrack.Name, track.Title);
+                track.Performer = BestString(dbTrack.Artist, metadata.Artist, track.Performer);
+            }
+        }
+
+        this.AlbumArtUrl = metadata.CoverArts?.FirstOrDefault()?.Uri ?? string.Empty;
+        this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
+        this.AlbumTitle = BestString(metadata.Album, this.AlbumTitle);
+        this.AlbumPerformer = BestString(metadata.Artist, this.AlbumPerformer);
+
+        if (string.IsNullOrEmpty(this.AlbumPerformer))
+        {
+            this.ComplexAlbumTitle = this.AlbumTitle;
+        }
+        else
+        {
+            this.ComplexAlbumTitle = $"{this.AlbumPerformer} - {this.AlbumTitle}";
+        }
+
+        this.CurrentTrackTitle = this.Tracks[this.CurrentTrack].Title;
+
+        static string BestString(params string[] values)
+        {
+            return values.FirstOrDefault(val => !string.IsNullOrEmpty(val)) ?? string.Empty;
+        }
     }
 
     private void PlayTrack(int trackIndex)

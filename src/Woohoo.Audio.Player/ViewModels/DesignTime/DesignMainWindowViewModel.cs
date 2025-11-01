@@ -8,7 +8,13 @@ using Woohoo.Audio.Player.Services;
 public class DesignMainWindowViewModel : MainWindowViewModel
 {
     public DesignMainWindowViewModel()
-        : base(new NullFilePickerService(), new NullPowerManagementService())
+        : base(new NullFilePickerService(), new NullPowerManagementService(), null)
     {
+        this.IsCueSheetOpen = true;
+        this.IsTipVisible = false;
+        this.AlbumPerformer = "Various Artists";
+        this.AlbumTitle = "Greatest Hits";
+        this.ComplexAlbumTitle = $"{this.AlbumPerformer} - {this.AlbumTitle}";
+        this.CurrentTrackTitle = "Sample Track Title";
     }
 }
