@@ -3,7 +3,7 @@
 
 namespace Woohoo.Audio.Core.CueToolsDatabase;
 
-public enum CTDBMetadataSearch
+internal enum CTDBMetadataSearch
 {
     None = 0,
     Fast = 1,

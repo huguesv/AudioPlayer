@@ -8,7 +8,7 @@ using System.Linq;
 using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.IO;
 
-public static class CTDBTocCalculator
+internal static class CTDBTocCalculator
 {
     public static string GetTocFromCue(CueSheet cueSheet, IMusicContainer container)
     {

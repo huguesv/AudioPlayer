@@ -9,16 +9,20 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Woohoo.Audio.Core.CueToolsDatabase.Models;
 
-public sealed class CTDBClient
+internal sealed class CTDBClient
 {
-    private const string DefaultServer = "db.cuetools.net";
+    private const string BaseUrl = "http://db.cuetools.net";
 
-    public async Task<CTDBResponse?> QueryAsync(string toc, bool ctdb, bool fuzzy, CTDBMetadataSearch metadataSearch, CancellationToken cancellationToken)
+    public Task<CTDBResponse?> QueryAsync(string toc, CancellationToken cancellationToken)
+    {
+        return this.QueryAsync(toc, ctdb: true, fuzzy: true, CTDBMetadataSearch.Extensive, cancellationToken);
+    }
+
+    private async Task<CTDBResponse?> QueryAsync(string toc, bool ctdb, bool fuzzy, CTDBMetadataSearch metadataSearch, CancellationToken cancellationToken)
     {
         string userAgent = "(" + Environment.OSVersion.VersionString + ")";
-        string urlbase = $"http://{DefaultServer}";
 
-        var requestUriString = urlbase
+        var requestUriString = BaseUrl
             + "/lookup2.php"
             + "?version=3"
             + "&ctdb=" + (ctdb ? 1 : 0)

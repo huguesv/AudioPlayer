@@ -17,9 +17,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.Cue.Serialization;
-using Woohoo.Audio.Core.CueToolsDatabase;
-using Woohoo.Audio.Core.CueToolsDatabase.Models;
 using Woohoo.Audio.Core.IO;
+using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Playback;
 using Woohoo.Audio.Player.Services;
 
@@ -29,7 +28,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private readonly IFilePickerService filePickerService;
     private readonly IPowerManagementService powerManagementService;
-    private readonly CTDBClient? databaseClient;
+    private readonly IMetadataProvider? metadataProvider;
     private readonly SdlAudioPlayer player;
 
     [ObservableProperty]
@@ -90,11 +89,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private IMusicContainer? container;
 
-    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, CTDBClient? databaseClient)
+    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider)
     {
         this.filePickerService = filePickerService;
         this.powerManagementService = powerManagementService;
-        this.databaseClient = databaseClient;
+        this.metadataProvider = metadataProvider;
 
         this.player = new SdlAudioPlayer(this.Played);
         this.volume = this.player.Volume;
@@ -371,13 +370,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
         if (AllowQueryDatabase && shouldQueryDatabase)
         {
-            this.QueryDatabase(cueSheet);
+            this.QueryMetadata(cueSheet);
         }
     }
 
-    private void QueryDatabase(CueSheet cueSheet)
+    private void QueryMetadata(CueSheet cueSheet)
     {
-        if (this.databaseClient is null)
+        if (this.metadataProvider is null)
         {
             return;
         }
@@ -392,21 +391,21 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             try
             {
-                var response = await this.databaseClient.QueryAsync(
-                    CTDBTocCalculator.GetTocFromCue(cueSheet, container),
-                    ctdb: true,
-                    fuzzy: true,
-                    metadataSearch: CTDBMetadataSearch.Extensive,
-                    cancellationToken: CancellationToken.None);
+                CancellationTokenSource tokenSource = new();
+                tokenSource.CancelAfter(TimeSpan.FromSeconds(30));
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                var metadata = await this.metadataProvider.QueryAsync(
+                    cueSheet,
+                    container,
+                    cancellationToken: tokenSource.Token);
+
+                if (metadata is not null)
                 {
-                    var metadata = response?.Metadatas?.FirstOrDefault(md => md.Tracks?.Length == this.Tracks.Count);
-                    if (metadata is not null)
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        this.UpdateMetadataFromDatabase(metadata);
-                    }
-                });
+                        this.LoadMetadata(metadata);
+                    });
+                }
             }
             catch
             {
@@ -414,12 +413,12 @@ public partial class MainWindowViewModel : ViewModelBase
         });
     }
 
-    private void UpdateMetadataFromDatabase(CTDBResponseMeta metadata)
+    private void LoadMetadata(AlbumMetadata metadata)
     {
         for (int i = 0; i < this.Tracks.Count; i++)
         {
             var track = this.Tracks[i];
-            var dbTrack = metadata.Tracks?[i];
+            var dbTrack = metadata.Tracks[i];
             if (dbTrack is not null)
             {
                 track.Title = BestString(dbTrack.Name, track.Title);
@@ -427,7 +426,7 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
 
-        this.AlbumArtUrl = metadata.CoverArts?.FirstOrDefault()?.Uri ?? string.Empty;
+        this.AlbumArtUrl = metadata.Images.FirstOrDefault(art => art.IsPrimary)?.Url ?? string.Empty;
         this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
         this.AlbumTitle = BestString(metadata.Album, this.AlbumTitle);
         this.AlbumPerformer = BestString(metadata.Artist, this.AlbumPerformer);

@@ -11,6 +11,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Woohoo.Audio.Core.CueToolsDatabase;
+using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Player.Services;
 using Woohoo.Audio.Player.ViewModels;
 using Woohoo.Audio.Player.Views;
@@ -66,9 +67,9 @@ public partial class App : Application
 
     private static void RegisterServices(ServiceCollection collection)
     {
-        collection.AddTransient<CTDBClient>();
         collection.AddTransient<MainWindowViewModel>();
         collection.AddTransient<IFilePickerService, FilePickerService>();
+        collection.AddTransient<IMetadataProvider, MetadataProvider>();
 
         if (OperatingSystem.IsWindowsVersionAtLeast(5, 1, 2600))
         {
