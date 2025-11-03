@@ -12,10 +12,10 @@
     xmlns:vm="using:Woohoo.Audio.Player.ViewModels"
     xmlns:vmd="using:Woohoo.Audio.Player.ViewModels.DesignTime"
     Title="Audio Player"
-    Width="500"
-    Height="400"
-    d:DesignHeight="400"
-    d:DesignWidth="500"
+    Width="600"
+    Height="600"
+    d:DesignHeight="600"
+    d:DesignWidth="600"
     x:DataType="vm:MainWindowViewModel"
     DragDrop.AllowDrop="True"
     Icon="/Assets/disc_114465-128px.ico"
@@ -38,7 +38,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
             <converters:IsEqualConverter x:Key="IsEqualConverter" />
-            <MenuFlyout x:Key="SharedMenuFlyout" Placement="TopEdgeAlignedLeft">
+            <MenuFlyout x:Key="ViewMenuFlyout" Placement="TopEdgeAlignedLeft">
                 <MenuItem
                     Command="{Binding ChangeViewCommand}"
                     CommandParameter="{x:Static vm:ViewType.NowPlaying}"
@@ -69,6 +69,13 @@
                     Header="Frequencies Bands"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
                     ToggleType="Radio" />
+            </MenuFlyout>
+            <MenuFlyout x:Key="SettingsMenuFlyout" Placement="TopEdgeAlignedLeft">
+                <MenuItem
+                    Command="{Binding ToggleFetchOnlineMetadataCommand}"
+                    Header="Fetch Online Metadata"
+                    IsChecked="{Binding FetchOnlineMetadata}"
+                    ToggleType="CheckBox" />
             </MenuFlyout>
             <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
         </ResourceDictionary>
@@ -102,6 +109,15 @@
                     <NativeMenuItem Command="{Binding SkipForwardCommand}" Header="Skip Forward 15s" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Command="{Binding MuteCommand}" Header="Mute / Unmute" />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Settings">
+                <NativeMenu>
+                    <NativeMenuItem
+                        Command="{Binding ToggleFetchOnlineMetadataCommand}"
+                        Header="Fetch Online Metadata"
+                        IsChecked="{Binding FetchOnlineMetadata}"
+                        ToggleType="CheckBox" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="View">
@@ -316,7 +332,7 @@
         <Grid
             Grid.Row="3"
             Margin="10"
-            ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+            ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
             <Button
                 Grid.Column="0"
                 Margin="4"
@@ -336,7 +352,7 @@
                 Grid.Column="1"
                 Margin="4"
                 AutomationProperties.Name="Change View"
-                Flyout="{StaticResource SharedMenuFlyout}"
+                Flyout="{StaticResource ViewMenuFlyout}"
                 ToolTip.Tip="Change View">
                 <Grid>
                     <Viewbox Width="24" Height="24">
@@ -346,8 +362,23 @@
                     </Viewbox>
                 </Grid>
             </Button>
-            <TextBlock
+            <Button
+                x:Name="SettingsButton"
                 Grid.Column="2"
+                Margin="4"
+                AutomationProperties.Name="Settings"
+                Flyout="{StaticResource SettingsMenuFlyout}"
+                ToolTip.Tip="Settings">
+                <Grid>
+                    <Viewbox Width="24" Height="24">
+                        <Canvas Width="32" Height="32">
+                            <StaticResource ResourceKey="Settings" />
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Button>
+            <TextBlock
+                Grid.Column="3"
                 Margin="10,0,10,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -355,7 +386,7 @@
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="NoWrap" />
             <Button
-                Grid.Column="3"
+                Grid.Column="4"
                 Margin="10,0,10,0"
                 AutomationProperties.Name="Mute/Unmute"
                 Command="{Binding MuteCommand}"
@@ -380,14 +411,14 @@
                 </Grid>
             </Button>
             <Slider
-                Grid.Column="4"
+                Grid.Column="5"
                 Width="100"
                 VerticalAlignment="Center"
                 Maximum="100"
                 ToolTip.Tip="Volume"
                 Value="{Binding Volume}" />
             <TextBlock
-                Grid.Column="5"
+                Grid.Column="6"
                 Width="40"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"

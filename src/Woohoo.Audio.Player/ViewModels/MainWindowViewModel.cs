@@ -20,19 +20,22 @@ using Woohoo.Audio.Core.Cue.Serialization;
 using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Playback;
+using Woohoo.Audio.Player.Models;
 using Woohoo.Audio.Player.Services;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private static readonly bool AllowQueryDatabase = true;
-
     private readonly IFilePickerService filePickerService;
     private readonly IPowerManagementService powerManagementService;
     private readonly IMetadataProvider? metadataProvider;
     private readonly SdlAudioPlayer player;
+    private readonly UserSettingsManager settingsManager;
+    private readonly string localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
     private int volume;
     private IMusicContainer? container;
+    private CueSheet? cueSheet;
+    private bool isLoading;
 
     public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider)
     {
@@ -56,7 +59,23 @@ public partial class MainWindowViewModel : ViewModelBase
         this.AlbumArtUrl = string.Empty;
         this.AlbumTitle = string.Empty;
         this.AlbumPerformer = string.Empty;
+
+        this.isLoading = true;
+        try
+        {
+            this.settingsManager = new UserSettingsManager(Path.Combine(this.localApplicationData, "Woohoo.Audio.Player", "LocalSettings.json"));
+            var settings = this.settingsManager.LoadSettings();
+
+            this.FetchOnlineMetadata = settings.FetchOnlineMetadata;
+        }
+        finally
+        {
+            this.isLoading = false;
+        }
     }
+
+    [ObservableProperty]
+    public partial bool FetchOnlineMetadata { get; set; }
 
     [ObservableProperty]
     public partial bool IsTipVisible { get; set; }
@@ -141,6 +160,13 @@ public partial class MainWindowViewModel : ViewModelBase
     public void ChangeView(ViewType view)
     {
         this.View = view;
+    }
+
+    [RelayCommand]
+    public void ToggleFetchOnlineMetadata()
+    {
+        this.FetchOnlineMetadata = !this.FetchOnlineMetadata;
+        this.QueryMetadata();
     }
 
     [RelayCommand]
@@ -304,13 +330,11 @@ public partial class MainWindowViewModel : ViewModelBase
         var cueData = this.container.ReadFileText(this.CueSheetFileName);
 
         CueSheetReader parser = new();
-        CueSheet cueSheet = parser.Parse(cueData);
+        this.cueSheet = parser.Parse(cueData);
 
         this.Tracks.Clear();
 
-        bool shouldQueryDatabase = true;
-
-        foreach (var file in cueSheet.Files)
+        foreach (var file in this.cueSheet.Files)
         {
             foreach (var track in file.Tracks)
             {
@@ -324,18 +348,13 @@ public partial class MainWindowViewModel : ViewModelBase
                     continue;
                 }
 
-                if (!string.IsNullOrEmpty(track.Title))
-                {
-                    shouldQueryDatabase = false;
-                }
-
                 TrackViewModel trackViewModel = new()
                 {
                     FileName = file.FileName,
                     TrackNumber = track.TrackNumber,
                     Title = track.Title ?? $"Track {track.TrackNumber}",
-                    Performer = track.Performer ?? cueSheet.Performer ?? string.Empty,
-                    Songwriter = track.Songwriter ?? cueSheet.Songwriter ?? string.Empty,
+                    Performer = track.Performer ?? this.cueSheet.Performer ?? string.Empty,
+                    Songwriter = track.Songwriter ?? this.cueSheet.Songwriter ?? string.Empty,
                     FileSize = this.container.GetFileSize(file.FileName),
                 };
 
@@ -345,8 +364,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
         this.AlbumArtUrl = string.Empty;
         this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
-        this.AlbumTitle = cueSheet.Title ?? this.CueSheetName;
-        this.AlbumPerformer = cueSheet.Performer ?? string.Empty;
+        this.AlbumTitle = this.cueSheet.Title ?? this.CueSheetName;
+        this.AlbumPerformer = this.cueSheet.Performer ?? string.Empty;
 
         if (string.IsNullOrEmpty(this.AlbumPerformer))
         {
@@ -367,21 +386,28 @@ public partial class MainWindowViewModel : ViewModelBase
 
         this.UpdateCommandUI();
 
-        if (AllowQueryDatabase && shouldQueryDatabase)
+        if (this.FetchOnlineMetadata)
         {
-            this.QueryMetadata(cueSheet);
+            this.QueryMetadata();
         }
     }
 
-    private void QueryMetadata(CueSheet cueSheet)
+    private void QueryMetadata()
     {
         if (this.metadataProvider is null)
         {
             return;
         }
 
+        // Capture mutable state in case it changes while the task is running
         var container = this.container;
         if (container is null)
+        {
+            return;
+        }
+
+        var cueSheet = this.cueSheet;
+        if (cueSheet is null)
         {
             return;
         }
@@ -484,5 +510,25 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             this.powerManagementService.RestoreSleep();
         }
+    }
+
+    private void SaveSettings()
+    {
+        var settings = new UserSettings
+        {
+            FetchOnlineMetadata = this.FetchOnlineMetadata,
+        };
+
+        this.settingsManager.SaveSettings(settings);
+    }
+
+    partial void OnFetchOnlineMetadataChanged(bool value)
+    {
+        if (this.isLoading)
+        {
+            return;
+        }
+
+        this.SaveSettings();
     }
 }
