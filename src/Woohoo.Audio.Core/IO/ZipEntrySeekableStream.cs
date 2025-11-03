@@ -61,41 +61,9 @@ internal class ZipEntrySeekableStream : Stream
     {
         this.EnsureNotDisposed();
 
-        try
-        {
-            return ReadFromStream();
-        }
-        catch (InvalidDataException)
-        {
-            // Sometimes the DeflateStream throws InvalidDataException
-            // for unknown reason. Try again by reopening the stream.
-            this.stream.Close();
-            this.stream = this.entry.Open();
-            if (this.position > 0)
-            {
-                Advance(this.stream, this.position);
-            }
-
-            try
-            {
-                return ReadFromStream();
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-        catch
-        {
-            return 0;
-        }
-
-        int ReadFromStream()
-        {
-            var bytesRead = this.stream.Read(buffer, offset, count);
-            this.position += bytesRead;
-            return bytesRead;
-        }
+        var bytesRead = this.stream.Read(buffer, offset, count);
+        this.position += bytesRead;
+        return bytesRead;
     }
 
     public override long Seek(long offset, SeekOrigin origin)
