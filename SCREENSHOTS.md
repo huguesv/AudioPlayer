@@ -10,9 +10,11 @@ Windows - Dark Theme
 
 Windows - Light Theme
 
-![Windows List Playlist](images/windows-light-playlist.png?raw=true "Windows Light Playlist")
+![Windows Light Album Art](images/windows-light-art.png?raw=true "Windows Light Playlist")
 
-![Windows List Frequencies](images/windows-light-frequencies.png?raw=true "Windows Light Frequencies")
+![Windows Light Playlist](images/windows-light-playlist.png?raw=true "Windows Light Playlist")
+
+![Windows Light Frequencies](images/windows-light-frequencies.png?raw=true "Windows Light Frequencies")
 
 MacOS - Dark Theme
 
