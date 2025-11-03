@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.CueToolsDatabase.Models;
+namespace Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
 using System;
 using System.Xml.Serialization;
 
 [Serializable]
 [XmlRoot(ElementName = "ctdb", Namespace = "http://db.cuetools.net/ns/mmd-1.0#")]
-public class CTDBResponse
+public sealed class CTDBResponse
 {
     public CTDBResponse()
     {

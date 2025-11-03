@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.CueToolsDatabase;
+namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -35,22 +35,22 @@ internal static class CTDBTocCalculator
     {
         List<int> sectors = [];
 
-        int absoluteTrackStartSector = 0;
+        var absoluteTrackStartSector = 0;
         foreach (var file in cueSheet.Files)
         {
-            long fileSizeBytes = fileSizeProvider(file.FileName);
+            var fileSizeBytes = fileSizeProvider(file.FileName);
             if (fileSizeBytes % 2352 != 0)
             {
                 throw new InvalidDataException("Invalid file size for CD audio.");
             }
 
-            int fileSectors = (int)(fileSizeBytes / 2352);
+            var fileSectors = (int)(fileSizeBytes / 2352);
             foreach (var track in file.Tracks)
             {
                 var firstIndex = track.Indexes.Where(idx => idx.IndexNumber == 1).FirstOrDefault();
                 if (firstIndex is not null)
                 {
-                    int trackStartSector = absoluteTrackStartSector + firstIndex.Time.ToSectors();
+                    var trackStartSector = absoluteTrackStartSector + firstIndex.Time.ToSectors();
                     sectors.Add(trackStartSector);
                 }
             }

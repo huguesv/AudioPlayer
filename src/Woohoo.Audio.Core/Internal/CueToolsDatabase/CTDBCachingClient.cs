@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.CueToolsDatabase;
+namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 
 using System;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Woohoo.Audio.Core.CueToolsDatabase.Models;
+using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
-internal sealed class CTDBCachingClient
+internal sealed class CTDBCachingClient : ICTDBClient
 {
     private static readonly TimeSpan CacheExpirationAge = TimeSpan.FromDays(7);
     private readonly CTDBClient internalClient = new();

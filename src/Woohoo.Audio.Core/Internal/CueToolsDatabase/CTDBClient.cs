@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.CueToolsDatabase;
+namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 
 using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Woohoo.Audio.Core.CueToolsDatabase.Models;
+using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
-internal sealed class CTDBClient
+internal sealed class CTDBClient : ICTDBClient
 {
     private const string BaseUrl = "http://db.cuetools.net";
 
@@ -20,7 +20,7 @@ internal sealed class CTDBClient
 
     private async Task<CTDBResponse?> QueryAsync(string toc, bool ctdb, bool fuzzy, CTDBMetadataSearch metadataSearch, CancellationToken cancellationToken)
     {
-        string userAgent = "(" + Environment.OSVersion.VersionString + ")";
+        var userAgent = "(" + Environment.OSVersion.VersionString + ")";
 
         var requestUriString = BaseUrl
             + "/lookup2.php"

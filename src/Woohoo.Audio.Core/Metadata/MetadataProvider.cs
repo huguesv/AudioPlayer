@@ -7,13 +7,13 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.CueToolsDatabase;
-using Woohoo.Audio.Core.CueToolsDatabase.Models;
+using Woohoo.Audio.Core.Internal.CueToolsDatabase;
+using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 using Woohoo.Audio.Core.IO;
 
 public sealed class MetadataProvider : IMetadataProvider
 {
-    private readonly CTDBCachingClient databaseClient = new(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"));
+    private readonly ICTDBClient databaseClient = new CTDBCachingClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"));
 
     public async Task<AlbumMetadata?> QueryAsync(CueSheet cueSheet, IMusicContainer container, CancellationToken cancellationToken)
     {
