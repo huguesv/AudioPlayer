@@ -21,6 +21,12 @@ This is currently NOT supported:
 - Playing music from other formats such as wav, mp3, flac, ogg, etc. Just use
   a regular music player for that.
 
+Album and track metadata is loaded from the CDTEXT information when
+present in cue file.
+
+Additional metadata is optionally retrieved from [CueToolsDB](https://db.cue.tools/),
+including album art.
+
 ## Desktop Player
 
 ![Audio Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Audio Player on Windows Screenshot")
@@ -68,6 +74,10 @@ You can still run it by clicking on "More info" and then "Run anyway".
 1. Click the **Change View** button (also **View** menu on MacOS) to switch
    between different views: currently playing, playlist, waveform view and
    spectrum views.
+
+1. Click the **Settings** button (also **Settings** menu on MacOS) to change
+   settings such as **Fetch Online Metadata** to retrieve album art and track
+   titles. This is off by default.
 
 ## Usage (Console Player)
 
@@ -130,3 +140,7 @@ This software uses assets from:
 - [Vidstack](https://www.vidstack.io/)
 - [icons-icons.com](https://icon-icons.com/)
   - [Disc Icon Free](https://icon-icons.com/icon/disc/114465)
+
+This software queries metadata from:
+
+- [CueToolsDB](http://db.cue.tools/)
