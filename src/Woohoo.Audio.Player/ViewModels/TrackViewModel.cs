@@ -32,4 +32,7 @@ public partial class TrackViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial string Songwriter { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsCurrentTrack { get; set; }
 }

@@ -175,7 +175,20 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <TextBlock Background="Transparent" Text="{Binding Title}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Border Margin="0,0,8,0">
+                                    <Viewbox Width="16" Height="16">
+                                        <Canvas Width="24" Height="24" IsVisible="{Binding IsCurrentTrack}">
+                                            <Path
+                                                Data="{StaticResource WaveformGeometry}"
+                                                Stroke="{DynamicResource SystemControlForegroundAccentBrush}"
+                                                StrokeThickness="2"
+                                                StrokeLineCap="Round"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Border>
+                                <TextBlock Background="Transparent" Text="{Binding Title}" />
+                            </StackPanel>
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 Background="Transparent"

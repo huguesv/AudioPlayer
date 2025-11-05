@@ -482,6 +482,15 @@ public partial class MainWindowViewModel : ViewModelBase
         this.CurrentTrackEndPosition = this.Tracks[trackIndex].FileSize;
         this.CurrentTrackTitle = this.Tracks[trackIndex].Title;
 
+        this.Tracks[trackIndex].IsCurrentTrack = true;
+        for (int i = 0; i < this.Tracks.Count; i++)
+        {
+            if (i != trackIndex)
+            {
+                this.Tracks[i].IsCurrentTrack = false;
+            }
+        }
+
 #if PLAY_USING_STREAM
         var trackStream = this.container.OpenFileStream(this.Tracks[trackIndex].FileName);
         this.player.Play(trackStream, (int)this.Tracks[trackIndex].FileSize);
