@@ -210,16 +210,28 @@
                             <StackPanel Orientation="Horizontal">
                                 <Border Margin="0,0,8,0">
                                     <Viewbox Width="16" Height="16">
-                                        <Canvas
-                                            Width="32"
-                                            Height="32"
-                                            IsVisible="{Binding IsCurrentTrack}">
-                                            <Path
-                                                Data="{StaticResource MusicGeometry}"
-                                                Fill="{DynamicResource PlaylistPlayingTrackBrush}"
-                                                Stroke="{DynamicResource PlaylistPlayingTrackBrush}"
-                                                 />
-                                        </Canvas>
+                                        <Grid>
+                                            <Canvas
+                                                Width="32"
+                                                Height="32"
+                                                IsVisible="{Binding IsCurrentTrack}">
+                                                <Path
+                                                    Data="{StaticResource MusicGeometry}"
+                                                    Fill="{DynamicResource PlaylistPlayingTrackBrush}"
+                                                    Stroke="{DynamicResource PlaylistPlayingTrackBrush}"
+                                                     />
+                                            </Canvas>
+                                            <Canvas
+                                                Width="32"
+                                                Height="32"
+                                                IsVisible="{Binding FileNotFound}">
+                                                <Path
+                                                    Data="{StaticResource XMarkGeometry}"
+                                                    Fill="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                                    Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                                     />
+                                            </Canvas>
+                                        </Grid>
                                     </Viewbox>
                                 </Border>
                                 <TextBlock

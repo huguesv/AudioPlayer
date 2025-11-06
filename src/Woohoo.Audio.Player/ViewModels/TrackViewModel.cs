@@ -19,6 +19,9 @@ public partial class TrackViewModel : ViewModelBase
     public partial string FileName { get; set; }
 
     [ObservableProperty]
+    public partial bool FileNotFound { get; set; }
+
+    [ObservableProperty]
     public partial long FileSize { get; set; }
 
     [ObservableProperty]

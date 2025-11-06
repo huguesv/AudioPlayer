@@ -236,6 +236,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanPlayPause))]
     public void PlayPause()
     {
+        if (this.Tracks[this.CurrentTrack].FileNotFound)
+        {
+            return;
+        }
+
         if (this.player.IsPlaying)
         {
             this.player.Pause();
@@ -387,19 +392,18 @@ public partial class MainWindowViewModel : ViewModelBase
                     continue;
                 }
 
-                if (!this.container.FileExists(file.FileName))
-                {
-                    continue;
-                }
+                var fileExists = this.container.FileExists(file.FileName);
+                long fileSize = fileExists ? this.container.GetFileSize(file.FileName) : 0;
 
                 TrackViewModel trackViewModel = new()
                 {
                     FileName = file.FileName,
+                    FileNotFound = !fileExists,
                     TrackNumber = track.TrackNumber,
                     Title = track.Title ?? $"Track {track.TrackNumber}",
                     Performer = track.Performer ?? this.cueSheet.Performer ?? string.Empty,
                     Songwriter = track.Songwriter ?? this.cueSheet.Songwriter ?? string.Empty,
-                    FileSize = this.container.GetFileSize(file.FileName),
+                    FileSize = fileSize,
                 };
 
                 this.Tracks.Add(trackViewModel);
@@ -531,6 +535,21 @@ public partial class MainWindowViewModel : ViewModelBase
     private void PlayTrack(int trackIndex)
     {
         Debug.Assert(this.container is not null, "Container not set");
+
+        if (this.Tracks[trackIndex].FileNotFound)
+        {
+            this.player.Pause();
+            this.IsPlaying = false;
+
+            this.CurrentTrack = 0;
+            this.CurrentTrackPosition = 0;
+            this.CurrentTrackEndPosition = 0;
+            this.CurrentTrackTitle = string.Empty;
+
+            this.UpdateCommandUI();
+
+            return;
+        }
 
         this.CurrentTrack = trackIndex;
         this.CurrentTrackPosition = 0;
