@@ -219,4 +219,12 @@ public partial class MainWindow : Window
             }
         }
     }
+
+    private void Image_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        if (this.DataContext is MainWindowViewModel vm)
+        {
+            vm.NextArtCommand.Execute(null);
+        }
+    }
 }

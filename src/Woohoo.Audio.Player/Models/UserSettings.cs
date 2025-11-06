@@ -6,4 +6,6 @@ namespace Woohoo.Audio.Player.Models;
 public sealed class UserSettings
 {
     public bool FetchOnlineMetadata { get; set; } = false;
+
+    public bool ShowAlbumArt { get; set; } = false;
 }

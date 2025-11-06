@@ -56,9 +56,8 @@ public partial class MainWindowViewModel : ViewModelBase
         this.CurrentTrackEndPosition = 0;
         this.CurrentTrackTitle = string.Empty;
         this.ComplexAlbumTitle = string.Empty;
-        this.AlbumArtUrl = string.Empty;
-        this.AlbumTitle = string.Empty;
         this.AlbumPerformer = string.Empty;
+        this.AlbumTitle = string.Empty;
 
         this.isLoading = true;
         try
@@ -67,6 +66,7 @@ public partial class MainWindowViewModel : ViewModelBase
             var settings = this.settingsManager.LoadSettings();
 
             this.FetchOnlineMetadata = settings.FetchOnlineMetadata;
+            this.ShowAlbumArt = settings.ShowAlbumArt;
         }
         finally
         {
@@ -78,10 +78,16 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial bool FetchOnlineMetadata { get; set; }
 
     [ObservableProperty]
+    public partial bool ShowAlbumArt { get; set; }
+
+    [ObservableProperty]
     public partial bool IsTipVisible { get; set; }
 
     [ObservableProperty]
     public partial bool IsAlbumArtVisible { get; set; }
+
+    [ObservableProperty]
+    public partial AlbumArtViewModel? CurrentArt { get; set; }
 
     [ObservableProperty]
     public partial bool IsCueSheetOpen { get; set; }
@@ -111,9 +117,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial string ComplexAlbumTitle { get; set; }
 
     [ObservableProperty]
-    public partial string AlbumArtUrl { get; set; }
-
-    [ObservableProperty]
     public partial string AlbumTitle { get; set; }
 
     [ObservableProperty]
@@ -132,6 +135,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial TrackViewModel? SelectedTrack { get; set; }
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
+
+    public ObservableCollection<AlbumArtViewModel> Art { get; } = [];
 
     public int Volume
     {
@@ -156,10 +161,38 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public bool CanSkipForwardOrBack() => this.IsCueSheetOpen;
 
+    public bool CanChangeArt() => this.Art.Count > 1 && this.ShowAlbumArt;
+
     [RelayCommand]
     public void ChangeView(ViewType view)
     {
         this.View = view;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanChangeArt))]
+    public void NextArt()
+    {
+        if (this.Art.Count < 2 || this.CurrentArt is null || !this.ShowAlbumArt)
+        {
+            return;
+        }
+
+        int currentIndex = this.Art.IndexOf(this.CurrentArt);
+        int nextIndex = (currentIndex + 1) % this.Art.Count;
+        this.CurrentArt = this.Art[nextIndex];
+    }
+
+    [RelayCommand(CanExecute = nameof(CanChangeArt))]
+    public void PreviousArt()
+    {
+        if (this.Art.Count < 2 || this.CurrentArt is null || !this.ShowAlbumArt)
+        {
+            return;
+        }
+
+        int currentIndex = this.Art.IndexOf(this.CurrentArt);
+        int previousIndex = (currentIndex - 1 + this.Art.Count) % this.Art.Count;
+        this.CurrentArt = this.Art[previousIndex];
     }
 
     [RelayCommand]
@@ -167,6 +200,13 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         this.FetchOnlineMetadata = !this.FetchOnlineMetadata;
         this.QueryMetadata();
+    }
+
+    [RelayCommand]
+    public void ToggleShowAlbumArt()
+    {
+        this.ShowAlbumArt = !this.ShowAlbumArt;
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
     }
 
     [RelayCommand]
@@ -362,8 +402,9 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
 
-        this.AlbumArtUrl = string.Empty;
-        this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
+        this.Art.Clear();
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        this.CurrentArt = null;
         this.AlbumTitle = this.cueSheet.Title ?? this.CueSheetName;
         this.AlbumPerformer = this.cueSheet.Performer ?? string.Empty;
 
@@ -451,8 +492,18 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
 
-        this.AlbumArtUrl = metadata.Images.FirstOrDefault(art => art.IsPrimary)?.Url ?? string.Empty;
-        this.IsAlbumArtVisible = !string.IsNullOrEmpty(this.AlbumArtUrl);
+        foreach (var art in metadata.Images)
+        {
+            this.Art.Add(new AlbumArtViewModel
+            {
+                Url = art.Url,
+                IsPrimary = art.IsPrimary,
+            });
+        }
+
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+
         this.AlbumTitle = BestString(metadata.Album, this.AlbumTitle);
         this.AlbumPerformer = BestString(metadata.Artist, this.AlbumPerformer);
 
@@ -526,12 +577,23 @@ public partial class MainWindowViewModel : ViewModelBase
         var settings = new UserSettings
         {
             FetchOnlineMetadata = this.FetchOnlineMetadata,
+            ShowAlbumArt = this.ShowAlbumArt,
         };
 
         this.settingsManager.SaveSettings(settings);
     }
 
     partial void OnFetchOnlineMetadataChanged(bool value)
+    {
+        if (this.isLoading)
+        {
+            return;
+        }
+
+        this.SaveSettings();
+    }
+
+    partial void OnShowAlbumArtChanged(bool value)
     {
         if (this.isLoading)
         {

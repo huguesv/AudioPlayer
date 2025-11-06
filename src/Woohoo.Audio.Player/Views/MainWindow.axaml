@@ -69,12 +69,26 @@
                     Header="Frequencies Bands"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
                     ToggleType="Radio" />
+                <Separator/>
+                <MenuItem Header="Album Art">
+                    <MenuItem
+                        Command="{Binding PreviousArtCommand}"
+                        Header="Previous Album Art"/>
+                    <MenuItem
+                        Command="{Binding NextArtCommand}"
+                        Header="Next Album Art"/>
+                </MenuItem>
             </MenuFlyout>
             <MenuFlyout x:Key="SettingsMenuFlyout" Placement="TopEdgeAlignedLeft">
                 <MenuItem
                     Command="{Binding ToggleFetchOnlineMetadataCommand}"
                     Header="Fetch Online Metadata"
                     IsChecked="{Binding FetchOnlineMetadata}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleShowAlbumArtCommand}"
+                    Header="Show Album Art"
+                    IsChecked="{Binding ShowAlbumArt}"
                     ToggleType="CheckBox" />
             </MenuFlyout>
             <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
@@ -118,6 +132,11 @@
                         Header="Fetch Online Metadata"
                         IsChecked="{Binding FetchOnlineMetadata}"
                         ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleShowAlbumArtCommand}"
+                        Header="Show Album Art"
+                        IsChecked="{Binding ShowAlbumArt}"
+                        ToggleType="CheckBox" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="View">
@@ -152,6 +171,15 @@
                         Header="Frequencies Bands"
                         IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
                         ToggleType="Radio" />
+                    <NativeMenuItemSeparator/>
+                    <NativeMenuItem Header="Album Art">
+                        <NativeMenuItem
+                            Command="{Binding PreviousArtCommand}"
+                            Header="Previous Album Art"/>
+                        <NativeMenuItem
+                            Command="{Binding NextArtCommand}"
+                            Header="Next Album Art"/>
+                    </NativeMenuItem>
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>
@@ -202,8 +230,9 @@
                     <Image
                         Grid.Row="0"
                         Margin="5"
-                        asyncImageLoader:ImageLoader.Source="{Binding AlbumArtUrl}"
-                        Stretch="Uniform" />
+                        asyncImageLoader:ImageLoader.Source="{Binding CurrentArt.Url}"
+                        Stretch="Uniform"
+                        Tapped="Image_Tapped"/>
                     <StackPanel
                         Grid.Row="1"
                         Orientation="Vertical"
