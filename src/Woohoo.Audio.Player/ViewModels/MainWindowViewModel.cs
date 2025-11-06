@@ -78,6 +78,8 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial bool FetchOnlineMetadata { get; set; }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NextArtCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousArtCommand))]
     public partial bool ShowAlbumArt { get; set; }
 
     [ObservableProperty]
@@ -87,7 +89,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial bool IsAlbumArtVisible { get; set; }
 
     [ObservableProperty]
-    public partial AlbumArtViewModel? CurrentArt { get; set; }
+    [NotifyCanExecuteChangedFor(nameof(NextArtCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousArtCommand))]
+    public partial AlbumArtViewModel? CurrentArt { get; private set; }
 
     [ObservableProperty]
     public partial bool IsCueSheetOpen { get; set; }
