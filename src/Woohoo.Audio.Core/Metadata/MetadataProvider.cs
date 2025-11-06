@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase;
-using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 using Woohoo.Audio.Core.IO;
 
 public sealed class MetadataProvider : IMetadataProvider
@@ -28,19 +27,30 @@ public sealed class MetadataProvider : IMetadataProvider
                 return null;
             }
 
-            var bestTitleMetadata = GetBestTitleMetadata(response);
-            var bestArtMetadata = GetBestArtMetadata(response);
+            var trackCount = cueSheet.GetTotalTrackCount();
 
-            if (bestTitleMetadata is null && bestArtMetadata is null)
+            var bestMetadata = response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length == trackCount);
+            if (bestMetadata is null)
             {
                 return null;
             }
 
+            var bestArtMetadata = bestMetadata;
+            if (bestArtMetadata?.CoverArts?.Any(a => a.Primary) != true)
+            {
+                // The best metadata does not have primary cover art, try to
+                // find another entry with matching album that has primary cover art.
+                bestArtMetadata = response.Metadatas?
+                    .Where(m => m.Tracks?.Length == trackCount)
+                    .Where(m => m.Album == bestMetadata.Album)
+                    .FirstOrDefault(m => m.CoverArts?.Any(a => a.Primary) == true);
+            }
+
             return new AlbumMetadata
             {
-                Album = bestTitleMetadata?.Album ?? string.Empty,
-                Artist = bestTitleMetadata?.Artist ?? string.Empty,
-                Tracks = bestTitleMetadata?.Tracks?.Select(t => new TrackMetadata
+                Album = bestMetadata?.Album ?? string.Empty,
+                Artist = bestMetadata?.Artist ?? string.Empty,
+                Tracks = bestMetadata?.Tracks?.Select(t => new TrackMetadata
                 {
                     Name = t.Name ?? string.Empty,
                     Artist = t.Artist ?? string.Empty,
@@ -57,15 +67,5 @@ public sealed class MetadataProvider : IMetadataProvider
         {
             return null;
         }
-    }
-
-    private static CTDBResponseMeta? GetBestTitleMetadata(CTDBResponse response)
-    {
-        return response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length > 0);
-    }
-
-    private static CTDBResponseMeta? GetBestArtMetadata(CTDBResponse response)
-    {
-        return response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length > 0 && m.CoverArts?.Length > 0 && (m.CoverArts?.Any(a => a.Primary) ?? false));
     }
 }

@@ -56,4 +56,6 @@ public record class CueSheet
     /// Gets or sets the album UPC/EAN code.
     /// </summary>
     public string? UpcEan { get; set; }
+
+    public int GetTotalTrackCount() => this.Files.Sum(file => file.Tracks.Count);
 }
