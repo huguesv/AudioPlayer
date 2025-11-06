@@ -38,6 +38,16 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
             <converters:IsEqualConverter x:Key="IsEqualConverter" />
+            <converters:BoolToBrushConverter x:Key="PlaylistTrackToForegroundBrushConverter">
+                <converters:BoolToBrushConverter.TrueBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
+                </converters:BoolToBrushConverter.TrueBrush>
+                <converters:BoolToBrushConverter.FalseBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
+                </converters:BoolToBrushConverter.FalseBrush>
+            </converters:BoolToBrushConverter>
+            <SolidColorBrush x:Key="PlaylistPlayingTrackBrush" Color="{DynamicResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="PlaylistNonPlayingTrackBrush" Color="{DynamicResource SystemBaseHighColor}" />
             <MenuFlyout x:Key="ViewMenuFlyout" Placement="TopEdgeAlignedLeft">
                 <MenuItem
                     Command="{Binding ChangeViewCommand}"
@@ -201,18 +211,21 @@
                                 <Border Margin="0,0,8,0">
                                     <Viewbox Width="16" Height="16">
                                         <Canvas
-                                            Width="24"
-                                            Height="24"
+                                            Width="32"
+                                            Height="32"
                                             IsVisible="{Binding IsCurrentTrack}">
                                             <Path
-                                                Data="{StaticResource WaveformGeometry}"
-                                                Stroke="{DynamicResource SystemControlForegroundAccentBrush}"
-                                                StrokeLineCap="Round"
-                                                StrokeThickness="2" />
+                                                Data="{StaticResource MusicGeometry}"
+                                                Fill="{DynamicResource PlaylistPlayingTrackBrush}"
+                                                Stroke="{DynamicResource PlaylistPlayingTrackBrush}"
+                                                 />
                                         </Canvas>
                                     </Viewbox>
                                 </Border>
-                                <TextBlock Background="Transparent" Text="{Binding Title}" />
+                                <TextBlock
+                                    Background="Transparent"
+                                    Text="{Binding Title}"
+                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
                             </StackPanel>
                             <TextBlock
                                 HorizontalAlignment="Right"
