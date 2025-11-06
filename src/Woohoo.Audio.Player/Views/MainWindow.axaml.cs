@@ -6,6 +6,8 @@ namespace Woohoo.Audio.Player.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using AsyncImageLoader;
+using AsyncImageLoader.Loaders;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -21,6 +23,7 @@ public partial class MainWindow : Window
     private readonly double[] plotBands;
     private readonly DispatcherTimer timer;
     private readonly ScottPlot.Bar[] plotBars;
+    private readonly string localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
     public MainWindow()
     {
@@ -32,6 +35,10 @@ public partial class MainWindow : Window
         {
             App.Current.ActualThemeVariantChanged += this.Current_ActualThemeVariantChanged;
         }
+
+        var oldLoader = ImageLoader.AsyncImageLoader;
+        ImageLoader.AsyncImageLoader = new DiskCachedWebImageLoader(Path.Combine(this.localApplicationData, "Woohoo.Audio.Player", "AlbumArtCache"));
+        oldLoader?.Dispose();
 
         this.StylePlots();
 
