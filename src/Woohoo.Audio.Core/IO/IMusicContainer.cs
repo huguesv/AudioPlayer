@@ -20,5 +20,7 @@ public interface IMusicContainer
 
     byte[] ReadFileBytes(string fileName);
 
+    byte[] ReadFileBytes(string fileName, long offset, long count);
+
     Stream OpenFileStream(string fileName);
 }

@@ -22,7 +22,10 @@ public partial class TrackViewModel : ViewModelBase
     public partial bool FileNotFound { get; set; }
 
     [ObservableProperty]
-    public partial long FileSize { get; set; }
+    public partial int TrackOffset { get; set; }
+
+    [ObservableProperty]
+    public partial int TrackSize { get; set; }
 
     [ObservableProperty]
     public partial int TrackNumber { get; set; }

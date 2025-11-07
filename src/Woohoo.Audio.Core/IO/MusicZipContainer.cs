@@ -70,6 +70,28 @@ public class MusicZipContainer : IMusicContainer
         return bytes;
     }
 
+    public byte[] ReadFileBytes(string fileName, long offset, long count)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(fileName);
+
+        var entry = this.archive.GetEntry(fileName);
+        if (entry is null)
+        {
+            throw EntryNotFound(fileName);
+        }
+
+        using var stream = entry.Open();
+        stream.Seek(offset, SeekOrigin.Begin);
+        byte[] buffer = new byte[count];
+        int bytesRead = stream.Read(buffer);
+        if (bytesRead < count)
+        {
+            Array.Resize(ref buffer, bytesRead);
+        }
+
+        return buffer;
+    }
+
     public string ReadFileText(string fileName)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(fileName);

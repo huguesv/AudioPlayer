@@ -26,6 +26,11 @@ public record class CueTime
     /// </summary>
     public int Frames { get; set; }
 
+    public int ToBytes()
+    {
+        return this.ToSectors() * 2352;
+    }
+
     public int ToSectors()
     {
         return (((this.Minutes * 60) + this.Seconds) * 75) + this.Frames;

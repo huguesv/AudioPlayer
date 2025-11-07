@@ -385,15 +385,27 @@ public partial class MainWindowViewModel : ViewModelBase
 
         foreach (var file in this.cueSheet.Files)
         {
-            foreach (var track in file.Tracks)
+            var fileExists = this.container.FileExists(file.FileName);
+            long fileSize = fileExists ? this.container.GetFileSize(file.FileName) : 0;
+
+            var tracksInfo = new (int StartOffset, int PlayOffset)[file.Tracks.Count + 1];
+            for (int i = 0; i < file.Tracks.Count; i++)
             {
+                var firstIndexOffset = file.Tracks[i].Indexes.FirstOrDefault()?.Time.ToBytes();
+                var firstIndex1Offset = file.Tracks[i].Indexes.Where(idx => idx.IndexNumber == 1).FirstOrDefault()?.Time.ToBytes();
+
+                tracksInfo[i] = (StartOffset: firstIndexOffset ?? 0, PlayOffset: firstIndex1Offset ?? firstIndexOffset ?? 0);
+            }
+
+            tracksInfo[file.Tracks.Count] = (StartOffset: (int)fileSize, PlayOffset: (int)fileSize);
+
+            for (int i = 0; i < file.Tracks.Count; i++)
+            {
+                var track = file.Tracks[i];
                 if (track.TrackMode != KnownTrackModes.Audio)
                 {
                     continue;
                 }
-
-                var fileExists = this.container.FileExists(file.FileName);
-                long fileSize = fileExists ? this.container.GetFileSize(file.FileName) : 0;
 
                 TrackViewModel trackViewModel = new()
                 {
@@ -403,7 +415,8 @@ public partial class MainWindowViewModel : ViewModelBase
                     Title = track.Title ?? $"Track {track.TrackNumber}",
                     Performer = track.Performer ?? this.cueSheet.Performer ?? string.Empty,
                     Songwriter = track.Songwriter ?? this.cueSheet.Songwriter ?? string.Empty,
-                    FileSize = fileSize,
+                    TrackOffset = fileExists ? tracksInfo[i].PlayOffset : 0,
+                    TrackSize = fileExists ? tracksInfo[i + 1].StartOffset - tracksInfo[i].PlayOffset : 0,
                 };
 
                 this.Tracks.Add(trackViewModel);
@@ -553,7 +566,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
         this.CurrentTrack = trackIndex;
         this.CurrentTrackPosition = 0;
-        this.CurrentTrackEndPosition = this.Tracks[trackIndex].FileSize;
+        this.CurrentTrackEndPosition = this.Tracks[trackIndex].TrackSize;
         this.CurrentTrackTitle = this.Tracks[trackIndex].Title;
 
         this.Tracks[trackIndex].IsCurrentTrack = true;
@@ -566,10 +579,17 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
 #if PLAY_USING_STREAM
-        var trackStream = this.container.OpenFileStream(this.Tracks[trackIndex].FileName);
-        this.player.Play(trackStream, (int)this.Tracks[trackIndex].FileSize);
+        var fileStream = this.container.OpenFileStream(this.Tracks[trackIndex].FileName);
+        var trackStream = new SubStream(
+            fileStream,
+            this.Tracks[trackIndex].TrackOffset,
+            this.Tracks[trackIndex].TrackSize);
+        this.player.Play(trackStream, this.Tracks[trackIndex].TrackSize);
 #else
-        var trackData = this.container.ReadFileBytes(this.Tracks[trackIndex].FileName);
+        var trackData = this.container.ReadFileBytes(
+            this.Tracks[trackIndex].FileName,
+            this.Tracks[trackIndex].TrackOffset,
+            this.Tracks[trackIndex].TrackSize);
         this.player.Play(trackData);
 #endif
 

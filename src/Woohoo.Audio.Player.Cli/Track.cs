@@ -7,11 +7,17 @@ internal record class Track
 {
     public string FileName { get; set; } = string.Empty;
 
-    public long FileSize { get; set; }
+    public bool FileNotFound { get; set; }
+
+    public int TrackOffset { get; set; }
+
+    public int TrackSize { get; set; }
 
     public int TrackNumber { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
     public string Performer { get; set; } = string.Empty;
+
+    public string Songwriter { get; set; } = string.Empty;
 }

@@ -39,6 +39,21 @@ public class MusicFolderContainer : IMusicContainer
         return File.ReadAllBytes(Path.Combine(this.ContainerPath, fileName));
     }
 
+    public byte[] ReadFileBytes(string fileName, long offset, long count)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(fileName);
+        using var stream = new FileStream(Path.Combine(this.ContainerPath, fileName), FileMode.Open, FileAccess.Read);
+        stream.Seek(offset, SeekOrigin.Begin);
+        byte[] buffer = new byte[count];
+        int bytesRead = stream.Read(buffer);
+        if (bytesRead < count)
+        {
+            Array.Resize(ref buffer, bytesRead);
+        }
+
+        return buffer;
+    }
+
     public string ReadFileText(string fileName)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(fileName);

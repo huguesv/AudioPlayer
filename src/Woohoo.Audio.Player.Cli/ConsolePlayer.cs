@@ -6,6 +6,7 @@
 namespace Woohoo.Audio.Player.Cli;
 
 using System.Timers;
+using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Playback;
 
 internal class ConsolePlayer
@@ -297,17 +298,34 @@ internal class ConsolePlayer
             return;
         }
 
+        if (this.album.Tracks[trackIndex].FileNotFound)
+        {
+            this.player.Pause();
+            this.isPlaying = false;
+
+            this.currentTrack = 0;
+            this.currentTrackPosition = 0;
+            this.currentTrackEndPosition = 0;
+        }
+
         this.currentTrack = trackIndex;
         this.currentTrackPosition = 0;
-        this.currentTrackEndPosition = this.album.Tracks[trackIndex].FileSize;
+        this.currentTrackEndPosition = this.album.Tracks[trackIndex].TrackSize;
 
         this.PrintCurrentlyPlayingInfo();
 
 #if PLAY_USING_STREAM
-        var trackStream = this.album.Container.OpenFileStream(this.album.Tracks[trackIndex].FileName);
-        this.player.Play(trackStream, (int)this.album.Tracks[trackIndex].FileSize);
+        var fileStream = this.album.Container.OpenFileStream(this.album.Tracks[trackIndex].FileName);
+        var trackStream = new SubStream(
+            fileStream,
+            this.album.Tracks[trackIndex].TrackOffset,
+            this.album.Tracks[trackIndex].TrackSize);
+        this.player.Play(trackStream, this.album.Tracks[trackIndex].TrackSize);
 #else
-        var trackData = this.album.Container.ReadFileBytes(this.album.Tracks[trackIndex].FileName);
+        var trackData = this.album.Container.ReadFileBytes(
+            this.album.Tracks[trackIndex].FileName,
+            this.album.Tracks[trackIndex].TrackOffset,
+            this.album.Tracks[trackIndex].TrackSize);
         this.player.Play(trackData);
 #endif
     }

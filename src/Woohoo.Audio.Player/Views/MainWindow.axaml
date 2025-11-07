@@ -242,7 +242,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
-                                Text="{Binding FileSize, Converter={StaticResource PositionToLabelConverter}}" />
+                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

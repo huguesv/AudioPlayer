@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-#define PLAY_USING_STREAM
-
 namespace Woohoo.Audio.Player.Cli;
 
 using Woohoo.Audio.Core.Cue;
@@ -79,14 +77,25 @@ internal class Album
         List<Track> tracks = [];
         foreach (var cueFile in cueSheet.Files)
         {
-            foreach (var cueTrack in cueFile.Tracks)
-            {
-                if (cueTrack.TrackMode != KnownTrackModes.Audio)
-                {
-                    continue;
-                }
+            var fileExists = container.FileExists(cueFile.FileName);
+            long fileSize = fileExists ? container.GetFileSize(cueFile.FileName) : 0;
 
-                if (!container.FileExists(cueFile.FileName))
+            var tracksInfo = new (int StartOffset, int PlayOffset)[cueFile.Tracks.Count + 1];
+            for (int i = 0; i < cueFile.Tracks.Count; i++)
+            {
+                var firstIndexOffset = cueFile.Tracks[i].Indexes.FirstOrDefault()?.Time.ToBytes();
+                var firstIndex1Offset = cueFile.Tracks[i].Indexes.Where(idx => idx.IndexNumber == 1).FirstOrDefault()?.Time.ToBytes();
+
+                tracksInfo[i] = (StartOffset: firstIndexOffset ?? 0, PlayOffset: firstIndex1Offset ?? firstIndexOffset ?? 0);
+            }
+
+            tracksInfo[cueFile.Tracks.Count] = (StartOffset: (int)fileSize, PlayOffset: (int)fileSize);
+
+            for (int i = 0; i < cueFile.Tracks.Count; i++)
+            {
+                var cueTrack = cueFile.Tracks[i];
+
+                if (cueTrack.TrackMode != KnownTrackModes.Audio)
                 {
                     continue;
                 }
@@ -94,10 +103,13 @@ internal class Album
                 tracks.Add(new Track
                 {
                     FileName = cueFile.FileName,
+                    FileNotFound = !fileExists,
                     TrackNumber = cueTrack.TrackNumber,
-                    Title = cueTrack.Title ?? string.Empty,
+                    Title = cueTrack.Title ?? $"Track {cueTrack.TrackNumber}",
                     Performer = cueTrack.Performer ?? cueSheet.Performer ?? string.Empty,
-                    FileSize = container.GetFileSize(cueFile.FileName),
+                    Songwriter = cueTrack.Songwriter ?? cueSheet.Songwriter ?? string.Empty,
+                    TrackOffset = fileExists ? tracksInfo[i].PlayOffset : 0,
+                    TrackSize = fileExists ? tracksInfo[i + 1].StartOffset - tracksInfo[i].PlayOffset : 0,
                 });
             }
         }
