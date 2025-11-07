@@ -551,7 +551,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
         if (this.Tracks[trackIndex].FileNotFound)
         {
-            this.player.Pause();
+            if (this.player.IsPlaying)
+            {
+                this.player.Pause();
+            }
+
             this.IsPlaying = false;
 
             this.CurrentTrack = 0;
