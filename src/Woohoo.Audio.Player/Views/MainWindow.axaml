@@ -235,6 +235,12 @@
                                     </Viewbox>
                                 </Border>
                                 <TextBlock
+                                    Margin="0,0,8,0"
+                                    MinWidth="24"
+                                    Background="Transparent"
+                                    Text="{Binding TrackNumber, StringFormat={}{0:00}. }"
+                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
+                                <TextBlock
                                     Background="Transparent"
                                     Text="{Binding Title}"
                                     Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
@@ -445,6 +451,7 @@
                     </Viewbox>
                 </Grid>
             </Button>
+
             <TextBlock
                 Grid.Column="3"
                 Margin="10,0,10,0"
@@ -453,6 +460,7 @@
                 Text="{Binding CurrentTrackTitle}"
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="NoWrap" />
+
             <Button
                 Grid.Column="4"
                 Margin="10,0,10,0"

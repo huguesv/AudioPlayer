@@ -537,7 +537,7 @@ public partial class MainWindowViewModel : ViewModelBase
             this.ComplexAlbumTitle = $"{this.AlbumPerformer} - {this.AlbumTitle}";
         }
 
-        this.CurrentTrackTitle = this.Tracks[this.CurrentTrack].Title;
+        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[this.CurrentTrack].TrackNumber, this.Tracks[this.CurrentTrack].Title);
 
         static string BestString(params string[] values)
         {
@@ -571,7 +571,7 @@ public partial class MainWindowViewModel : ViewModelBase
         this.CurrentTrack = trackIndex;
         this.CurrentTrackPosition = 0;
         this.CurrentTrackEndPosition = this.Tracks[trackIndex].TrackSize;
-        this.CurrentTrackTitle = this.Tracks[trackIndex].Title;
+        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[trackIndex].TrackNumber, this.Tracks[trackIndex].Title);
 
         this.Tracks[trackIndex].IsCurrentTrack = true;
         for (int i = 0; i < this.Tracks.Count; i++)
