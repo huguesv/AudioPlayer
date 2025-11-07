@@ -62,8 +62,7 @@ You can still run it by clicking on "More info" and then "Run anyway".
 1. Click the **Open cue or zip file** button at the bottom left of the application.
    Also available from the **File** menu on MacOS.
 
-1. Select either a .cue file or a .zip file that contains a .cue file. See the
-   next section for how to dump your own audio CDs to bin/cue files format.
+1. Select either a .cue file or a .zip file that contains a .cue file.
 
 1. A new playlist that consists of the audio tracks from the .cue file will be
    opened and the first track will start playing.
@@ -76,17 +75,18 @@ You can still run it by clicking on "More info" and then "Run anyway".
    spectrum views.
 
 1. Click the **Settings** button (also **Settings** menu on MacOS) to change
-   settings such as **Fetch Online Metadata** to retrieve album art and track
-   titles. This is off by default.
+   settings such as **Fetch Online Metadata** and **Show Album Art**.
 
 ## Usage (Console Player)
 
 1. Open a terminal window.
+
 1. Run the executable and pass in a single argument that is a path to a .cue
    file or a .zip file that contains a .cue file.
    ```shell
    Woohoo.Audio.Player.Cli "Guacamelee! Super Turbo Championship Edition (USA) (Official Soundtrack) (PC Game Bundle).zip"
    ```
+
 1. Press the following keys to control the player:
    - `Q` to quit.
    - `P` to pause playback.
