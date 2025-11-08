@@ -30,7 +30,7 @@ internal class Album
 
     public string Title { get; set; }
 
-    public string Performer { get; }
+    public string Performer { get; set; }
 
     public List<Track> Tracks { get; } = [];
 
