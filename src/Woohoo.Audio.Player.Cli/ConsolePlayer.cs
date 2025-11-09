@@ -5,7 +5,9 @@
 
 namespace Woohoo.Audio.Player.Cli;
 
+using System.Collections.Immutable;
 using System.Timers;
+using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Playback;
 
@@ -15,7 +17,7 @@ internal class ConsolePlayer
 
     private int volume;
 
-    private Album? album;
+    private ImmutableList<AlbumTrack> tracks;
 
     private int currentTrack;
 
@@ -37,6 +39,7 @@ internal class ConsolePlayer
     {
         this.player = new SdlAudioPlayer(this.Played);
         this.volume = this.player.Volume;
+        this.tracks = [];
 
         this.currentTrackPosition = 0;
         this.currentTrackEndPosition = 0;
@@ -76,9 +79,9 @@ internal class ConsolePlayer
         Console.WriteLine();
     }
 
-    public void LoadAlbum(Album album)
+    public void LoadAlbum(ImmutableList<AlbumTrack> album)
     {
-        this.album = album;
+        this.tracks = album;
     }
 
     public bool HandleKey(ConsoleKey key)
@@ -120,27 +123,22 @@ internal class ConsolePlayer
     {
         this.cursorBeginPos = Console.GetCursorPosition();
 
-        if (this.album is null)
-        {
-            return;
-        }
-
-        if (this.album.Tracks.Count > 0)
+        if (this.tracks.Count > 0)
         {
             StringBuilder sb = new StringBuilder();
-            if (this.album.Performer.Length > 0)
+            if (this.tracks[0].AlbumPerformer.Length > 0)
             {
-                sb.Append(this.album.Performer);
+                sb.Append(this.tracks[0].AlbumPerformer);
                 sb.Append(" - ");
             }
 
-            if (this.album.Title.Length > 0)
+            if (this.tracks[0].AlbumTitle.Length > 0)
             {
-                sb.Append(this.album.Title);
+                sb.Append(this.tracks[0].AlbumTitle);
             }
             else
             {
-                sb.Append(this.album.CueSheetName);
+                sb.Append(this.tracks[0].CueSheetName);
             }
 
             this.PrintAlbumTitle(sb.ToString());
@@ -195,11 +193,6 @@ internal class ConsolePlayer
 
     private void SkipForward()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         this.PrintCommand($"Seek Forward 15 secs");
 
         this.player.SkipForward(TimeSpan.FromSeconds(15));
@@ -207,11 +200,6 @@ internal class ConsolePlayer
 
     private void SkipBackward()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         this.PrintCommand($"Seek Back 15 secs");
 
         this.player.SkipBack(TimeSpan.FromSeconds(15));
@@ -219,11 +207,6 @@ internal class ConsolePlayer
 
     private void ResumeTrack()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         this.PrintCommand($"Resume");
 
         this.player.Resume();
@@ -231,11 +214,6 @@ internal class ConsolePlayer
 
     private void PauseTrack()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         this.PrintCommand($"Pause");
 
         this.player.Pause();
@@ -259,12 +237,7 @@ internal class ConsolePlayer
 
     private void NextTrack()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
-        if (this.currentTrack + 1 >= this.album.Tracks.Count)
+        if (this.currentTrack + 1 >= this.tracks.Count)
         {
             return;
         }
@@ -276,11 +249,6 @@ internal class ConsolePlayer
 
     private void PreviousTrack()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         if (this.currentTrack < 1)
         {
             return;
@@ -293,12 +261,12 @@ internal class ConsolePlayer
 
     private void PlayTrack(int trackIndex)
     {
-        if (this.album is null)
+        if (trackIndex >= this.tracks.Count)
         {
             return;
         }
 
-        if (this.album.Tracks[trackIndex].FileNotFound)
+        if (this.tracks[trackIndex].TrackFileNotFound)
         {
             this.player.Pause();
             this.isPlaying = false;
@@ -310,33 +278,28 @@ internal class ConsolePlayer
 
         this.currentTrack = trackIndex;
         this.currentTrackPosition = 0;
-        this.currentTrackEndPosition = this.album.Tracks[trackIndex].TrackSize;
+        this.currentTrackEndPosition = this.tracks[trackIndex].TrackSize;
 
         this.PrintCurrentlyPlayingInfo();
 
 #if PLAY_USING_STREAM
-        var fileStream = this.album.Container.OpenFileStream(this.album.Tracks[trackIndex].FileName);
+        var fileStream = this.tracks[trackIndex].Container.OpenFileStream(this.tracks[trackIndex].TrackFileName);
         var trackStream = new SubStream(
             fileStream,
-            this.album.Tracks[trackIndex].TrackOffset,
-            this.album.Tracks[trackIndex].TrackSize);
-        this.player.Play(trackStream, this.album.Tracks[trackIndex].TrackSize);
+            this.tracks[trackIndex].TrackOffset,
+            this.tracks[trackIndex].TrackSize);
+        this.player.Play(trackStream, this.tracks[trackIndex].TrackSize);
 #else
-        var trackData = this.album.Container.ReadFileBytes(
-            this.album.Tracks[trackIndex].FileName,
-            this.album.Tracks[trackIndex].TrackOffset,
-            this.album.Tracks[trackIndex].TrackSize);
+        var trackData = this.album[trackIndex].Container.ReadFileBytes(
+            this.album[trackIndex].TrackFileName,
+            this.album[trackIndex].TrackOffset,
+            this.album[trackIndex].TrackSize);
         this.player.Play(trackData);
 #endif
     }
 
     private void Played(byte[] buffer, int count, int position, bool eof)
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         bool oldIsPlaying = this.isPlaying;
 
         this.currentTrackPosition = position;
@@ -352,26 +315,21 @@ internal class ConsolePlayer
 
     private void PrintCurrentlyPlayingInfo()
     {
-        if (this.album is null)
-        {
-            return;
-        }
-
         string trackLength = PositionToString(this.currentTrackEndPosition);
         string trackPos = PositionToString(this.currentTrackPosition);
 
         StringBuilder sb = new StringBuilder();
-        sb.Append($"Track {this.currentTrack + 1:D2} of {this.album.Tracks.Count:D2}");
-        if (this.album.Tracks[this.currentTrack].Performer.Length > 0)
+        sb.Append($"Track {this.currentTrack + 1:D2} of {this.tracks.Count:D2}");
+        if (this.tracks[this.currentTrack].TrackPerformer.Length > 0)
         {
             sb.Append(" - ");
-            sb.Append(this.album.Tracks[this.currentTrack].Performer);
+            sb.Append(this.tracks[this.currentTrack].TrackPerformer);
         }
 
-        if (this.album.Tracks[this.currentTrack].Title.Length > 0)
+        if (this.tracks[this.currentTrack].TrackTitle.Length > 0)
         {
             sb.Append(" - ");
-            sb.Append(this.album.Tracks[this.currentTrack].Title);
+            sb.Append(this.tracks[this.currentTrack].TrackTitle);
         }
 
         string trackNumberAndTitle = sb.ToString();

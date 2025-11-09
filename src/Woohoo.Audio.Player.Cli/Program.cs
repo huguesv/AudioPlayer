@@ -5,7 +5,8 @@ namespace Woohoo.Audio.Player.Cli;
 
 using System.CommandLine;
 using System.IO;
-using Woohoo.Audio.Core.Cue.Serialization;
+using System.Linq;
+using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Metadata;
 
 internal class Program
@@ -57,78 +58,82 @@ internal class Program
 
     private static async Task<int> PlayCommandHandler(FileInfo fileInfo, bool fetchMetadata)
     {
-        var album = Album.LoadFrom(fileInfo.FullName);
-        if (album is null)
+        try
+        {
+            var tracks = new AlbumLoader().LoadFrom(fileInfo.FullName);
+            ConsolePlayer.ClearScreen();
+            ConsolePlayer.PrintCopyright();
+
+            if (fetchMetadata && tracks.Count > 0)
+            {
+                try
+                {
+                    var metadataProvider = new MetadataProvider();
+                    var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                    var metadata = await metadataProvider.QueryAsync(tracks[0].CueSheet, tracks[0].Container, cancellationTokenSource.Token);
+                    if (metadata is not null)
+                    {
+                        var albumTitle = BestString(metadata.Album, tracks[0].AlbumTitle);
+                        var albumPerformer = BestString(metadata.Artist, tracks[0].AlbumPerformer);
+
+                        for (int i = 0; i < tracks.Count; i++)
+                        {
+                            var track = tracks[i];
+                            track.AlbumTitle = albumTitle;
+                            track.AlbumPerformer = albumPerformer;
+
+                            var dbTrack = metadata.Tracks[i];
+                            if (dbTrack is not null)
+                            {
+                                track.TrackTitle = BestString(dbTrack.Name, track.TrackTitle);
+                                track.TrackPerformer = BestString(dbTrack.Artist, metadata.Artist, track.TrackPerformer);
+                            }
+                        }
+
+                        Console.WriteLine("Metadata fetched successfully.");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Metadata not available.");
+                        Console.WriteLine();
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    Console.Error.WriteLine("Metadata fetch timed out.");
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("Metadata fetch error: " + ex.Message);
+                }
+            }
+
+            ConsolePlayer.PrintCommands();
+
+            Console.CursorVisible = false;
+            try
+            {
+                var player = new ConsolePlayer();
+                player.LoadAlbum(tracks);
+                player.PlayAll();
+
+                while (player.HandleKey(Console.ReadKey(intercept: true).Key))
+                {
+                }
+            }
+            finally
+            {
+                Console.CursorVisible = true;
+            }
+
+            return 0;
+        }
+        catch
         {
             Console.WriteLine($"Unable to load: {fileInfo.FullName}.\nOnly .cue or .zip files are supported.");
             return 1;
         }
-
-        ConsolePlayer.ClearScreen();
-        ConsolePlayer.PrintCopyright();
-
-        if (fetchMetadata)
-        {
-            try
-            {
-                var metadataProvider = new MetadataProvider();
-                var cueSheet = new CueSheetReader().Parse(album.Container.ReadFileText(album.CueSheetFileName));
-                var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-                var metadata = await metadataProvider.QueryAsync(cueSheet, album.Container, cancellationTokenSource.Token);
-                if (metadata is not null)
-                {
-                    album.Title = BestString(metadata.Album, album.Title);
-                    album.Performer = BestString(metadata.Artist, album.Performer);
-
-                    for (int i = 0; i < album.Tracks.Count; i++)
-                    {
-                        var track = album.Tracks[i];
-                        var dbTrack = metadata.Tracks[i];
-                        if (dbTrack is not null)
-                        {
-                            track.Title = BestString(dbTrack.Name, track.Title);
-                            track.Performer = BestString(dbTrack.Artist, metadata.Artist, track.Performer);
-                        }
-                    }
-
-                    Console.WriteLine("Metadata fetched successfully.");
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine("Metadata not available.");
-                    Console.WriteLine();
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                Console.Error.WriteLine("Metadata fetch timed out.");
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine("Metadata fetch error: " + ex.Message);
-            }
-        }
-
-        ConsolePlayer.PrintCommands();
-
-        Console.CursorVisible = false;
-        try
-        {
-            var player = new ConsolePlayer();
-            player.LoadAlbum(album);
-            player.PlayAll();
-
-            while (player.HandleKey(Console.ReadKey(intercept: true).Key))
-            {
-            }
-        }
-        finally
-        {
-            Console.CursorVisible = true;
-        }
-
-        return 0;
 
         static string BestString(params string[] values)
         {

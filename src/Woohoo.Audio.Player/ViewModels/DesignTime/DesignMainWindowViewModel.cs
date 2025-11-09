@@ -10,7 +10,6 @@ public class DesignMainWindowViewModel : MainWindowViewModel
     public DesignMainWindowViewModel()
         : base(new NullFilePickerService(), new NullPowerManagementService(), null)
     {
-        this.IsCueSheetOpen = true;
         this.IsTipVisible = false;
         this.AlbumPerformer = "Various Artists";
         this.AlbumTitle = "Greatest Hits";

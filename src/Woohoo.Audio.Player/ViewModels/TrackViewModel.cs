@@ -4,6 +4,8 @@
 namespace Woohoo.Audio.Player.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using Woohoo.Audio.Core.Cue;
+using Woohoo.Audio.Core.IO;
 
 public partial class TrackViewModel : ViewModelBase
 {
@@ -14,6 +16,10 @@ public partial class TrackViewModel : ViewModelBase
         this.Performer = string.Empty;
         this.Songwriter = string.Empty;
     }
+
+    public required IMusicContainer Container { get; init; }
+
+    public required CueSheet CueSheet { get; init; }
 
     [ObservableProperty]
     public partial string FileName { get; set; }

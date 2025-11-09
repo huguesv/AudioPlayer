@@ -8,15 +8,13 @@ namespace Woohoo.Audio.Player.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.Cue.Serialization;
+using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Playback;
@@ -33,8 +31,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly string localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
     private int volume;
-    private IMusicContainer? container;
-    private CueSheet? cueSheet;
     private bool isLoading;
 
     public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider)
@@ -49,9 +45,6 @@ public partial class MainWindowViewModel : ViewModelBase
         this.View = ViewType.NowPlaying;
         this.IsTipVisible = true;
 
-        this.CueSheetName = string.Empty;
-        this.CueSheetFileName = string.Empty;
-        this.CueSheetContainerPath = string.Empty;
         this.CurrentTrackPosition = 0;
         this.CurrentTrackEndPosition = 0;
         this.CurrentTrackTitle = string.Empty;
@@ -94,19 +87,16 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial AlbumArtViewModel? CurrentArt { get; private set; }
 
     [ObservableProperty]
-    public partial bool IsCueSheetOpen { get; set; }
+    [NotifyCanExecuteChangedFor(nameof(PlayPauseCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipBackCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipForwardCommand))]
+    public partial TrackViewModel? CurrentTrack { get; set; }
 
     [ObservableProperty]
-    public partial string CueSheetName { get; set; }
-
-    [ObservableProperty]
-    public partial string CueSheetFileName { get; set; }
-
-    [ObservableProperty]
-    public partial string CueSheetContainerPath { get; set; }
-
-    [ObservableProperty]
-    public partial int CurrentTrack { get; set; }
+    [NotifyCanExecuteChangedFor(nameof(PlayPauseCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipBackCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipForwardCommand))]
+    public partial int CurrentTrackIndex { get; set; }
 
     [ObservableProperty]
     public partial long CurrentTrackPosition { get; set; }
@@ -127,6 +117,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial string AlbumPerformer { get; set; }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PlayPauseCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipBackCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SkipForwardCommand))]
     public partial bool IsPlaying { get; set; }
 
     [ObservableProperty]
@@ -136,7 +129,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public partial ViewType View { get; set; }
 
     [ObservableProperty]
-    public partial TrackViewModel? SelectedTrack { get; set; }
+    public partial TrackViewModel? PlaylistSelectedTrack { get; set; }
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
 
@@ -155,15 +148,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public SdlAudioPlayer Player => this.player;
 
-    public bool CanPlayPause() => this.IsCueSheetOpen && this.Tracks.Count > 0;
+    public bool CanPlayPause() => this.Tracks.Count > 0;
 
-    public bool CanPlayPreviousTrack() => this.IsCueSheetOpen && this.CurrentTrack > 0 && this.Tracks.Count > 0;
+    public bool CanPlayPreviousTrack() => this.CurrentTrackIndex > 0 && this.Tracks.Count > 0;
 
-    public bool CanPlayNextTrack() => this.IsCueSheetOpen && this.CurrentTrack < this.Tracks.Count - 1;
+    public bool CanPlayNextTrack() => this.CurrentTrackIndex < this.Tracks.Count - 1;
 
-    public bool CanPlaySelectedTrack() => this.SelectedTrack is not null;
+    public bool CanPlaySelectedTrack() => this.IsPlaying;
 
-    public bool CanSkipForwardOrBack() => this.IsCueSheetOpen;
+    public bool CanSkipForwardOrBack() => this.IsPlaying;
 
     public bool CanChangeArt() => this.Art.Count > 1 && this.ShowAlbumArt;
 
@@ -236,7 +229,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanPlayPause))]
     public void PlayPause()
     {
-        if (this.Tracks[this.CurrentTrack].FileNotFound)
+        if (this.Tracks[this.CurrentTrackIndex].FileNotFound)
         {
             return;
         }
@@ -258,43 +251,55 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanPlayPreviousTrack))]
     public void PlayPreviousTrack()
     {
-        if (this.CurrentTrack - 1 < 0)
+        if (this.CurrentTrackIndex - 1 < 0)
         {
             return;
         }
 
-        this.PlayTrack(this.CurrentTrack - 1);
+        this.PlayTrack(this.CurrentTrackIndex - 1);
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayNextTrack))]
     public void PlayNextTrack()
     {
-        if (this.CurrentTrack + 1 >= this.Tracks.Count)
+        if (this.CurrentTrackIndex + 1 >= this.Tracks.Count)
         {
             return;
         }
 
-        this.PlayTrack(this.CurrentTrack + 1);
+        this.PlayTrack(this.CurrentTrackIndex + 1);
     }
 
     [RelayCommand(CanExecute = nameof(CanPlaySelectedTrack))]
     public void PlaySelectedTrack()
     {
-        if (this.SelectedTrack is not null)
+        if (this.PlaylistSelectedTrack is null)
         {
-            this.PlayTrack(this.Tracks.IndexOf(this.SelectedTrack));
+            return;
         }
+
+        this.PlayTrack(this.Tracks.IndexOf(this.PlaylistSelectedTrack));
     }
 
     [RelayCommand(CanExecute = nameof(CanSkipForwardOrBack))]
     public void SkipBack()
     {
+        if (this.CurrentTrackIndex >= this.Tracks.Count)
+        {
+            return;
+        }
+
         this.player.SkipBack(TimeSpan.FromSeconds(15));
     }
 
     [RelayCommand(CanExecute = nameof(CanSkipForwardOrBack))]
     public void SkipForward()
     {
+        if (this.CurrentTrackIndex >= this.Tracks.Count)
+        {
+            return;
+        }
+
         this.player.SkipForward(TimeSpan.FromSeconds(15));
     }
 
@@ -302,15 +307,13 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         foreach (var filePath in filePaths)
         {
-            if (Path.GetExtension(filePath) == ".cue")
+            try
             {
-                this.OpenCue(filePath);
+                this.OpenFile(filePath);
                 break;
             }
-            else if (Path.GetExtension(filePath) == ".zip")
+            catch
             {
-                this.OpenArchive(filePath);
-                break;
             }
         }
     }
@@ -336,98 +339,41 @@ public partial class MainWindowViewModel : ViewModelBase
         });
     }
 
-    private void OpenCue(string filePath)
+    private void OpenFile(string filePath)
     {
-        if (!File.Exists(filePath))
+        var loader = new AlbumLoader();
+        var tracks = loader.LoadFrom(filePath);
+        if (tracks.Count == 0)
         {
             return;
         }
-
-        string? folder = Path.GetDirectoryName(filePath);
-        if (folder is null)
-        {
-            return;
-        }
-
-        this.ProcessContainer(new MusicFolderContainer(folder));
-    }
-
-    private void OpenArchive(string filePath)
-    {
-        if (!File.Exists(filePath))
-        {
-            return;
-        }
-
-        this.ProcessContainer(new MusicZipContainer(filePath));
-    }
-
-    private void ProcessContainer(IMusicContainer container)
-    {
-        this.container = container;
-
-        var cueFile = this.container.EnumerateFilesByExtension("cue").FirstOrDefault();
-        if (cueFile is null)
-        {
-            return;
-        }
-
-        this.CueSheetName = Path.GetFileNameWithoutExtension(cueFile);
-        this.CueSheetFileName = cueFile;
-        this.CueSheetContainerPath = this.container.ContainerPath;
-
-        var cueData = this.container.ReadFileText(this.CueSheetFileName);
-
-        CueSheetReader parser = new();
-        this.cueSheet = parser.Parse(cueData);
 
         this.Tracks.Clear();
 
-        foreach (var file in this.cueSheet.Files)
+        foreach (var track in tracks)
         {
-            var fileExists = this.container.FileExists(file.FileName);
-            long fileSize = fileExists ? this.container.GetFileSize(file.FileName) : 0;
-
-            var tracksInfo = new (int StartOffset, int PlayOffset)[file.Tracks.Count + 1];
-            for (int i = 0; i < file.Tracks.Count; i++)
+            TrackViewModel trackViewModel = new()
             {
-                var firstIndexOffset = file.Tracks[i].Indexes.FirstOrDefault()?.Time.ToBytes();
-                var firstIndex1Offset = file.Tracks[i].Indexes.Where(idx => idx.IndexNumber == 1).FirstOrDefault()?.Time.ToBytes();
+                Container = track.Container,
+                CueSheet = track.CueSheet,
+                FileName = track.TrackFileName,
+                FileNotFound = track.TrackFileNotFound,
+                TrackNumber = track.TrackNumber,
+                Title = track.TrackTitle.Length > 0 ? track.TrackTitle : $"Track {track.TrackNumber:00}",
+                Performer = track.TrackPerformer,
+                Songwriter = track.TrackSongwriter,
+                TrackOffset = track.TrackOffset,
+                TrackSize = track.TrackSize,
+            };
 
-                tracksInfo[i] = (StartOffset: firstIndexOffset ?? 0, PlayOffset: firstIndex1Offset ?? firstIndexOffset ?? 0);
-            }
-
-            tracksInfo[file.Tracks.Count] = (StartOffset: (int)fileSize, PlayOffset: (int)fileSize);
-
-            for (int i = 0; i < file.Tracks.Count; i++)
-            {
-                var track = file.Tracks[i];
-                if (track.TrackMode != KnownTrackModes.Audio)
-                {
-                    continue;
-                }
-
-                TrackViewModel trackViewModel = new()
-                {
-                    FileName = file.FileName,
-                    FileNotFound = !fileExists,
-                    TrackNumber = track.TrackNumber,
-                    Title = track.Title ?? $"Track {track.TrackNumber}",
-                    Performer = track.Performer ?? this.cueSheet.Performer ?? string.Empty,
-                    Songwriter = track.Songwriter ?? this.cueSheet.Songwriter ?? string.Empty,
-                    TrackOffset = fileExists ? tracksInfo[i].PlayOffset : 0,
-                    TrackSize = fileExists ? tracksInfo[i + 1].StartOffset - tracksInfo[i].PlayOffset : 0,
-                };
-
-                this.Tracks.Add(trackViewModel);
-            }
+            this.Tracks.Add(trackViewModel);
         }
 
         this.Art.Clear();
         this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
         this.CurrentArt = null;
-        this.AlbumTitle = this.cueSheet.Title ?? this.CueSheetName;
-        this.AlbumPerformer = this.cueSheet.Performer ?? string.Empty;
+        this.AlbumTitle = tracks[0].AlbumTitle;
+        this.AlbumPerformer = tracks[0].AlbumPerformer;
 
         if (string.IsNullOrEmpty(this.AlbumPerformer))
         {
@@ -439,7 +385,6 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
         this.IsTipVisible = false;
-        this.IsCueSheetOpen = true;
 
         if (this.Tracks.Count > 0)
         {
@@ -456,23 +401,14 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void QueryMetadata()
     {
-        if (this.metadataProvider is null)
+        if (this.metadataProvider is null || this.Tracks.Count == 0)
         {
             return;
         }
 
         // Capture mutable state in case it changes while the task is running
-        var container = this.container;
-        if (container is null)
-        {
-            return;
-        }
-
-        var cueSheet = this.cueSheet;
-        if (cueSheet is null)
-        {
-            return;
-        }
+        var container = this.Tracks[0].Container;
+        var cueSheet = this.Tracks[0].CueSheet;
 
         _ = Task.Run(async () =>
         {
@@ -537,7 +473,7 @@ public partial class MainWindowViewModel : ViewModelBase
             this.ComplexAlbumTitle = $"{this.AlbumPerformer} - {this.AlbumTitle}";
         }
 
-        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[this.CurrentTrack].TrackNumber, this.Tracks[this.CurrentTrack].Title);
+        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[this.CurrentTrackIndex].TrackNumber, this.Tracks[this.CurrentTrackIndex].Title);
 
         static string BestString(params string[] values)
         {
@@ -547,33 +483,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void PlayTrack(int trackIndex)
     {
-        Debug.Assert(this.container is not null, "Container not set");
-
-        if (this.Tracks[trackIndex].FileNotFound)
+        if (this.player.IsPlaying)
         {
-            if (this.player.IsPlaying)
-            {
-                this.player.Pause();
-            }
-
-            this.IsPlaying = false;
-
-            this.CurrentTrack = 0;
-            this.CurrentTrackPosition = 0;
-            this.CurrentTrackEndPosition = 0;
-            this.CurrentTrackTitle = string.Empty;
-
-            this.UpdateCommandUI();
-
-            return;
+            this.player.Pause();
         }
 
-        this.CurrentTrack = trackIndex;
-        this.CurrentTrackPosition = 0;
-        this.CurrentTrackEndPosition = this.Tracks[trackIndex].TrackSize;
-        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[trackIndex].TrackNumber, this.Tracks[trackIndex].Title);
+        this.IsPlaying = false;
 
-        this.Tracks[trackIndex].IsCurrentTrack = true;
         for (int i = 0; i < this.Tracks.Count; i++)
         {
             if (i != trackIndex)
@@ -582,20 +498,33 @@ public partial class MainWindowViewModel : ViewModelBase
             }
         }
 
+        this.CurrentTrackIndex = trackIndex;
+        this.CurrentTrack = this.Tracks[trackIndex];
+        this.CurrentTrackPosition = 0;
+        this.CurrentTrackEndPosition = this.Tracks[trackIndex].TrackSize;
+        this.CurrentTrackTitle = string.Format("{0:00}. {1}", this.Tracks[trackIndex].TrackNumber, this.Tracks[trackIndex].Title);
+
+        if (!this.Tracks[trackIndex].FileNotFound)
+        {
+            this.Tracks[trackIndex].IsCurrentTrack = true;
+
 #if PLAY_USING_STREAM
-        var fileStream = this.container.OpenFileStream(this.Tracks[trackIndex].FileName);
-        var trackStream = new SubStream(
-            fileStream,
-            this.Tracks[trackIndex].TrackOffset,
-            this.Tracks[trackIndex].TrackSize);
-        this.player.Play(trackStream, this.Tracks[trackIndex].TrackSize);
+            var fileStream = this.Tracks[trackIndex].Container.OpenFileStream(this.Tracks[trackIndex].FileName);
+            var trackStream = new SubStream(
+                fileStream,
+                this.Tracks[trackIndex].TrackOffset,
+                this.Tracks[trackIndex].TrackSize);
+            this.player.Play(trackStream, this.Tracks[trackIndex].TrackSize);
 #else
-        var trackData = this.container.ReadFileBytes(
-            this.Tracks[trackIndex].FileName,
-            this.Tracks[trackIndex].TrackOffset,
-            this.Tracks[trackIndex].TrackSize);
-        this.player.Play(trackData);
+            var trackData = this.Tracks[trackIndex].Container.ReadFileBytes(
+                this.Tracks[trackIndex].FileName,
+                this.Tracks[trackIndex].TrackOffset,
+                this.Tracks[trackIndex].TrackSize);
+            this.player.Play(trackData);
 #endif
+
+            this.IsPlaying = true;
+        }
 
         this.UpdateCommandUI();
     }

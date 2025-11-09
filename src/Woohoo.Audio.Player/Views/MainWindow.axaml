@@ -195,7 +195,7 @@
                 DoubleTapped="GestureBorder_DoubleTapped"
                 IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
                 ItemsSource="{Binding Tracks}"
-                SelectedItem="{Binding SelectedTrack}">
+                SelectedItem="{Binding PlaylistSelectedTrack, Mode=TwoWay}">
                 <ListBox.KeyBindings>
                     <KeyBinding Command="{Binding PlaySelectedTrackCommand}" Gesture="Enter" />
                 </ListBox.KeyBindings>
