@@ -81,10 +81,10 @@ You can still run it by clicking on "More info" and then "Run anyway".
 
 1. Open a terminal window.
 
-1. Run the executable and pass in a single argument that is a path to a .cue
-   file or a .zip file that contains a .cue file.
+1. Run the executable and pass a path to a .cue file or a .zip file that contains a .cue file.
+   Optionally pass in `-m` or `-metadata` to fetch metadata from CueToolsDB.
    ```shell
-   Woohoo.Audio.Player.Cli "Guacamelee! Super Turbo Championship Edition (USA) (Official Soundtrack) (PC Game Bundle).zip"
+   Woohoo.Audio.Player.Cli -m "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Press the following keys to control the player:
