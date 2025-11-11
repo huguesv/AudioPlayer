@@ -12,6 +12,9 @@ jobs:
         dotnet-runtime: [win-x64, win-arm64, win-x86, linux-x64, linux-arm64, osx-x64, osx-arm64]
     runs-on: ubuntu-latest
     env:
+      dotnetActionVersion: '10.0.x'
+      dotnetBuildVersion: 'net10.0'
+      dotnetOutputFolder: 'net10.0'
       desktopBinariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
       consoleBinariesName: Woohoo.Audio.Player.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
     steps:
@@ -21,33 +24,33 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Desktop App - Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f net9.0 -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
 
     - name: Console App - Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f net9.0 -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+      run: dotnet publish src/Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
 
     - name: Desktop App - Zip binaries
-      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/net9.0/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/net9.0/${{ env.desktopBinariesName }}.zip *
+      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ env.desktopBinariesName }}.zip *
 
     - name: Console App - Zip binaries
-      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player.Cli/net9.0/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player.Cli/net9.0/${{ env.consoleBinariesName }}.zip *
+      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player.Cli/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player.Cli/${{ env.dotnetOutputFolder }}/${{ env.consoleBinariesName }}.zip *
 
     - name: Desktop App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
         name: desktop-${{ matrix.dotnet-runtime }}
-        path: bin/Release/Woohoo.Audio.Player/net9.0/${{ env.desktopBinariesName }}.zip
+        path: bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ env.desktopBinariesName }}.zip
 
     - name: Console App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
         name: console-${{ matrix.dotnet-runtime }}
-        path: bin/Release/Woohoo.Audio.Player.Cli/net9.0/${{ env.consoleBinariesName }}.zip
+        path: bin/Release/Woohoo.Audio.Player.Cli/${{ env.dotnetOutputFolder }}/${{ env.consoleBinariesName }}.zip
 
   release:
     name: Upload Release Assets
