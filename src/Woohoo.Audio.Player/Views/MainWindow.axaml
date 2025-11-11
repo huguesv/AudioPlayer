@@ -248,7 +248,8 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
-                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
+                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}"
+                                Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
