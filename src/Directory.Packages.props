@@ -17,7 +17,7 @@
     <PackageVersion Include="FftSharp" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
     <PackageVersion Include="ppy.SDL3-CS" Version="2025.920.0" />
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.57" />
