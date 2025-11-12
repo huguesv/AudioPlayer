@@ -19,7 +19,6 @@ jobs:
     env:
       dotnetActionVersion: '10.0.x'
       dotnetBuildVersion: 'net10.0'
-      dotnetOutputFolder: 'net10.0'
       binariesName: Woohoo.Audio.Player-${{ matrix.dotnet-runtime.target }}
       bundleName: Woohoo.Audio.Player.app
       bundleIconName: Woohoo.Audio.Player.icns
@@ -33,53 +32,53 @@ jobs:
         dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime.target }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime.target }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Zip binaries
-      working-directory: ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime.target }}/publish
-      run: zip -r ${{ github.workspace }}/bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ env.binariesName }}.zip *
+      working-directory: ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime.target }}/publish
+      run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.binariesName }}.zip *
 
     - name: Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.dotnet-runtime.target }}
-        path: bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ env.binariesName }}.zip
+        path: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.binariesName }}.zip
         
     - name: Build MacOS bundle
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
       run: |
-        mkdir bin/bundle
-        mkdir bin/bundle/${{ matrix.dotnet-runtime.target }}
-        mkdir bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}
-        mkdir bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents
-        mkdir bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
-        mkdir bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources
-        cp src/Woohoo.Audio.Player/MacOS/Info.plist bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Info.plist
-        cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources/${{ env.bundleIconName }}
-        cp -a bin/Release/Woohoo.Audio.Player/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime.target }}/publish/. bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
+        mkdir bundle
+        mkdir bundle/${{ matrix.dotnet-runtime.target }}
+        mkdir bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}
+        mkdir bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents
+        mkdir bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
+        mkdir bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources
+        cp src/Woohoo.Audio.Player/MacOS/Info.plist bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Info.plist
+        cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources/${{ env.bundleIconName }}
+        cp -a src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime.target }}/publish/. bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
 
     - name: Display MacOS bundle folder contents
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
-      run: ls -R bin/bundle/${{ matrix.dotnet-runtime.target }}
+      run: ls -R bundle/${{ matrix.dotnet-runtime.target }}
 
     - name: Zip MacOS bundle
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
-      working-directory: ${{ github.workspace }}/bin/bundle/${{ matrix.dotnet-runtime.target }}
-      run: zip -r ${{ github.workspace }}/bin/bundle/${{ env.binariesName }}-bundle.zip *
+      working-directory: ${{ github.workspace }}/bundle/${{ matrix.dotnet-runtime.target }}
+      run: zip -r ${{ github.workspace }}/bundle/${{ env.binariesName }}-bundle.zip *
 
     - name: Upload MacOS bundle artifact
       uses: actions/upload-artifact@v4
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
       with:
         name: ${{ matrix.dotnet-runtime.target }}-bundle
-        path: bin/bundle/${{ env.binariesName }}-bundle.zip
+        path: bundle/${{ env.binariesName }}-bundle.zip
 
 #    - name: Build MacOS dmg      
 #      uses: L-Super/create-dmg-actions@v1.0.3
 #      if: ${{ matrix.dotnet-runtime.mac-bundle }}
 #      with:
 #        dmg_name: ${{ env.binariesName }}
-#        src_dir: bin/bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}     
+#        src_dir: bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}     
 #
 #    - name: Upload MacOS dmg artifact
 #      uses: actions/upload-artifact@v4

@@ -38,4 +38,4 @@ jobs:
       run: dotnet format ${{env.solutionFile}} --verify-no-changes --verbosity diagnostic
 
     - name: Test
-      run: dotnet test ${{env.solutionFile}} --no-restore --verbosity normal
+      run: dotnet test --solution ${{env.solutionFile}} --no-restore --verbosity normal
