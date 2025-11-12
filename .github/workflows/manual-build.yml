@@ -56,7 +56,7 @@ jobs:
         mkdir bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources
         cp src/Woohoo.Audio.Player/MacOS/Info.plist bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Info.plist
         cp src/Woohoo.Audio.Player/MacOS/${{ env.bundleIconName }} bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/Resources/${{ env.bundleIconName }}
-        cp -a src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetOutputFolder }}/${{ matrix.dotnet-runtime.target }}/publish/. bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
+        cp -a src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime.target }}/publish/. bundle/${{ matrix.dotnet-runtime.target }}/${{ env.bundleName }}/Contents/MacOS
 
     - name: Display MacOS bundle folder contents
       if: ${{ matrix.dotnet-runtime.mac-bundle }}
