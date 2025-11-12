@@ -32,10 +32,11 @@ jobs:
         dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime.target }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
+      working-directory: src
+      run: dotnet publish Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime.target }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Zip binaries
-      working-directory: ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime.target }}/publish
+      working-directory: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime.target }}/publish
       run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.binariesName }}.zip *
 
     - name: Upload binaries artifact

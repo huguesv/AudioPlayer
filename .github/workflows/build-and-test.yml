@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       dotnetActionVersion: '10.0.x'
-      solutionFile: src/AudioPlayer.slnx
+      solutionFile: AudioPlayer.slnx
 
     steps:
     - name: Checkout repository
@@ -29,13 +29,17 @@ jobs:
         dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Clean
+      working-directory: src
       run: dotnet clean ${{env.solutionFile}} --configuration Release && dotnet nuget locals all --clear
 
     - name: Build
+      working-directory: src
       run: dotnet build ${{env.solutionFile}} --configuration Release
 
     - name: Format
+      working-directory: src
       run: dotnet format ${{env.solutionFile}} --verify-no-changes --verbosity diagnostic
 
     - name: Test
+      working-directory: src
       run: dotnet test --solution ${{env.solutionFile}} --no-restore --verbosity normal

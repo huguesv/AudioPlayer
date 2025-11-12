@@ -26,17 +26,19 @@ jobs:
         dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Desktop App - Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
+      working-directory: src
+      run: dotnet publish Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Console App - Build / Publish
-      run: dotnet publish src/Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
+      working-directory: src
+      run: dotnet publish Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Desktop App - Zip binaries
-      working-directory: ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
+      working-directory: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
       run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip *
 
     - name: Console App - Zip binaries
-      working-directory: ${{ github.workspace }}/src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
+      working-directory: src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
       run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip *
 
     - name: Desktop App - Upload binaries artifact
