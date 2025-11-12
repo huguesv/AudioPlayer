@@ -100,7 +100,7 @@ You can still run it by clicking on "More info" and then "Run anyway".
 
 ## Building
 
-Install the [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0).
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0).
 
 To build the application, use the following command from the `\src` folder:
 
