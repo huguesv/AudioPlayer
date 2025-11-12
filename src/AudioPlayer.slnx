@@ -3,7 +3,6 @@
     <File Path="../LICENSE" />
     <File Path="../README.md" />
     <File Path="../SCREENSHOTS.md" />
-    <File Path="Common/Common.AssemblyInfo.cs" />
     <File Path="Common/stylecop.json" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />

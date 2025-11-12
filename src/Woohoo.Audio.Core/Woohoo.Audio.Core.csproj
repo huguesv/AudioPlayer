@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Nullable>enable</Nullable>
+    <AssemblyTitle>Noise Core</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>

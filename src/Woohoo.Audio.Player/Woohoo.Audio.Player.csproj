@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <PublishSingleFile>true</PublishSingleFile>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyTitle>Audio Player</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>

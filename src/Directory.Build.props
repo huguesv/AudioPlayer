@@ -1,6 +1,10 @@
 <Project>
 
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -8,11 +12,19 @@
     <NoWarn>CS1591;SA1600;SA0001;IDE0290</NoWarn>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <SignAssembly>false</SignAssembly>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Hugues Valois</Company>
+    <Copyright>Copyright (c) Hugues Valois 2025</Copyright>
+    <Product>Audio Player</Product>
+    <Version>0.6.0.0</Version>
+    <FileVersion>0.6.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)Common\stylecop.json" Link="stylecop.json" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Common.AssemblyInfo.cs" Link="Common.AssemblyInfo.cs" />
   </ItemGroup>
 
 </Project>
