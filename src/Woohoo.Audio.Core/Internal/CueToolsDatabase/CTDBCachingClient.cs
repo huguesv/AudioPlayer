@@ -5,7 +5,6 @@ namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 
 using System;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
 internal sealed class CTDBCachingClient : ICTDBClient
@@ -21,83 +20,37 @@ internal sealed class CTDBCachingClient : ICTDBClient
 
     public async Task<CTDBResponse?> QueryAsync(string toc, CancellationToken cancellationToken)
     {
-        var tocEncodedBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(toc));
-        var cacheFilePath = Path.Combine(this.cacheFolder, tocEncodedBase64 + ".xml");
+        var cache = new CTDBResponseCache(this.cacheFolder, toc);
 
-        if (this.TryReadFromCache(cacheFilePath, out var cachedResponse))
+        if (cache.Exists &&
+            cache.Age < CacheExpirationAge &&
+            cache.TryReadFromCache(out var cachedResponse))
         {
             return cachedResponse;
         }
 
-        var response = await this.internalClient.QueryAsync(toc, cancellationToken);
-        if (response is not null)
-        {
-            this.WriteToCache(cacheFilePath, response);
-        }
-
-        return response;
-    }
-
-    private static void SafeDelete(string filePath)
-    {
         try
         {
-            if (File.Exists(filePath))
+            var response = await this.internalClient.QueryAsync(toc, cancellationToken);
+            if (response is not null)
             {
-                File.Delete(filePath);
+                cache.WriteToCache(response);
             }
+
+            return response;
         }
         catch
         {
-            // Ignore deletion errors
-        }
-    }
+            // We could not get a response from the server.
+            // Client/server may be offline or whatever.
+            // Use the expired cache when available.
+            if (cache.Exists &&
+                cache.TryReadFromCache(out var expiredCachedResponse))
+            {
+                return expiredCachedResponse;
+            }
 
-    private bool TryReadFromCache(string cacheFilePath, out CTDBResponse? response)
-    {
-        response = null;
-
-        var cacheFileInfo = new FileInfo(cacheFilePath);
-        if (!cacheFileInfo.Exists)
-        {
-            return false;
-        }
-
-        // If it's older than 7 days, ignore the cache
-        if (DateTime.UtcNow - cacheFileInfo.LastWriteTimeUtc > CacheExpirationAge)
-        {
-            SafeDelete(cacheFilePath);
-            return false;
-        }
-
-        try
-        {
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
-            using var fileStream = File.OpenRead(cacheFilePath);
-            response = serializer.Deserialize(fileStream) as CTDBResponse;
-            return response is not null;
-        }
-        catch
-        {
-            // Ignore cache read errors
-            SafeDelete(cacheFilePath);
-        }
-
-        return false;
-    }
-
-    private void WriteToCache(string cacheFilePath, CTDBResponse? result)
-    {
-        try
-        {
-            Directory.CreateDirectory(this.cacheFolder);
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
-            using var fileStream = File.Create(cacheFilePath);
-            serializer.Serialize(fileStream, result);
-        }
-        catch
-        {
-            // Ignore cache write errors
+            throw;
         }
     }
 }
