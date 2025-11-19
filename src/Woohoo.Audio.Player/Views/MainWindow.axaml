@@ -218,8 +218,7 @@
                                                 <Path
                                                     Data="{StaticResource MusicGeometry}"
                                                     Fill="{DynamicResource PlaylistPlayingTrackBrush}"
-                                                    Stroke="{DynamicResource PlaylistPlayingTrackBrush}"
-                                                     />
+                                                    Stroke="{DynamicResource PlaylistPlayingTrackBrush}" />
                                             </Canvas>
                                             <Canvas
                                                 Width="32"
@@ -228,28 +227,27 @@
                                                 <Path
                                                     Data="{StaticResource XMarkGeometry}"
                                                     Fill="{DynamicResource PlaylistNonPlayingTrackBrush}"
-                                                    Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}"
-                                                     />
+                                                    Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}" />
                                             </Canvas>
                                         </Grid>
                                     </Viewbox>
                                 </Border>
                                 <TextBlock
-                                    Margin="0,0,8,0"
                                     MinWidth="24"
+                                    Margin="0,0,8,0"
                                     Background="Transparent"
-                                    Text="{Binding TrackNumber, StringFormat={}{0:00}. }"
-                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
+                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                                    Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
                                 <TextBlock
                                     Background="Transparent"
-                                    Text="{Binding Title}"
-                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
+                                    Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                                    Text="{Binding Title}" />
                             </StackPanel>
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 Background="Transparent"
-                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}"
-                                Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}" />
+                                Foreground="{Binding IsCurrentTrack, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
