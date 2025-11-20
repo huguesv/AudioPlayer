@@ -58,4 +58,6 @@ public record class CueSheet
     public string? UpcEan { get; set; }
 
     public int GetTotalTrackCount() => this.Files.Sum(file => file.Tracks.Count);
+
+    public int GetTotalAudioTrackCount() => this.Files.Sum(file => file.Tracks.Where(t => t.TrackMode == KnownTrackModes.Audio).Count());
 }

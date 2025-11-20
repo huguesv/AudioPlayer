@@ -27,7 +27,7 @@ public sealed class MetadataProvider : IMetadataProvider
                 return null;
             }
 
-            var trackCount = cueSheet.GetTotalTrackCount();
+            var trackCount = cueSheet.GetTotalAudioTrackCount();
 
             var bestMetadata = response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length == trackCount);
             if (bestMetadata is null)

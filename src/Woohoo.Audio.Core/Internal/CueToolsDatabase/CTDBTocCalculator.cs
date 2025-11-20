@@ -45,17 +45,27 @@ internal static class CTDBTocCalculator
             }
 
             var fileSectors = (int)(fileSizeBytes / 2352);
+            bool includeFile = false;
             foreach (var track in file.Tracks)
             {
+                if (track.TrackMode != KnownTrackModes.Audio)
+                {
+                    break;
+                }
+
                 var firstIndex = track.Indexes.Where(idx => idx.IndexNumber == 1).FirstOrDefault();
                 if (firstIndex is not null)
                 {
                     var trackStartSector = absoluteTrackStartSector + firstIndex.Time.ToSectors();
                     sectors.Add(trackStartSector);
+                    includeFile = true;
                 }
             }
 
-            absoluteTrackStartSector += fileSectors;
+            if (includeFile)
+            {
+                absoluteTrackStartSector += fileSectors;
+            }
         }
 
         // Length of album is total of every file
