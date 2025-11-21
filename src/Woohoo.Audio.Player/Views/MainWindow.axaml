@@ -79,6 +79,12 @@
                     Header="Frequencies Bands"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
                     ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.About}"
+                    Header="About"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
+                    ToggleType="Radio" />
                 <Separator />
                 <MenuItem Header="Album Art">
                     <MenuItem Command="{Binding PreviousArtCommand}" Header="Previous Album Art" />
@@ -177,6 +183,12 @@
                         Header="Frequencies Bands"
                         IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
                         ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.About}"
+                        Header="About"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
+                        ToggleType="Radio" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Album Art">
                         <NativeMenu>
@@ -191,6 +203,80 @@
 
     <Grid RowDefinitions="*,Auto,Auto,Auto">
         <Grid Grid.Row="0" IsVisible="{Binding !IsTipVisible}">
+            <Grid
+                Margin="12"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ColumnDefinitions="Auto,*"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="8,16"
+                    Text="Audio Player by Hugues Valois" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="App version" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.AppVersion, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="Avalonia version" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.AvaloniaVersion, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="Framework" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.DotNetFramework, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="Process architecture" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.ProcessArchitecture, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="Runtime identifier" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.RuntimeIdentifier, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Margin="8,4"
+                    Text="Operating system" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Margin="8,4"
+                    Text="{Binding AboutInfo.OperatingSystem, Mode=OneWay}" />
+            </Grid>
             <ListBox
                 DoubleTapped="GestureBorder_DoubleTapped"
                 IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"

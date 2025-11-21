@@ -10,4 +10,5 @@ public enum ViewType
     VisualizerAmplitude,
     VisualizerFrequency,
     VisualizerFrequencyBands,
+    About,
 }

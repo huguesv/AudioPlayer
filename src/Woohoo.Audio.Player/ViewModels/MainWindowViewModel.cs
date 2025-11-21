@@ -131,6 +131,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial TrackViewModel? PlaylistSelectedTrack { get; set; }
 
+    public AboutInformationViewModel AboutInfo { get; } = new();
+
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
 
     public ObservableCollection<AlbumArtViewModel> Art { get; } = [];
