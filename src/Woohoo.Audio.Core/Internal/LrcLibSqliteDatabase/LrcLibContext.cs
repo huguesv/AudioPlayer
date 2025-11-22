@@ -16,9 +16,9 @@ public partial class LrcLibContext : DbContext
         this.filePath = filePath;
     }
 
-    public virtual DbSet<Lyric> Lyrics { get; set; }
+    public virtual DbSet<Lyric> Lyrics { get; set; } = null!;
 
-    public virtual DbSet<Track> Tracks { get; set; }
+    public virtual DbSet<Track> Tracks { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
