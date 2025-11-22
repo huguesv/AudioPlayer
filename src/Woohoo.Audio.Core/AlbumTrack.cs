@@ -5,6 +5,7 @@ namespace Woohoo.Audio.Core;
 
 using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.IO;
+using Woohoo.Audio.Core.Lyrics;
 
 public sealed class AlbumTrack
 {
@@ -37,4 +38,6 @@ public sealed class AlbumTrack
     public string TrackPerformer { get; set; } = string.Empty;
 
     public string TrackSongwriter { get; set; } = string.Empty;
+
+    public LyricsTrack? Lyrics { get; set; }
 }

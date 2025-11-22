@@ -15,7 +15,9 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Woohoo.Audio.Core;
+using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.IO;
+using Woohoo.Audio.Core.Lyrics;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Playback;
 using Woohoo.Audio.Player.Models;
@@ -26,6 +28,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IFilePickerService filePickerService;
     private readonly IPowerManagementService powerManagementService;
     private readonly IMetadataProvider? metadataProvider;
+    private readonly ILyricsProvider? lyricsProvider;
     private readonly SdlAudioPlayer player;
     private readonly UserSettingsManager settingsManager;
     private readonly string localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -33,11 +36,12 @@ public partial class MainWindowViewModel : ViewModelBase
     private int volume;
     private bool isLoading;
 
-    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider)
+    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider, ILyricsProvider? lyricsProvider)
     {
         this.filePickerService = filePickerService;
         this.powerManagementService = powerManagementService;
         this.metadataProvider = metadataProvider;
+        this.lyricsProvider = lyricsProvider;
 
         this.player = new SdlAudioPlayer(this.Played);
         this.volume = this.player.Volume;
@@ -59,6 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase
             var settings = this.settingsManager.LoadSettings();
 
             this.FetchOnlineMetadata = settings.FetchOnlineMetadata;
+            this.FetchLyrics = settings.FetchLyrics;
             this.ShowAlbumArt = settings.ShowAlbumArt;
         }
         finally
@@ -69,6 +74,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial bool FetchOnlineMetadata { get; set; }
+
+    [ObservableProperty]
+    public partial bool FetchLyrics { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NextArtCommand))]
@@ -198,7 +206,14 @@ public partial class MainWindowViewModel : ViewModelBase
     public void ToggleFetchOnlineMetadata()
     {
         this.FetchOnlineMetadata = !this.FetchOnlineMetadata;
-        this.QueryMetadata();
+        this.QueryMetadataAndLyrics(this.FetchOnlineMetadata, this.FetchLyrics);
+    }
+
+    [RelayCommand]
+    public void ToggleFetchLyrics()
+    {
+        this.FetchLyrics = !this.FetchLyrics;
+        this.QueryMetadataAndLyrics(this.FetchOnlineMetadata, this.FetchLyrics);
     }
 
     [RelayCommand]
@@ -328,6 +343,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
             this.CurrentTrackPosition = position;
             this.IsPlaying = !eof;
+            this.CurrentTrack?.UpdateCurrentLyricFromPosition(position);
 
             if (eof)
             {
@@ -395,47 +411,91 @@ public partial class MainWindowViewModel : ViewModelBase
 
         this.UpdateCommandUI();
 
-        if (this.FetchOnlineMetadata)
+        this.QueryMetadataAndLyrics(this.FetchOnlineMetadata, this.FetchLyrics);
+    }
+
+    private void QueryMetadataAndLyrics(bool fetchOnlineMetadata, bool fetchLyrics)
+    {
+        var container = this.Tracks[0].Container;
+        var cueSheet = this.Tracks[0].CueSheet;
+
+        _ = Task.Run(async () =>
         {
-            this.QueryMetadata();
+            if (fetchOnlineMetadata)
+            {
+                await this.QueryMetadataAsync(container, cueSheet);
+            }
+
+            // Lyrics fetching depends on metadata fetching to have track titles/performers updated
+            if (fetchLyrics)
+            {
+                await this.QueryLyricsAsync();
+            }
+        });
+    }
+
+    private async Task QueryLyricsAsync()
+    {
+        if (this.lyricsProvider is null || this.Tracks.Count == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            CancellationTokenSource tokenSource = new();
+            tokenSource.CancelAfter(TimeSpan.FromSeconds(30));
+            for (int i = 0; i < this.Tracks.Count; i++)
+            {
+                var track = this.Tracks[i];
+                var lyrics = await this.lyricsProvider.QueryAsync(
+                    this.AlbumTitle,
+                    this.AlbumPerformer,
+                    track.Title,
+                    TimeConversion.FromPosition(track.TrackSize),
+                    cancellationToken: tokenSource.Token);
+                if (lyrics is not null)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        track.UpdateLyrics(lyrics);
+                    });
+                }
+            }
+        }
+        catch
+        {
         }
     }
 
-    private void QueryMetadata()
+    private async Task QueryMetadataAsync(IMusicContainer container, CueSheet cueSheet)
     {
         if (this.metadataProvider is null || this.Tracks.Count == 0)
         {
             return;
         }
 
-        // Capture mutable state in case it changes while the task is running
-        var container = this.Tracks[0].Container;
-        var cueSheet = this.Tracks[0].CueSheet;
-
-        _ = Task.Run(async () =>
+        try
         {
-            try
+            CancellationTokenSource tokenSource = new();
+            tokenSource.CancelAfter(TimeSpan.FromSeconds(30));
+
+            var metadata = await this.metadataProvider.QueryAsync(
+                cueSheet,
+                container,
+                cancellationToken: tokenSource.Token);
+
+            if (metadata is not null)
             {
-                CancellationTokenSource tokenSource = new();
-                tokenSource.CancelAfter(TimeSpan.FromSeconds(30));
-
-                var metadata = await this.metadataProvider.QueryAsync(
-                    cueSheet,
-                    container,
-                    cancellationToken: tokenSource.Token);
-
-                if (metadata is not null)
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        this.LoadMetadata(metadata);
-                    });
-                }
+                    this.LoadMetadata(metadata);
+                });
             }
-            catch
-            {
-            }
-        });
+        }
+        catch
+        {
+        }
     }
 
     private void LoadMetadata(AlbumMetadata metadata)
@@ -555,6 +615,7 @@ public partial class MainWindowViewModel : ViewModelBase
         var settings = new UserSettings
         {
             FetchOnlineMetadata = this.FetchOnlineMetadata,
+            FetchLyrics = this.FetchLyrics,
             ShowAlbumArt = this.ShowAlbumArt,
         };
 
@@ -562,6 +623,16 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     partial void OnFetchOnlineMetadataChanged(bool value)
+    {
+        if (this.isLoading)
+        {
+            return;
+        }
+
+        this.SaveSettings();
+    }
+
+    partial void OnFetchLyricsChanged(bool value)
     {
         if (this.isLoading)
         {

@@ -27,6 +27,9 @@ present in cue file.
 Additional metadata is optionally retrieved from [CueToolsDB](https://db.cue.tools/),
 including album art.
 
+Lyrics are optionally retrieved from [LRCLIB](https://lrclib.net).
+Using a local LRCLIB sqlite3 database is also supported.
+
 ## Desktop Player
 
 ![Audio Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Audio Player on Windows Screenshot")
@@ -77,14 +80,57 @@ You can still run it by clicking on "More info" and then "Run anyway".
 1. Click the **Settings** button (also **Settings** menu on MacOS) to change
    settings such as **Fetch Online Metadata** and **Show Album Art**.
 
+1. Click the **Settings** button (also **Settings** menu on MacOS) to change
+   **Fetch Lyrics** setting.
+   Note that this requires metadata to be available for your tracks, either
+   from CDTEXT in the cue file, or from CueToolsDB.
+
+### Lyrics Configuration
+
+Lyrics are fetched from [LRCLIB](https://lrclib.net) using their API.
+
+You can optionally use a local version of the LRCLIB database:
+
+1. Download a [dump of the latest database](https://lrclib.net/db-dumps).
+   Warning: this is a VERY large (~20GB).
+1. Extract the .sqlite3 file from the downloaded .gz file.
+1. Set the path to the .sqlite3 file in `LRCLIB_DB_PATH` environment variable.
+1. Restart the application.
+
 ## Usage (Console Player)
 
 1. Open a terminal window.
 
-1. Run the executable and pass a path to a .cue file or a .zip file that contains a .cue file.
-   Optionally pass in `-m` or `-metadata` to fetch metadata from CueToolsDB.
+1. For help on command line options, run:
+   ```shell
+   Woohoo.Audio.Player.Cli -h
+   ```
+
+1. Run the executable and pass a path to a .cue file or a .zip file that contains
+   a .cue file.
+   ```shell
+   Woohoo.Audio.Player.Cli "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   ```
+
+1. Optionally pass in `-m` or `--metadata` to fetch metadata from CueToolsDB.
    ```shell
    Woohoo.Audio.Player.Cli -m "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   ```
+
+1. Optionally pass in `-l` or `--lyrics` to fetch lyrics from LRCLIB.net.
+   Note that this requires metadata to be available for your tracks, either
+   from CDTEXT in the cue file, or from CueToolsDB.
+   ```shell
+   Woohoo.Audio.Player.Cli -m -l "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   ```
+
+1. Optionally pass in `-ldb <path>` or `--lyrics-db <path>` to use a local LRCLIB
+   database. A path to a .sqlite3 file must be provided. The latest database dump
+   can be downloaded from [here](https://lrclib.net/db-dumps).
+   When specified, lyrics will be fetched from the local database first, and fall
+   back to the online service if no match is found locally.
+   ```shell
+   Woohoo.Audio.Player.Cli -m -l -ldb "C:\path\to\lrclib.sqlite3" "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Press the following keys to control the player:
@@ -144,3 +190,7 @@ This software uses assets from:
 This software queries metadata from:
 
 - [CueToolsDB](http://db.cue.tools/)
+
+This software queries lyrics from:
+
+- [LRCLIB](https://lrclib.net)

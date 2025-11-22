@@ -10,6 +10,7 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
+using Woohoo.Audio.Core.Lyrics;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Player.Services;
 using Woohoo.Audio.Player.ViewModels;
@@ -66,9 +67,19 @@ public partial class App : Application
 
     private static void RegisterServices(ServiceCollection collection)
     {
+        var lrcLibDatabaseFilePath = Environment.GetEnvironmentVariable("LRCLIB_DB_PATH");
+        var lyricsOptions = new LyricsProviderOptions
+        {
+            UseWeb = true,
+            UseWebExternalSources = true,
+            UseDatabase = File.Exists(lrcLibDatabaseFilePath),
+            DatabaseFilePath = lrcLibDatabaseFilePath,
+        };
+
         collection.AddTransient<MainWindowViewModel>();
         collection.AddTransient<IFilePickerService, FilePickerService>();
         collection.AddTransient<IMetadataProvider, MetadataProvider>();
+        collection.AddTransient<ILyricsProvider>(sp => new LyricsProvider(lyricsOptions));
 
         if (OperatingSystem.IsWindowsVersionAtLeast(5, 1, 2600))
         {

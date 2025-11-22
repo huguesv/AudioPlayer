@@ -8,7 +8,7 @@ using Woohoo.Audio.Player.Services;
 public class DesignMainWindowViewModel : MainWindowViewModel
 {
     public DesignMainWindowViewModel()
-        : base(new NullFilePickerService(), new NullPowerManagementService(), null)
+        : base(new NullFilePickerService(), new NullPowerManagementService(), null, null)
     {
         this.IsTipVisible = false;
         this.AlbumPerformer = "Various Artists";

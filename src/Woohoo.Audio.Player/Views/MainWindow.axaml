@@ -46,6 +46,14 @@
                     <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
                 </converters:BoolToBrushConverter.FalseBrush>
             </converters:BoolToBrushConverter>
+            <converters:BoolToBrushConverter x:Key="LyricToForegroundBrushConverter">
+                <converters:BoolToBrushConverter.TrueBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
+                </converters:BoolToBrushConverter.TrueBrush>
+                <converters:BoolToBrushConverter.FalseBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
+                </converters:BoolToBrushConverter.FalseBrush>
+            </converters:BoolToBrushConverter>
             <SolidColorBrush x:Key="PlaylistPlayingTrackBrush" Color="{DynamicResource SystemAccentColor}" />
             <SolidColorBrush x:Key="PlaylistNonPlayingTrackBrush" Color="{DynamicResource SystemBaseHighColor}" />
             <MenuFlyout x:Key="ViewMenuFlyout" Placement="TopEdgeAlignedLeft">
@@ -81,6 +89,12 @@
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand}"
+                    CommandParameter="{x:Static vm:ViewType.Lyrics}"
+                    Header="Lyrics"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand}"
                     CommandParameter="{x:Static vm:ViewType.About}"
                     Header="About"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
@@ -96,6 +110,11 @@
                     Command="{Binding ToggleFetchOnlineMetadataCommand}"
                     Header="Fetch Online Metadata"
                     IsChecked="{Binding FetchOnlineMetadata}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleFetchLyricsCommand}"
+                    Header="Fetch Lyrics"
+                    IsChecked="{Binding FetchLyrics}"
                     ToggleType="CheckBox" />
                 <MenuItem
                     Command="{Binding ToggleShowAlbumArtCommand}"
@@ -145,6 +164,11 @@
                         IsChecked="{Binding FetchOnlineMetadata}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
+                        Command="{Binding ToggleFetchLyricsCommand}"
+                        Header="Fetch Lyrics"
+                        IsChecked="{Binding FetchLyrics}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
                         Command="{Binding ToggleShowAlbumArtCommand}"
                         Header="Show Album Art"
                         IsChecked="{Binding ShowAlbumArt}"
@@ -182,6 +206,12 @@
                         CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
                         Header="Frequencies Bands"
                         IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
+                        ToggleType="Radio" />
+                    <NativeMenuItem
+                        Command="{Binding ChangeViewCommand}"
+                        CommandParameter="{x:Static vm:ViewType.Lyrics}"
+                        Header="Lyrics"
+                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
                         ToggleType="Radio" />
                     <NativeMenuItem
                         Command="{Binding ChangeViewCommand}"
@@ -277,6 +307,25 @@
                     Margin="8,4"
                     Text="{Binding AboutInfo.OperatingSystem, Mode=OneWay}" />
             </Grid>
+            <ScrollViewer IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}">
+                <ItemsRepeater
+                    Margin="8"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding CurrentTrack.HasLyrics, Mode=OneWay}"
+                    ItemsSource="{Binding CurrentTrack.Lyrics, Mode=OneWay}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Orientation="Vertical" Spacing="6" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
+                                Text="{Binding Text, Mode=OneWay}" />
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </ScrollViewer>
             <ListBox
                 DoubleTapped="GestureBorder_DoubleTapped"
                 IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
@@ -354,6 +403,10 @@
                             Margin="5"
                             HorizontalAlignment="Center"
                             Text="{Binding ComplexAlbumTitle}" />
+                        <TextBlock
+                            Margin="5"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurrentTrack.CurrentLyric}" />
                     </StackPanel>
                 </Grid>
                 <Grid IsVisible="{Binding !IsAlbumArtVisible}">

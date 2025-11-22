@@ -15,6 +15,8 @@ internal class ConsolePlayer
 {
     private readonly SdlAudioPlayer player;
 
+    private readonly Timer commandEraseTimer;
+
     private int volume;
 
     private ImmutableList<AlbumTrack> tracks;
@@ -28,8 +30,6 @@ internal class ConsolePlayer
     private bool isPlaying;
 
     private (int Left, int Top) cursorBeginPos;
-
-    private Timer commandEraseTimer;
 
     private string previousTrackNumberAndTitle;
 
@@ -161,9 +161,11 @@ internal class ConsolePlayer
 
     private void PrintTrackTime(string text) => this.PrintAtLine(text, 2);
 
+    private void PrintLyric(string text) => this.PrintAtLine(text, 3);
+
     private void PrintCommand(string text)
     {
-        this.PrintAtLine(text, 3);
+        this.PrintAtLine(text, 4);
 
         // Commands are only visible for a short time
         if (!string.IsNullOrEmpty(text))
@@ -281,6 +283,7 @@ internal class ConsolePlayer
         this.currentTrackEndPosition = this.tracks[trackIndex].TrackSize;
 
         this.PrintCurrentlyPlayingInfo();
+        this.PrintLyric(string.Empty);
 
 #if PLAY_USING_STREAM
         var fileStream = this.tracks[trackIndex].Container.OpenFileStream(this.tracks[trackIndex].TrackFileName);
@@ -306,6 +309,9 @@ internal class ConsolePlayer
         this.isPlaying = !eof;
 
         this.PrintCurrentlyPlayingInfo();
+
+        var lyric = this.tracks[this.currentTrack].Lyrics?.GetLineAt(TimeConversion.FromPosition(position));
+        this.PrintLyric(lyric ?? string.Empty);
 
         if (eof)
         {

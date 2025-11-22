@@ -1,20 +1,26 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
+namespace Woohoo.Audio.Core.Internal.LrcLibWeb;
 
 using System;
+using System.IO;
 using System.Text;
-using System.Xml.Serialization;
-using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
+using System.Text.Json;
+using Woohoo.Audio.Core.Internal.LrcLibWeb.Models;
 
-internal sealed class CTDBResponseCache
+internal sealed class LrcLibResponseCache
 {
+    private static readonly JsonSerializerOptions SerializationOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
+
     private readonly string filePath;
 
-    public CTDBResponseCache(string cacheFolder, string toc)
+    public LrcLibResponseCache(string cacheFolder, string albumTitle, string artistName, string trackTitle, TimeSpan duration)
     {
-        this.filePath = Path.Combine(cacheFolder, CreateMD5(toc) + ".xml");
+        this.filePath = Path.Combine(cacheFolder, CreateMD5($"{albumTitle}:{artistName}:{trackTitle}:{(long)duration.TotalSeconds}") + ".json");
     }
 
     public TimeSpan? Age
@@ -27,12 +33,12 @@ internal sealed class CTDBResponseCache
         get => File.Exists(this.filePath);
     }
 
-    public bool TryReadFromCache(out CTDBResponse? response)
+    public bool TryReadFromCache(out LrcLibResponse? response)
     {
         return TryReadFromCache(this.filePath, out response);
     }
 
-    public void WriteToCache(CTDBResponse result)
+    public void WriteToCache(LrcLibResponse? result)
     {
         WriteToCache(this.filePath, result);
     }
@@ -70,15 +76,21 @@ internal sealed class CTDBResponseCache
         return DateTime.UtcNow - cacheFileInfo.LastWriteTimeUtc;
     }
 
-    private static bool TryReadFromCache(string cacheFilePath, out CTDBResponse? response)
+    private static bool TryReadFromCache(string cacheFilePath, out LrcLibResponse? response)
     {
         response = null;
 
         try
         {
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
+            // Empty file indicates no result
+            var fileInfo = new FileInfo(cacheFilePath);
+            if (fileInfo.Length == 0)
+            {
+                return true;
+            }
+
             using var fileStream = File.OpenRead(cacheFilePath);
-            response = serializer.Deserialize(fileStream) as CTDBResponse;
+            response = JsonSerializer.Deserialize<LrcLibResponse>(fileStream, SerializationOptions);
             return response is not null;
         }
         catch
@@ -90,7 +102,7 @@ internal sealed class CTDBResponseCache
         return false;
     }
 
-    private static void WriteToCache(string cacheFilePath, CTDBResponse result)
+    private static void WriteToCache(string cacheFilePath, LrcLibResponse? result)
     {
         try
         {
@@ -102,9 +114,13 @@ internal sealed class CTDBResponseCache
 
             Directory.CreateDirectory(folderPath);
 
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
             using var fileStream = File.Create(cacheFilePath);
-            serializer.Serialize(fileStream, result);
+
+            // Empty file indicates no result
+            if (result is not null)
+            {
+                JsonSerializer.Serialize(fileStream, result, SerializationOptions);
+            }
         }
         catch
         {
