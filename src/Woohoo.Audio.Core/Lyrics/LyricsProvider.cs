@@ -10,16 +10,16 @@ using Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase;
 using Woohoo.Audio.Core.Internal.LrcLibWeb;
 using Woohoo.Audio.Core.Lyrics.Serialization;
 
-public class LyricsProvider : ILyricsProvider
+public sealed class LyricsProvider : ILyricsProvider
 {
     private readonly LrcLibDatabaseClient? databaseClient;
     private readonly LrcLibCachingWebClient webClient;
     private readonly LyricsProviderOptions options;
 
-    public LyricsProvider(LyricsProviderOptions options)
+    public LyricsProvider(LyricsProviderOptions options, IHttpClientFactory httpClientFactory)
     {
         this.databaseClient = File.Exists(options.DatabaseFilePath) && options.UseDatabase ? new LrcLibDatabaseClient(new LrcLibDatabaseConnection(options.DatabaseFilePath)) : null;
-        this.webClient = new LrcLibCachingWebClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "LrcLibCache"));
+        this.webClient = new LrcLibCachingWebClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "LrcLibCache"), new LrcLibWebClient(httpClientFactory));
         this.options = options;
     }
 

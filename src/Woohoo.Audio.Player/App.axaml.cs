@@ -10,6 +10,7 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
+using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Lyrics;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Player.Services;
@@ -79,7 +80,7 @@ public partial class App : Application
         collection.AddTransient<MainWindowViewModel>();
         collection.AddTransient<IFilePickerService, FilePickerService>();
         collection.AddTransient<IMetadataProvider, MetadataProvider>();
-        collection.AddTransient<ILyricsProvider>(sp => new LyricsProvider(lyricsOptions));
+        collection.AddTransient<ILyricsProvider>(sp => new LyricsProvider(lyricsOptions, new HttpClientFactory()));
 
         if (OperatingSystem.IsWindowsVersionAtLeast(5, 1, 2600))
         {

@@ -85,7 +85,7 @@ internal class Program
 
                 try
                 {
-                    var metadataProvider = new MetadataProvider();
+                    var metadataProvider = new MetadataProvider(new HttpClientFactory());
                     var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
                     var metadata = await metadataProvider.QueryAsync(tracks[0].CueSheet, tracks[0].Container, cancellationTokenSource.Token);
                     if (metadata is not null)
@@ -136,7 +136,7 @@ internal class Program
                     DatabaseFilePath = lrclibDbFileInfo?.FullName,
                 };
 
-                var lyricsProvider = new LyricsProvider(lyricsOptions);
+                var lyricsProvider = new LyricsProvider(lyricsOptions, new HttpClientFactory());
 
                 int lyricsCount = 0;
 

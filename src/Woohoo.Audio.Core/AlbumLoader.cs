@@ -11,7 +11,7 @@ using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.Cue.Serialization;
 using Woohoo.Audio.Core.IO;
 
-public class AlbumLoader
+public sealed class AlbumLoader
 {
     public ImmutableList<AlbumTrack> LoadFrom(string filePath)
     {

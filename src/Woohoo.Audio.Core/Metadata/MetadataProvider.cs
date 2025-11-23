@@ -12,7 +12,12 @@ using Woohoo.Audio.Core.IO;
 
 public sealed class MetadataProvider : IMetadataProvider
 {
-    private readonly ICTDBClient databaseClient = new CTDBCachingClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"));
+    private readonly CTDBCachingWebClient databaseClient;
+
+    public MetadataProvider(IHttpClientFactory httpClientFactory)
+    {
+        this.databaseClient = new CTDBCachingWebClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"), new CTDBWebClient(httpClientFactory));
+    }
 
     public async Task<AlbumMetadata?> QueryAsync(CueSheet cueSheet, IMusicContainer container, CancellationToken cancellationToken)
     {

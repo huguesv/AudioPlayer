@@ -5,10 +5,11 @@ namespace Woohoo.Audio.Core.Internal.LrcLibWeb;
 
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using Woohoo.Audio.Core.Internal.LrcLibWeb.Models;
 
-public sealed class LrcLibWebClient
+public sealed class LrcLibWebClient : ILrcLibWebClient
 {
     private const string BaseUrl = "https://lrclib.net";
 
@@ -16,6 +17,13 @@ public sealed class LrcLibWebClient
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
+
+    private readonly IHttpClientFactory httpClientFactory;
+
+    public LrcLibWebClient(IHttpClientFactory httpClientFactory)
+    {
+        this.httpClientFactory = httpClientFactory;
+    }
 
     public async Task<LrcLibResponse?> QueryAsync(string albumTitle, string artistName, string trackTitle, TimeSpan duration, bool allowExternalSources, CancellationToken cancellationToken)
     {
@@ -30,7 +38,7 @@ public sealed class LrcLibWebClient
             + "&album_name=" + EncodeQueryParameter(albumTitle)
             + "&duration=" + ((int)duration.TotalSeconds).ToString();
 
-        var httpClient = new HttpClient();
+        var httpClient = this.httpClientFactory.CreateClient();
 
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUriString);
         request.Headers.UserAgent.ParseAdd(userAgent);

@@ -6,15 +6,16 @@ namespace Woohoo.Audio.Core.Internal.LrcLibWeb;
 using System;
 using Woohoo.Audio.Core.Internal.LrcLibWeb.Models;
 
-public sealed class LrcLibCachingWebClient
+public sealed class LrcLibCachingWebClient : ILrcLibWebClient
 {
     private static readonly TimeSpan CacheExpirationAge = TimeSpan.FromDays(7);
-    private readonly LrcLibWebClient internalClient = new();
+    private readonly ILrcLibWebClient innerClient;
     private readonly string cacheFolder;
 
-    public LrcLibCachingWebClient(string cacheFolder)
+    public LrcLibCachingWebClient(string cacheFolder, ILrcLibWebClient innerClient)
     {
         this.cacheFolder = cacheFolder;
+        this.innerClient = innerClient;
     }
 
     public async Task<LrcLibResponse?> QueryAsync(string albumTitle, string artistName, string trackTitle, TimeSpan duration, bool allowExternalSources, CancellationToken cancellationToken)
@@ -30,7 +31,7 @@ public sealed class LrcLibCachingWebClient
 
         try
         {
-            var response = await this.internalClient.QueryAsync(albumTitle, artistName, trackTitle, duration, allowExternalSources, cancellationToken);
+            var response = await this.innerClient.QueryAsync(albumTitle, artistName, trackTitle, duration, allowExternalSources, cancellationToken);
             cache.WriteToCache(response);
             return response;
         }

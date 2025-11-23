@@ -9,9 +9,16 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
-internal sealed class CTDBClient : ICTDBClient
+internal sealed class CTDBWebClient : ICTDBWebClient
 {
     private const string BaseUrl = "http://db.cuetools.net";
+
+    private readonly IHttpClientFactory httpClientFactory;
+
+    public CTDBWebClient(IHttpClientFactory httpClientFactory)
+    {
+        this.httpClientFactory = httpClientFactory;
+    }
 
     public Task<CTDBResponse?> QueryAsync(string toc, CancellationToken cancellationToken)
     {
@@ -30,7 +37,7 @@ internal sealed class CTDBClient : ICTDBClient
             + "&metadata=" + (metadataSearch == CTDBMetadataSearch.None ? "none" : metadataSearch == CTDBMetadataSearch.Fast ? "fast" : metadataSearch == CTDBMetadataSearch.Default ? "default" : "extensive")
             + "&toc=" + toc;
 
-        var httpClient = new HttpClient();
+        var httpClient = this.httpClientFactory.CreateClient();
 
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUriString);
         request.Headers.UserAgent.ParseAdd(userAgent);

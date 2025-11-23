@@ -6,7 +6,7 @@ namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 using System.Threading.Tasks;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
-internal interface ICTDBClient
+internal interface ICTDBWebClient
 {
     Task<CTDBResponse?> QueryAsync(string toc, CancellationToken cancellationToken);
 }

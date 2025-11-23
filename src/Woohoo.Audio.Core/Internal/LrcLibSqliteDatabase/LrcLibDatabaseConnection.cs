@@ -5,7 +5,7 @@ namespace Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase;
 
 using Microsoft.EntityFrameworkCore;
 
-public class LrcLibDatabaseConnection
+public sealed class LrcLibDatabaseConnection
 {
     public LrcLibDatabaseConnection(string databaseFilePath)
     {
