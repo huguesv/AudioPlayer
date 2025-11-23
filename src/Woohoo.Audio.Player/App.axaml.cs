@@ -80,6 +80,7 @@ public partial class App : Application
         collection.AddTransient<MainWindowViewModel>();
         collection.AddTransient<IFilePickerService, FilePickerService>();
         collection.AddTransient<IMetadataProvider, MetadataProvider>();
+        collection.AddTransient<IHttpClientFactory, HttpClientFactory>();
         collection.AddTransient<ILyricsProvider>(sp => new LyricsProvider(lyricsOptions, new HttpClientFactory()));
 
         if (OperatingSystem.IsWindowsVersionAtLeast(5, 1, 2600))
