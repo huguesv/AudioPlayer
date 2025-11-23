@@ -416,6 +416,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void QueryMetadataAndLyrics(bool fetchOnlineMetadata, bool fetchLyrics)
     {
+        if (this.Tracks.Count == 0)
+        {
+            return;
+        }
+
         var container = this.Tracks[0].Container;
         var cueSheet = this.Tracks[0].CueSheet;
 
