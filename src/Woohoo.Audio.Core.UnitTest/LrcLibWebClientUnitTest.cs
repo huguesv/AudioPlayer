@@ -12,7 +12,7 @@ using Woohoo.Audio.Core.UnitTest.Infrastructure;
 public partial class LrcLibWebClientUnitTest
 {
     [Fact]
-    public async Task RequestLyricsAsync_ShouldReturnLyrics()
+    public async Task QueryAsync_ShouldReturnLyrics()
     {
         // Arrange
         var mockHandler = new MockHttpMessageHandler();

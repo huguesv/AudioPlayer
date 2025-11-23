@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase.Models;
 
-internal sealed class CTDBWebClient : ICTDBWebClient
+public sealed class CTDBWebClient : ICTDBWebClient
 {
     private const string BaseUrl = "http://db.cuetools.net";
 

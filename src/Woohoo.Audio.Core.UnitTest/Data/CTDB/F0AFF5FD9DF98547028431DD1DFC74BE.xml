@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ctdb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" status="" updateurl="" updatemsg="" message="" npar="0" xmlns="http://db.cuetools.net/ns/mmd-1.0#">
+  <entry id="2161876" crc32="de54429a" confidence="16" npar="8" stride="5880" hasparity="http://p.cuetools.net/2161876" parity="" syndrome="81ko/GZs5DTXhslJGTF1Jg==" trackcrcs="dd249f16 32c60d12 6d03a8d4 16459479 f236d3e0 82c339c3 6387bf89 4a245126 f19dee4a 9803aa07 e66af33e c50dfacf 2f2da1de 5e9ad292 1311f656 7517410d d7f21eb8" toc="0:21906:39281:56437:74243:88808:100823:115032:132582:148007:168265:192424:208167:224237:241505:261364:283698:-314879:326899" />
+  <metadata source="musicbrainz" id="0a8a3b15-1c60-4668-9cf5-e169d3b4407a" artist="Various Artists" album="The Red Room, Volume 4" year="2005" genre="" discnumber="1" disccount="1" discname="" infourl="https://www.amazon.co.uk/gp/product/B000A5IBFG" barcode="755174075629">
+    <extra />
+    <track name="Times Like These" artist="Foo Fighters">
+      <extra />
+    </track>
+    <track name="Bill Murray" artist="Gorillaz">
+      <extra />
+    </track>
+    <track name="Tilt" artist="Billy Corgan">
+      <extra />
+    </track>
+    <track name="Dramatica Mujer" artist="Jason Mraz feat. Álex Cuba Band">
+      <extra />
+    </track>
+    <track name="Black and White Town" artist="Doves">
+      <extra />
+    </track>
+    <track name="Afterglow 61" artist="Son Volt">
+      <extra />
+    </track>
+    <track name="Gracie" artist="Ben Folds">
+      <extra />
+    </track>
+    <track name="Finding Out True Love Is Blind" artist="Louis XIV">
+      <extra />
+    </track>
+    <track name="Banquet" artist="Bloc Party">
+      <extra />
+    </track>
+    <track name="Portions for Foxes" artist="Rilo Kiley">
+      <extra />
+    </track>
+    <track name="Green Grass of Tunnel" artist="British Sea Power">
+      <extra />
+    </track>
+    <track name="Just Friends" artist="Gavin DeGraw">
+      <extra />
+    </track>
+    <track name="Hot Fries" artist="The Hold Steady">
+      <extra />
+    </track>
+    <track name="Devil in Me" artist="22‐20s">
+      <extra />
+    </track>
+    <track name="Was It a Dream" artist="30 Seconds to Mars">
+      <extra />
+    </track>
+    <track name="Collide" artist="Howie Day">
+      <extra />
+    </track>
+    <track name="Jolene" artist="Ray LaMontagne">
+      <extra />
+    </track>
+    <label name="Sony BMG Music Entertainment" catno="DRC 13734" />
+    <release date="2005" country="US" />
+  </metadata>
+  <metadata source="discogs" id="1959641" artist="Various" album="Red Room Volume 04" year="2005" genre="" discnumber="1" disccount="1" discname="" infourl="" barcode="755174075629">
+    <extra>"This is an enhanced cd which contains exclusive audio tracks as well as a weblink to theoddsagainst7even.com/redroom website.
+
+© 2005 Target Stores.
+℗ 2005 Sony BMG Music Entertainment /
+Manufactured and distributed by Sony BMG Music Entertainment
+</extra>
+    <track name="Times Like These" artist="Foo Fighters">
+      <extra />
+    </track>
+    <track name="Bill Murray" artist="Gorillaz">
+      <extra />
+    </track>
+    <track name="Tilt" artist="Billy Corgan">
+      <extra />
+    </track>
+    <track name="Dramatica Mujer" artist="Jason Mraz Featuring Alex Cuba Band">
+      <extra />
+    </track>
+    <track name="Black And White Town" artist="Doves">
+      <extra />
+    </track>
+    <track name="Afterglow 61" artist="Son Volt">
+      <extra />
+    </track>
+    <track name="Gracie" artist="Ben Folds">
+      <extra />
+    </track>
+    <track name="Finding Out True Love Is Blind" artist="Louis XIV">
+      <extra />
+    </track>
+    <track name="Banquet" artist="Bloc Party">
+      <extra />
+    </track>
+    <track name="Portions For Foxes" artist="Rilo Kiley">
+      <extra />
+    </track>
+    <track name="Green Grass Of Tunnel" artist="British Sea Power">
+      <extra />
+    </track>
+    <track name="Just Friends" artist="Gavin Degraw">
+      <extra />
+    </track>
+    <track name="Hot Fries" artist="The Hold Steady">
+      <extra />
+    </track>
+    <track name="Devil In Me" artist="22-20s">
+      <extra />
+    </track>
+    <track name="Was It A Dream" artist="30 Seconds To Mars">
+      <extra />
+    </track>
+    <track name="Collide" artist="Howie Day">
+      <extra />
+    </track>
+    <track name="Jolene" artist="Ray Lamontagne">
+      <extra />
+    </track>
+    <label name="Sony BMG Music Entertainment" catno="DRC 13734" />
+    <release date="2005" country="US" />
+  </metadata>
+  <metadata source="freedb" id="rock/1b0fd011" artist="Various" album="The Red Room Vol 4" year="2005" genre="" discnumber="" disccount="" discname="" infourl="" barcode="">
+    <extra>mdb</extra>
+    <track name="Times Like These" artist="Foo Fighters">
+      <extra />
+    </track>
+    <track name="Bill Murray" artist="Gorillaz">
+      <extra />
+    </track>
+    <track name="Tilt" artist="Billy Corgan">
+      <extra />
+    </track>
+    <track name="Dramatica Mujer" artist="Jason Mraz f. Alex Cuba Band">
+      <extra />
+    </track>
+    <track name="Black and White Town" artist="Doves">
+      <extra />
+    </track>
+    <track name="Afterglow 61" artist="Son Volt">
+      <extra />
+    </track>
+    <track name="Gracie" artist="Ben Folds">
+      <extra />
+    </track>
+    <track name="Finding Out True Love is Blind" artist="Louis XIV">
+      <extra />
+    </track>
+    <track name="Banquet" artist="Bloc Party">
+      <extra />
+    </track>
+    <track name="Portions for Foxes" artist="Rilo Kiley">
+      <extra />
+    </track>
+    <track name="Green Grass of Tunnel" artist="British Sea Power">
+      <extra />
+    </track>
+    <track name="Just Friends" artist="Gavin Degraw">
+      <extra />
+    </track>
+    <track name="Hot Fries" artist="The Hold Steady">
+      <extra />
+    </track>
+    <track name="Devil in Me" artist="22-20s">
+      <extra />
+    </track>
+    <track name="Was it a Dream" artist="30 seconds to Mars">
+      <extra />
+    </track>
+    <track name="Collide" artist="Howie Day">
+      <extra />
+    </track>
+    <track name="Jolene" artist="Ray Lamontagne">
+      <extra />
+    </track>
+  </metadata>
+</ctdb>
