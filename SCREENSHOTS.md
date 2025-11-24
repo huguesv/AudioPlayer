@@ -8,6 +8,8 @@ Windows - Dark Theme
 
 ![Windows Dark Amplitude](images/windows-dark-amplitude.png?raw=true "Windows Dark Amplitude")
 
+![Windows Dark Lyrics](images/windows-dark-lyrics.png?raw=true "Windows Dark Lyrics")
+
 Windows - Light Theme
 
 ![Windows Light Album Art](images/windows-light-art.png?raw=true "Windows Light Playlist")
@@ -15,6 +17,8 @@ Windows - Light Theme
 ![Windows Light Playlist](images/windows-light-playlist.png?raw=true "Windows Light Playlist")
 
 ![Windows Light Frequencies](images/windows-light-frequencies.png?raw=true "Windows Light Frequencies")
+
+![Windows Light Lyrics](images/windows-light-lyrics.png?raw=true "Windows Light Lyrics")
 
 MacOS - Dark Theme
 
