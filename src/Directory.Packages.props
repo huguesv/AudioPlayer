@@ -16,17 +16,17 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FftSharp" Version="2.2.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
     <PackageVersion Include="ppy.SDL3-CS" Version="2025.1205.0" />
     <PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.57" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.0" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.1" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
