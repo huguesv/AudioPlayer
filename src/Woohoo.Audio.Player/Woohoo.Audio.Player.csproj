@@ -41,6 +41,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="ScottPlot.Avalonia" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'" />
     <PackageReference Include="Woohoo.Platform.MacOS" />
     <PackageReference Include="Woohoo.Platform.Windows" />
   </ItemGroup>
