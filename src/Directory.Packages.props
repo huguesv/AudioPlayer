@@ -27,7 +27,7 @@
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.57" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.2" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.3" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
