@@ -3,13 +3,9 @@
 
 namespace Woohoo.Audio.Player.ViewModels;
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
-public partial class AlbumArtViewModel : ViewModelBase
+public class AlbumArtViewModel
 {
-    [ObservableProperty]
-    public partial string Url { get; set; }
+    public required string Url { get; init; }
 
-    [ObservableProperty]
-    public partial bool IsPrimary { get; set; }
+    public bool IsPrimary { get; init; }
 }
