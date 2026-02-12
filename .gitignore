@@ -399,3 +399,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /src/Woohoo.Audio.Player.Cli/Properties/launchSettings.json
+/src/.idea/.idea.AudioPlayer/.idea

@@ -2,13 +2,13 @@
     x:Class="Woohoo.Audio.Player.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
     xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
     xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:converters="using:Woohoo.Audio.Player.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Woohoo.Audio.Player.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:scottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
     xmlns:vm="using:Woohoo.Audio.Player.ViewModels"
     xmlns:vmd="using:Woohoo.Audio.Player.ViewModels.DesignTime"
     Title="Audio Player"
@@ -319,9 +319,9 @@
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
+                                Margin="20,0"
                                 HorizontalAlignment="Center"
                                 Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
-                                Margin="20,0"
                                 Text="{Binding Text, Mode=OneWay}"
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
@@ -438,12 +438,12 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <ScottPlot:AvaPlot Name="WavePlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}" />
-            <ScottPlot:AvaPlot
+            <scottPlot:AvaPlot Name="WavePlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}" />
+            <scottPlot:AvaPlot
                 Name="FftPlot"
                 Margin="10"
                 IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}" />
-            <ScottPlot:AvaPlot Name="BandPlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}" />
+            <scottPlot:AvaPlot Name="BandPlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}" />
         </Grid>
         <Grid Grid.Row="1" ColumnDefinitions="75,*,75">
             <TextBlock
