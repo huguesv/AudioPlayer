@@ -321,7 +321,10 @@
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
-                                Text="{Binding Text, Mode=OneWay}" />
+                                Margin="20,0"
+                                Text="{Binding Text, Mode=OneWay}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
