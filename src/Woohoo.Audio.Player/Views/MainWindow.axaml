@@ -133,6 +133,12 @@
         <Style Selector="Button">
             <Setter Property="CornerRadius" Value="10" />
         </Style>
+        <Style Selector="HyperlinkButton">
+            <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+        </Style>
+        <Style Selector="HyperlinkButton:visited /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource HyperlinkButtonForeground}" />
+        </Style>
     </Window.Styles>
 
     <NativeMenu.Menu>
@@ -240,12 +246,17 @@
                 ColumnDefinitions="Auto,*"
                 IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
                 RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-                <TextBlock
+                <StackPanel
                     Grid.Row="0"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Margin="8,16"
-                    Text="Audio Player by Hugues Valois" />
+                    Margin="8,8"
+                    Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Audio Player by Hugues Valois" />
+                    <HyperlinkButton Margin="8,0,0,0" NavigateUri="https://github.com/huguesv/AudioPlayer">
+                        <TextBlock Text="View on GitHub" />
+                    </HyperlinkButton>
+                </StackPanel>
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
