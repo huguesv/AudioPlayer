@@ -1,15 +1,18 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Woohoo.Audio.Player.Tui.Views.MainControl"
-             xmlns:converters="using:Woohoo.Audio.Player.Tui.Converters"
-             xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
-             xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
-             xmlns:vm="clr-namespace:Woohoo.Audio.Player.Tui.ViewModels"
-             x:DataType="vm:MainViewModel"
-             x:CompileBindings="True">
+<UserControl
+    x:Class="Woohoo.Audio.Player.Tui.Views.MainControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Woohoo.Audio.Player.Tui.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
+    xmlns:vm="clr-namespace:Woohoo.Audio.Player.Tui.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:CompileBindings="True"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,127 +25,139 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File" IsTabStop="False">
                 <MenuItem
-                Header="_Open..."
-                Command="{Binding Path=BrowseCommand, Mode=OneWay}"
-                HotKey="{OnPlatform Ctrl+O, macOS=⌘+O}"
-                InputGesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
+                    Command="{Binding Path=BrowseCommand, Mode=OneWay}"
+                    Header="_Open..."
+                    HotKey="{OnPlatform Ctrl+O,
+                                        macOS=⌘+O}"
+                    InputGesture="{OnPlatform Ctrl+O,
+                                              macOS=⌘+O}" />
                 <Separator />
                 <MenuItem
-                Header="E_xit"
-                Click="OnExit"
-                HotKey="{OnPlatform Ctrl+Q, macOS=⌘+Q}"
-                InputGesture="{OnPlatform Ctrl+Q, macOS=⌘+Q}" />
+                    Click="OnExit"
+                    Header="E_xit"
+                    HotKey="{OnPlatform Ctrl+Q,
+                                        macOS=⌘+Q}"
+                    InputGesture="{OnPlatform Ctrl+Q,
+                                              macOS=⌘+Q}" />
             </MenuItem>
             <MenuItem Header="_Theme" IsTabStop="False">
                 <MenuItem
-                    Header="Modern _Dark"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.ModernDark}"
+                    Header="Modern _Dark"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernDark}}" />
                 <MenuItem
-                    Header="Modern _Light"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.ModernLight}"
+                    Header="Modern _Light"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernLight}}" />
                 <MenuItem
-                    Header="Modern Contr_ast"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.ModernContrast}"
+                    Header="Modern Contr_ast"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernContrast}}" />
                 <MenuItem
-                    Header="_TurboVision"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.TurboVision}"
+                    Header="_TurboVision"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.TurboVision}}" />
                 <MenuItem
-                    Header="TurboVision _Compatible"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.TurboVisionCompatible}"
+                    Header="TurboVision _Compatible"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.TurboVisionCompatible}}" />
                 <MenuItem
-                    Header="TurboVision _Gray"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.TurboVisionGray}"
+                    Header="TurboVision _Gray"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.TurboVisionGray}}" />
                 <MenuItem
-                    Header="TurboVision _Elegant"
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.TurboVisionElegant}"
+                    Header="TurboVision _Elegant"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.TurboVisionElegant}}" />
             </MenuItem>
             <MenuItem Header="_View" IsTabStop="False">
                 <MenuItem
+                    Command="{Binding SelectViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownViews.About}"
                     Header="_About"
                     HotKey="F1"
                     InputGesture="F1"
-                    Command="{Binding SelectViewCommand, Mode=OneWay}"
-                    CommandParameter="{x:Static services:KnownViews.About}"
-                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.About}}"/>
+                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.About}}" />
                 <MenuItem
+                    Command="{Binding SelectViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownViews.NowPlaying}"
                     Header="_Now Playing"
                     HotKey="F2"
                     InputGesture="F2"
-                    Command="{Binding SelectViewCommand, Mode=OneWay}"
-                    CommandParameter="{x:Static services:KnownViews.NowPlaying}"
-                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.NowPlaying}}"/>
+                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.NowPlaying}}" />
                 <MenuItem
+                    Command="{Binding SelectViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownViews.Playlist}"
                     Header="_Playlist"
                     HotKey="F3"
                     InputGesture="F3"
-                    Command="{Binding SelectViewCommand, Mode=OneWay}"
-                    CommandParameter="{x:Static services:KnownViews.Playlist}"
-                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Playlist}}"/>
+                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Playlist}}" />
                 <MenuItem
+                    Command="{Binding SelectViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownViews.Lyrics}"
                     Header="_Lyrics"
                     HotKey="F4"
                     InputGesture="F4"
-                    Command="{Binding SelectViewCommand, Mode=OneWay}"
-                    CommandParameter="{x:Static services:KnownViews.Lyrics}"
-                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Lyrics}}"/>
+                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Lyrics}}" />
             </MenuItem>
             <MenuItem Header="_Playback" IsTabStop="False">
                 <MenuItem
+                    Command="{Binding PlayPauseCommand, Mode=OneWay}"
                     Header="Play / Pause"
-                    HotKey="{OnPlatform Ctrl+Space, macOS=⌘+Space}"
-                    InputGesture="{OnPlatform Ctrl+Space, macOS=⌘+Space}"
-                    Command="{Binding PlayPauseCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl+Space,
+                                        macOS=⌘+Space}"
+                    InputGesture="{OnPlatform Ctrl+Space,
+                                              macOS=⌘+Space}" />
                 <Separator />
                 <MenuItem
+                    Command="{Binding PlayPreviousTrackCommand, Mode=OneWay}"
                     Header="Previous Track"
-                    HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}"
-                    InputGesture="{OnPlatform Ctrl+P, macOS=⌘+P}"
-                    Command="{Binding PlayPreviousTrackCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl+P,
+                                        macOS=⌘+P}"
+                    InputGesture="{OnPlatform Ctrl+P,
+                                              macOS=⌘+P}" />
                 <MenuItem
+                    Command="{Binding PlayNextTrackCommand, Mode=OneWay}"
                     Header="Next Track"
-                    HotKey="{OnPlatform Ctrl+N, macOS=⌘+N}"
-                    InputGesture="{OnPlatform Ctrl+N, macOS=⌘+N}"
-                    Command="{Binding PlayNextTrackCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl+N,
+                                        macOS=⌘+N}"
+                    InputGesture="{OnPlatform Ctrl+N,
+                                              macOS=⌘+N}" />
                 <Separator />
-                <MenuItem
-                    Header="Skip Back 15s"
-                    Command="{Binding SkipBackCommand, Mode=OneWay}" />
-                <MenuItem
-                    Header="Skip Forward 15s"
-                    Command="{Binding SkipForwardCommand, Mode=OneWay}" />
+                <MenuItem Command="{Binding SkipBackCommand, Mode=OneWay}" Header="Skip Back 15s" />
+                <MenuItem Command="{Binding SkipForwardCommand, Mode=OneWay}" Header="Skip Forward 15s" />
             </MenuItem>
             <MenuItem Header="_Volume" IsTabStop="False">
                 <MenuItem
+                    Command="{Binding MuteCommand, Mode=OneWay}"
                     Header="_Mute"
-                    HotKey="{OnPlatform Ctrl+M, macOS=⌘+M}"
-                    InputGesture="{OnPlatform Ctrl+M, macOS=⌘+M}"
-                    IsChecked="{Binding IsMuted, Mode=OneWay}"
-                    Command="{Binding MuteCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl+M,
+                                        macOS=⌘+M}"
+                    InputGesture="{OnPlatform Ctrl+M,
+                                              macOS=⌘+M}"
+                    IsChecked="{Binding IsMuted, Mode=OneWay}" />
                 <Separator />
                 <MenuItem
+                    Command="{Binding VolumeUpCommand, Mode=OneWay}"
                     Header="Volume _Up"
-                    HotKey="{OnPlatform Ctrl++, macOS=⌘++}"
-                    InputGesture="{OnPlatform Ctrl++, macOS=⌘++}"
-                    Command="{Binding VolumeUpCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl++,
+                                        macOS=⌘++}"
+                    InputGesture="{OnPlatform Ctrl++,
+                                              macOS=⌘++}" />
                 <MenuItem
+                    Command="{Binding VolumeDownCommand, Mode=OneWay}"
                     Header="Volume _Down"
-                    HotKey="{OnPlatform Ctrl+-, macOS=⌘+-}"
-                    InputGesture="{OnPlatform Ctrl+-, macOS=⌘+-}"
-                    Command="{Binding VolumeDownCommand, Mode=OneWay}" />
+                    HotKey="{OnPlatform Ctrl+-,
+                                        macOS=⌘+-}"
+                    InputGesture="{OnPlatform Ctrl+-,
+                                              macOS=⌘+-}" />
             </MenuItem>
             <MenuItem Header="_Settings" IsTabStop="False">
                 <MenuItem
@@ -157,146 +172,170 @@
             </MenuItem>
         </Menu>
 
-        <Grid DockPanel.Dock="Bottom" Margin="1,0" ColumnDefinitions="Auto,*,Auto" IsVisible="{Binding !IsTipVisible}">
+        <Grid
+            Margin="1,0"
+            ColumnDefinitions="Auto,*,Auto"
+            DockPanel.Dock="Bottom"
+            IsVisible="{Binding !IsTipVisible}">
             <TextBlock
                 Grid.Column="0"
-                Text="{Binding CurrentTrackPosition, Converter={StaticResource PositionToLabelConverter}}"
-                MinWidth="5" />
+                MinWidth="5"
+                Text="{Binding CurrentTrackPosition, Converter={StaticResource PositionToLabelConverter}}" />
             <ProgressBar
                 Grid.Column="1"
+                Height="1"
                 Margin="2,0"
                 Maximum="{Binding CurrentTrackEndPosition}"
-                Value="{Binding CurrentTrackPosition}"
-                Height="1"
-                ShowProgressText="False" />
+                ShowProgressText="False"
+                Value="{Binding CurrentTrackPosition}" />
             <TextBlock
-                Grid.Column="2" 
-                Text="{Binding CurrentTrackEndPosition, Converter={StaticResource PositionToLabelConverter}}"
-                MinWidth="5" />
+                Grid.Column="2"
+                MinWidth="5"
+                Text="{Binding CurrentTrackEndPosition, Converter={StaticResource PositionToLabelConverter}}" />
         </Grid>
 
         <StackPanel
-            Orientation="Horizontal"
             HorizontalAlignment="Center"
-            DockPanel.Dock="Bottom">
-            <TextBlock HorizontalAlignment="Center" Margin="2,0" Text="{Binding CurrentTrack.CurrentLyric}" TextWrapping="NoWrap" />
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="2,0"
+                HorizontalAlignment="Center"
+                Text="{Binding CurrentTrack.CurrentLyric}"
+                TextWrapping="NoWrap" />
         </StackPanel>
 
         <StackPanel
-            Orientation="Horizontal"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            DockPanel.Dock="Bottom"
             IsVisible="{Binding !IsTipVisible}"
-            DockPanel.Dock="Bottom">
+            Orientation="Horizontal">
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" &lt;&lt; "
-                Command="{Binding SkipBackCommand, Mode=OneWay}" />
+                Command="{Binding SkipBackCommand, Mode=OneWay}"
+                Content=" &lt;&lt; " />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" &lt; "
-                Command="{Binding PlayPreviousTrackCommand, Mode=OneWay}" />
+                Command="{Binding PlayPreviousTrackCommand, Mode=OneWay}"
+                Content=" &lt; " />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content="{Binding PlayPauseCaption, Mode=OneWay}"
-                Command="{Binding PlayPauseCommand, Mode=OneWay}" />
+                Command="{Binding PlayPauseCommand, Mode=OneWay}"
+                Content="{Binding PlayPauseCaption, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" &gt; "
-                Command="{Binding PlayNextTrackCommand, Mode=OneWay}" />
+                Command="{Binding PlayNextTrackCommand, Mode=OneWay}"
+                Content=" &gt; " />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" &gt;&gt; "
-                Command="{Binding SkipForwardCommand, Mode=OneWay}" />
+                Command="{Binding SkipForwardCommand, Mode=OneWay}"
+                Content=" &gt;&gt; " />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content="Mute"
-                Command="{Binding MuteCommand, Mode=OneWay}" />
+                Command="{Binding MuteCommand, Mode=OneWay}"
+                Content="Mute" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" Vol - "
-                Command="{Binding VolumeDownCommand, Mode=OneWay}" />
+                Command="{Binding VolumeDownCommand, Mode=OneWay}"
+                Content=" Vol - " />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                Content=" Vol + "
-                Command="{Binding VolumeUpCommand, Mode=OneWay}" />
+                Command="{Binding VolumeUpCommand, Mode=OneWay}"
+                Content=" Vol + " />
             <TextBlock
                 MinWidth="5"
-                IsVisible="{Binding !IsMuted, Mode=OneWay}"
                 Margin="1"
                 VerticalAlignment="Top"
+                IsVisible="{Binding !IsMuted, Mode=OneWay}"
                 Text="{Binding Volume, StringFormat={}{0}%}" />
             <TextBlock
                 MinWidth="5"
-                IsVisible="{Binding IsMuted, Mode=OneWay}"
                 Margin="1"
                 VerticalAlignment="Top"
+                IsVisible="{Binding IsMuted, Mode=OneWay}"
                 Text="Muted" />
         </StackPanel>
 
         <Grid>
             <StackPanel
-                IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.About}}"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center">
+                IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.About}}">
                 <TextBlock
-                    Text="Audio Player"
+                    HorizontalAlignment="Center"
                     FontFamily="fonts:Consolonia#Doom"
                     FontSize="8"
-                    HorizontalAlignment="Center" />
-                <TextBlock Text="by Hugues Valois" Margin="0,0,0,1" />
+                    Text="Audio Player" />
+                <TextBlock Margin="0,0,0,1" Text="by Hugues Valois" />
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="App version:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="App version:" />
                     <TextBlock Text="{Binding AboutInfo.AppVersion, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Avalonia version:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="Avalonia version:" />
                     <TextBlock Text="{Binding AboutInfo.AvaloniaVersion, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Framework:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="Framework:" />
                     <TextBlock Text="{Binding AboutInfo.DotNetFramework, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Process architecture:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="Process architecture:" />
                     <TextBlock Text="{Binding AboutInfo.ProcessArchitecture, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Runtime identifier:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="Runtime identifier:" />
                     <TextBlock Text="{Binding AboutInfo.RuntimeIdentifier, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Operating system:" Margin="0,0,1,0" />
+                    <TextBlock Margin="0,0,1,0" Text="Operating system:" />
                     <TextBlock Text="{Binding AboutInfo.OperatingSystem, Mode=OneTime}" />
                 </StackPanel>
             </StackPanel>
 
-            <ScrollViewer
-                IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.NowPlaying}}"
-                VerticalScrollBarVisibility="Auto">
+            <ScrollViewer IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.NowPlaying}}" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <StackPanel
-                        IsVisible="{Binding IsTipVisible}"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center" Text="Welcome to Audio Player!" Margin="1" />
-                        <TextBlock HorizontalAlignment="Center" Text="Open a cue file or a zip containing a cue file" Margin="1" />
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding IsTipVisible}">
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="Welcome to Audio Player!" />
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="Open a cue file or a zip containing a cue file" />
                     </StackPanel>
                     <StackPanel
-                        IsVisible="{Binding !IsTipVisible}"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center" Text="{Binding AlbumPerformer}" Margin="1" TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Center" Text="{Binding AlbumTitle}" Margin="1" TextWrapping="Wrap" />
-                        <TextBlock HorizontalAlignment="Center" Text="{Binding CurrentTrackTitle}" Margin="1" TextWrapping="Wrap" />
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding !IsTipVisible}">
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding AlbumPerformer}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding AlbumTitle}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurrentTrackTitle}"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
@@ -316,20 +355,20 @@
                 </ListBox.Styles>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="Auto,Auto,*,Auto" Background="Transparent">
-                            <StackPanel Grid.Column="0" Orientation="Horizontal" MinWidth="2" Margin="0,0,1,0">
-                                <TextBlock
-                                    Text="▶"
-                                    IsVisible="{Binding IsCurrentTrack}" />
+                        <Grid Background="Transparent" ColumnDefinitions="Auto,Auto,*,Auto">
+                            <StackPanel
+                                Grid.Column="0"
+                                MinWidth="2"
+                                Margin="0,0,1,0"
+                                Orientation="Horizontal">
+                                <TextBlock IsVisible="{Binding IsCurrentTrack}" Text="▶" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Column="1"
                                 MinWidth="4"
                                 Margin="0,0,1,0"
                                 Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
-                            <TextBlock
-                                Grid.Column="2"
-                                Text="{Binding Title}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Title}" />
                             <TextBlock
                                 Grid.Column="3"
                                 Margin="0,0,1,0"
@@ -340,8 +379,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <ScrollViewer IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Lyrics}}"
-                VerticalScrollBarVisibility="Auto">
+            <ScrollViewer IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Lyrics}}" VerticalScrollBarVisibility="Auto">
                 <ItemsRepeater
                     VerticalAlignment="Center"
                     IsVisible="{Binding CurrentTrack.HasLyrics, Mode=OneWay}"
@@ -354,16 +392,15 @@
                             <Setter Property="FontWeight" Value="Bold" />
                             <Setter Property="FontStyle" Value="Italic" />
                         </Style>
-                        <Style Selector="TextBlock.class2">
-                        </Style>
+                        <Style Selector="TextBlock.class2" />
                     </ItemsRepeater.Styles>
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                Classes.class1="{Binding IsCurrent}"
-                                Classes.class2="{Binding !IsCurrent}"
                                 Margin="2,0"
                                 HorizontalAlignment="Center"
+                                Classes.class1="{Binding IsCurrent}"
+                                Classes.class2="{Binding !IsCurrent}"
                                 Text="{Binding Text, Mode=OneWay}"
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />

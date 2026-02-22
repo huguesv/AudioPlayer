@@ -1,20 +1,33 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:console="https://github.com/jinek/consolonia"
-        xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
-        xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
-        x:Class="Woohoo.Audio.Player.Tui.Views.MainWindow"
-        Title="Audio Player">
+<Window
+    x:Class="Woohoo.Audio.Player.Tui.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:console="https://github.com/jinek/consolonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
+    Title="Audio Player">
 
     <Window.KeyBindings>
         <KeyBinding Command="{Binding BrowseCommand}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
         <KeyBinding Command="{Binding PlayPauseCommand}" Gesture="{OnPlatform Ctrl+Space, macOS=⌘+Space}" />
-        <KeyBinding Command="{Binding SelectViewCommand, Mode=OneWay}" Gesture="F1" CommandParameter="{x:Static services:KnownViews.About}" />
-        <KeyBinding Command="{Binding SelectViewCommand, Mode=OneWay}" Gesture="F2" CommandParameter="{x:Static services:KnownViews.NowPlaying}" />
-        <KeyBinding Command="{Binding SelectViewCommand, Mode=OneWay}" Gesture="F3" CommandParameter="{x:Static services:KnownViews.Playlist}" />
-        <KeyBinding Command="{Binding SelectViewCommand, Mode=OneWay}" Gesture="F4" CommandParameter="{x:Static services:KnownViews.Lyrics}" />
+        <KeyBinding
+            Command="{Binding SelectViewCommand, Mode=OneWay}"
+            CommandParameter="{x:Static services:KnownViews.About}"
+            Gesture="F1" />
+        <KeyBinding
+            Command="{Binding SelectViewCommand, Mode=OneWay}"
+            CommandParameter="{x:Static services:KnownViews.NowPlaying}"
+            Gesture="F2" />
+        <KeyBinding
+            Command="{Binding SelectViewCommand, Mode=OneWay}"
+            CommandParameter="{x:Static services:KnownViews.Playlist}"
+            Gesture="F3" />
+        <KeyBinding
+            Command="{Binding SelectViewCommand, Mode=OneWay}"
+            CommandParameter="{x:Static services:KnownViews.Lyrics}"
+            Gesture="F4" />
     </Window.KeyBindings>
 
     <local:MainControl />
