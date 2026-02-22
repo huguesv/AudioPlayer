@@ -16,6 +16,7 @@ jobs:
       dotnetBuildVersion: 'net10.0'
       desktopBinariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
       consoleBinariesName: Woohoo.Audio.Player.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      terminalBinariesName: Woohoo.Audio.Player.Tui-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -33,6 +34,10 @@ jobs:
       working-directory: src
       run: dotnet publish Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
+    - name: Terminal App - Build / Publish
+      working-directory: src
+      run: dotnet publish Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
+
     - name: Desktop App - Zip binaries
       working-directory: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
       run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip *
@@ -40,6 +45,10 @@ jobs:
     - name: Console App - Zip binaries
       working-directory: src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
       run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip *
+
+    - name: Terminal App - Zip binaries
+      working-directory: src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.terminalBinariesName }}.zip *
 
     - name: Desktop App - Upload binaries artifact
       uses: actions/upload-artifact@v4
@@ -52,6 +61,12 @@ jobs:
       with:
         name: console-${{ matrix.dotnet-runtime }}
         path: src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip
+
+    - name: Terminal App - Upload binaries artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: terminal-${{ matrix.dotnet-runtime }}
+        path: src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.terminalBinariesName }}.zip
 
   release:
     name: Upload Release Assets

@@ -32,11 +32,15 @@ Using a local LRCLIB sqlite3 database is also supported.
 
 ## Desktop Player
 
-![Audio Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Audio Player on Windows Screenshot")
+![Desktop Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Desktop Player on Windows Screenshot")
+
+## Terminal UI Player
+
+![TUI Player on Windows Terminal](images/windows-tui.png?raw=true "TUI Player on Windows Terminal")
 
 ## Console Player
 
-![Windows Terminal](images/windows-cli.png?raw=true "Windows Terminal")
+![Console Player on Windows Terminal](images/windows-cli.png?raw=true "Console Player on Windows Terminal")
 
 For more screenshots, see the [SCREENSHOTS.md](SCREENSHOTS.md) file.
 
@@ -59,6 +63,18 @@ Binaries are not available for MacOS yet. You'll need to [build it from sources]
 
 Windows may prevent you from launching the application, since it is not signed.
 You can still run it by clicking on "More info" and then "Run anyway".
+
+## Lyrics Configuration
+
+Lyrics are fetched from [LRCLIB](https://lrclib.net) using their API.
+
+You can optionally use a local version of the LRCLIB database:
+
+1. Download a [dump of the latest database](https://lrclib.net/db-dumps).
+   Warning: this is a VERY large (~20GB).
+1. Extract the .sqlite3 file from the downloaded .gz file.
+1. Set the path to the .sqlite3 file in `LRCLIB_DB_PATH` environment variable.
+1. Restart the application.
 
 ## Usage (Desktop Player)
 
@@ -85,17 +101,20 @@ You can still run it by clicking on "More info" and then "Run anyway".
    Note that this requires metadata to be available for your tracks, either
    from CDTEXT in the cue file, or from CueToolsDB.
 
-### Lyrics Configuration
+## Usage (Terminal UI Player)
 
-Lyrics are fetched from [LRCLIB](https://lrclib.net) using their API.
+1. Click the **File** menu, then **Open**.
 
-You can optionally use a local version of the LRCLIB database:
+1. Select either a .cue file or a .zip file that contains a .cue file.
 
-1. Download a [dump of the latest database](https://lrclib.net/db-dumps).
-   Warning: this is a VERY large (~20GB).
-1. Extract the .sqlite3 file from the downloaded .gz file.
-1. Set the path to the .sqlite3 file in `LRCLIB_DB_PATH` environment variable.
-1. Restart the application.
+1. A new playlist that consists of the audio tracks from the .cue file will be
+   opened and the first track will start playing.
+
+1. You can only load one album at a time. When you load another, the current
+   playlist is replaced with the tracks from the new album.
+
+1. Click the **View** menu, then the view you want to switch to:
+   currently playing, playlist, and lyrics.
 
 ## Usage (Console Player)
 
@@ -159,6 +178,11 @@ To run the desktop player, use the following command from the `\src` folder:
 dotnet run --project Woohoo.Audio.Player
 ```
 
+To run the terminal UI player, use the following command from the `\src` folder:
+```
+dotnet run --project Woohoo.Audio.Player.Tui
+```
+
 To run the unit tests, use the following command from the `\src` folder:
 
 ```
@@ -169,7 +193,7 @@ dotnet test
 
 This software is licensed under the MIT License. See the [LICENSE](LICENSE) file.
 
-Copyright (c) 2025 Hugues Valois. All rights reserved.
+Copyright (c) 2025-2026 Hugues Valois. All rights reserved.
 
 This software uses the following libraries:
 

@@ -1,21 +1,19 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player;
+namespace Woohoo.Audio.Player.Tui;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Lyrics;
 using Woohoo.Audio.Core.Metadata;
-using Woohoo.Audio.Player.Services;
-using Woohoo.Audio.Player.ViewModels;
-using Woohoo.Audio.Player.Views;
+using Woohoo.Audio.Player.Tui.Services;
+using Woohoo.Audio.Player.Tui.ViewModels;
+using Woohoo.Audio.Player.Tui.Views;
 
 public partial class App : Application
 {
@@ -24,12 +22,6 @@ public partial class App : Application
         if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             return desktopLifetime.MainWindow;
-        }
-
-        if (app.ApplicationLifetime is ISingleViewApplicationLifetime viewLifetime)
-        {
-            var visualRoot = viewLifetime.MainView?.GetVisualRoot();
-            return visualRoot as TopLevel;
         }
 
         return null;
@@ -42,10 +34,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Line below is needed to remove Avalonia data validation.
-        // Without this line you will get duplicate validations from both Avalonia and CT
-        BindingPlugins.DataValidators.RemoveAt(0);
-
         // Register all the services needed for the application to run
         var collection = new ServiceCollection();
         RegisterServices(collection);
@@ -61,7 +49,11 @@ public partial class App : Application
             {
                 DataContext = vm,
             };
+
+            var themeService = services.GetRequiredService<IThemeService>();
+            themeService.SelectedTheme = vm.SelectedTheme;
         }
+
 
         base.OnFrameworkInitializationCompleted();
     }
@@ -79,22 +71,10 @@ public partial class App : Application
 
         collection.AddTransient<MainViewModel>();
         collection.AddTransient<ITopLevelProvider, TopLevelProvider>();
+        collection.AddTransient<IThemeService, ThemeService>();
         collection.AddTransient<IFilePickerService, FilePickerService>();
         collection.AddTransient<IMetadataProvider, MetadataProvider>();
         collection.AddTransient<IHttpClientFactory, HttpClientFactory>();
         collection.AddTransient<ILyricsProvider>(sp => new LyricsProvider(lyricsOptions, new HttpClientFactory()));
-
-        if (OperatingSystem.IsWindowsVersionAtLeast(5, 1, 2600))
-        {
-            collection.AddTransient<IPowerManagementService, WindowsPowerManagementService>();
-        }
-        else if (OperatingSystem.IsMacOS())
-        {
-            collection.AddTransient<IPowerManagementService, MacOSPowerManagementService>();
-        }
-        else
-        {
-            collection.AddTransient<IPowerManagementService, NullPowerManagementService>();
-        }
     }
 }

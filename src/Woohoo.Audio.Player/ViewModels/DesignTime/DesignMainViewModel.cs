@@ -5,9 +5,9 @@ namespace Woohoo.Audio.Player.ViewModels.DesignTime;
 
 using Woohoo.Audio.Player.Services;
 
-public class DesignMainWindowViewModel : MainWindowViewModel
+public class DesignMainViewModel : MainViewModel
 {
-    public DesignMainWindowViewModel()
+    public DesignMainViewModel()
         : base(new NullFilePickerService(), new NullPowerManagementService(), null, null)
     {
         this.IsTipVisible = false;

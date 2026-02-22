@@ -23,7 +23,7 @@ using Woohoo.Audio.Playback;
 using Woohoo.Audio.Player.Models;
 using Woohoo.Audio.Player.Services;
 
-public partial class MainWindowViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
     private readonly IFilePickerService filePickerService;
     private readonly IPowerManagementService powerManagementService;
@@ -36,7 +36,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private int volume;
     private bool isLoading;
 
-    public MainWindowViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider, ILyricsProvider? lyricsProvider)
+    public MainViewModel(IFilePickerService filePickerService, IPowerManagementService powerManagementService, IMetadataProvider? metadataProvider, ILyricsProvider? lyricsProvider)
     {
         this.filePickerService = filePickerService;
         this.powerManagementService = powerManagementService;
