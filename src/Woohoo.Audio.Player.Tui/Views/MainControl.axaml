@@ -205,7 +205,7 @@
                 TextWrapping="NoWrap" />
         </StackPanel>
 
-        <StackPanel
+        <WrapPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             DockPanel.Dock="Bottom"
@@ -263,7 +263,7 @@
                 VerticalAlignment="Top"
                 IsVisible="{Binding IsMuted, Mode=OneWay}"
                 Text="Muted" />
-        </StackPanel>
+        </WrapPanel>
 
         <Grid>
             <StackPanel
