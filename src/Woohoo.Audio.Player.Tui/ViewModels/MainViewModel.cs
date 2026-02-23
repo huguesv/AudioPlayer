@@ -573,13 +573,13 @@ public partial class MainViewModel : ObservableObject
 
     private void UpdateCommandUI()
     {
+        this.PlayPauseCaption = this.IsPlaying ? PlayCaptionPause : PlayCaptionPlay;
         this.PlayNextTrackCommand.NotifyCanExecuteChanged();
         this.PlayPreviousTrackCommand.NotifyCanExecuteChanged();
         this.PlayPauseCommand.NotifyCanExecuteChanged();
         this.SkipBackCommand.NotifyCanExecuteChanged();
         this.SkipForwardCommand.NotifyCanExecuteChanged();
         this.PlaySelectedTrackCommand.NotifyCanExecuteChanged();
-        this.PlayPauseCaption = this.IsPlaying ? PlayCaptionPause : PlayCaptionPlay;
     }
 
     private void SaveSettings()

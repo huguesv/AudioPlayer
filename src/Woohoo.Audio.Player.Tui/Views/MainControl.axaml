@@ -358,10 +358,10 @@
                         <Grid Background="Transparent" ColumnDefinitions="Auto,Auto,*,Auto">
                             <StackPanel
                                 Grid.Column="0"
-                                MinWidth="2"
+                                MinWidth="1"
                                 Margin="0,0,1,0"
                                 Orientation="Horizontal">
-                                <TextBlock IsVisible="{Binding IsCurrentTrack}" Text="▶" />
+                                <TextBlock IsVisible="{Binding IsCurrentTrack}" Text="&gt;" />
                             </StackPanel>
                             <TextBlock
                                 Grid.Column="1"
