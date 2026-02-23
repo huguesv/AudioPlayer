@@ -367,6 +367,7 @@ public partial class MainViewModel : ObservableObject
                 FileName = track.TrackFileName,
                 FileNotFound = track.TrackFileNotFound,
                 TrackNumber = track.TrackNumber,
+                ComplexTitle = TrackViewModel.BuildComplexTitle(track.TrackTitle, track.TrackPerformer),
                 Title = track.TrackTitle.Length > 0 ? track.TrackTitle : $"Track {track.TrackNumber:00}",
                 Performer = track.TrackPerformer,
                 Songwriter = track.TrackSongwriter,
@@ -500,6 +501,7 @@ public partial class MainViewModel : ObservableObject
             {
                 track.Title = BestString(dbTrack.Name, track.Title);
                 track.Performer = BestString(dbTrack.Artist, metadata.Artist, track.Performer);
+                track.ComplexTitle = TrackViewModel.BuildComplexTitle(track.Title, track.Performer);
             }
         }
 

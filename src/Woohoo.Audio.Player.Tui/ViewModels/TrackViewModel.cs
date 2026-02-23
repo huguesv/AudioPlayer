@@ -14,6 +14,7 @@ public partial class TrackViewModel : ViewModelBase
     public TrackViewModel()
     {
         this.FileName = string.Empty;
+        this.ComplexTitle = string.Empty;
         this.Title = string.Empty;
         this.Performer = string.Empty;
         this.Songwriter = string.Empty;
@@ -39,6 +40,9 @@ public partial class TrackViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial int TrackNumber { get; set; }
+
+    [ObservableProperty]
+    public partial string ComplexTitle { get; set; }
 
     [ObservableProperty]
     public partial string Title { get; set; }
@@ -120,5 +124,20 @@ public partial class TrackViewModel : ViewModelBase
         }
 
         this.CurrentLyric = index >= 0 && index < this.Lyrics.Count ? this.Lyrics[index].Text : string.Empty;
+    }
+
+    public static string BuildComplexTitle(string title, string performer)
+    {
+        if (string.IsNullOrEmpty(title))
+        {
+            return performer;
+        }
+
+        if (string.IsNullOrEmpty(performer))
+        {
+            return title;
+        }
+
+        return $" {performer} - {title}";
     }
 }
