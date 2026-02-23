@@ -1,0 +1,28 @@
+<Window
+    x:Class="Woohoo.ConsoloniaControls.Gallery.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:console="https://github.com/jinek/consolonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Woohoo.ConsoloniaControls.Gallery"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wc="clr-namespace:Woohoo.ConsoloniaControls;assembly=Woohoo.ConsoloniaControls"
+    Title="Woohoo Consolonia Controls Gallery">
+
+    <Grid RowDefinitions="Auto,*">
+        <TextBlock HorizontalAlignment="Center" Text="Woohoo Consolonia Controls Gallery" />
+
+        <TabControl Grid.Row="1" TabStripPlacement="Bottom">
+            <TabItem Header="Bar Plot">
+                <wc:BarPlot Source="{Binding PlotData, Mode=OneWay}" Tick="{Binding PlotTick, Mode=OneWay}" />
+            </TabItem>
+            <TabItem Header="Signal Plot">
+                <wc:SignalPlot
+                    Dot="#"
+                    Source="{Binding PlotData, Mode=OneWay}"
+                    Tick="{Binding PlotTick, Mode=OneWay}" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+</Window>

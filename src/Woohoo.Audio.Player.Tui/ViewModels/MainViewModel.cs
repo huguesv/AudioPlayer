@@ -57,6 +57,8 @@ public partial class MainViewModel : ObservableObject
         this.AlbumPerformer = string.Empty;
         this.AlbumTitle = string.Empty;
 
+        this.PlotData = new double[441];
+
         this.isLoading = true;
         try
         {
@@ -136,6 +138,12 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     public partial TrackViewModel? PlaylistSelectedTrack { get; set; }
+
+    [ObservableProperty]
+    public partial double[] PlotData { get; set; }
+
+    [ObservableProperty]
+    public partial long PlotTick { get; set; }
 
     public AboutInformationViewModel AboutInfo { get; } = new();
 
@@ -308,6 +316,23 @@ public partial class MainViewModel : ObservableObject
         }
 
         this.player.SkipForward(TimeSpan.FromSeconds(15));
+    }
+
+    public void UpdatePlot()
+    {
+        if (!this.IsPlaying)
+        {
+            return;
+        }
+
+        var plotPsd = new double[257];
+        var plotBands = new double[8];
+        this.Player.Visualization.CopyTo(plotPsd, plotBands, this.PlotData);
+        this.PlotTick++;
+        if (this.PlotTick == long.MaxValue)
+        {
+            this.PlotTick = long.MinValue;
+        }
     }
 
     public void Open(params IEnumerable<string> filePaths)
