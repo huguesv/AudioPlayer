@@ -11,6 +11,7 @@
   <Project Path="Woohoo.Audio.Core/Woohoo.Audio.Core.csproj" />
   <Project Path="Woohoo.Audio.Playback/Woohoo.Audio.Playback.csproj" />
   <Project Path="Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj" />
+  <Project Path="Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj" />
   <Project Path="Woohoo.Audio.Player/Woohoo.Audio.Player.csproj" />
   <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
 </Solution>

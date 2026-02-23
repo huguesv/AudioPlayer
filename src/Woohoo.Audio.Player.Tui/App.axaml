@@ -1,0 +1,11 @@
+<Application
+    x:Class="Woohoo.Audio.Player.Tui.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:console="https://github.com/jinek/consolonia"
+    Name="Audio Player"
+    RequestedThemeVariant="Default">
+    <Application.Styles>
+        <console:ModernTheme />
+    </Application.Styles>
+</Application>

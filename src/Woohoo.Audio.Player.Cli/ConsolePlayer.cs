@@ -60,7 +60,7 @@ internal class ConsolePlayer
 
     public static void PrintCopyright()
     {
-        Console.WriteLine("Woohoo.Audio.Player.Cli. Copyright (c) 2025 Hugues Valois.");
+        Console.WriteLine("Woohoo.Audio.Player.Cli. Copyright (c) 2025-2026 Hugues Valois.");
         Console.WriteLine("An audio player for CD dumps in bin/cue format.");
         Console.WriteLine();
     }

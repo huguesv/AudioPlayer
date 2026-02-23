@@ -122,14 +122,14 @@ public partial class MainWindow : Window
 
             if (filePaths.Count > 0)
             {
-                (this.DataContext as MainWindowViewModel)?.Open(filePaths);
+                (this.DataContext as MainViewModel)?.Open(filePaths);
             }
         }
     }
 
     private void GestureBorder_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (this.DataContext is MainWindowViewModel vm)
+        if (this.DataContext is MainViewModel vm)
         {
             vm.PlaySelectedTrackCommand.Execute(null);
         }
@@ -137,7 +137,7 @@ public partial class MainWindow : Window
 
     private void DispatcherTimer_Tick(object? sender, EventArgs e)
     {
-        if (this.DataContext is MainWindowViewModel vm)
+        if (this.DataContext is MainViewModel vm)
         {
             if (!vm.IsPlaying)
             {
@@ -182,7 +182,7 @@ public partial class MainWindow : Window
     {
         if (e.Key == Key.MediaPlayPause)
         {
-            if (this.DataContext is MainWindowViewModel vm)
+            if (this.DataContext is MainViewModel vm)
             {
                 vm.PlayPauseCommand.Execute(null);
                 e.Handled = true;
@@ -190,7 +190,7 @@ public partial class MainWindow : Window
         }
         else if (e.Key == Key.MediaPreviousTrack)
         {
-            if (this.DataContext is MainWindowViewModel vm)
+            if (this.DataContext is MainViewModel vm)
             {
                 vm.PlayPreviousTrackCommand.Execute(null);
                 e.Handled = true;
@@ -198,7 +198,7 @@ public partial class MainWindow : Window
         }
         else if (e.Key == Key.MediaNextTrack)
         {
-            if (this.DataContext is MainWindowViewModel vm)
+            if (this.DataContext is MainViewModel vm)
             {
                 vm.PlayNextTrackCommand.Execute(null);
                 e.Handled = true;
@@ -229,7 +229,7 @@ public partial class MainWindow : Window
 
     private void Image_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
-        if (this.DataContext is MainWindowViewModel vm)
+        if (this.DataContext is MainViewModel vm)
         {
             vm.NextArtCommand.Execute(null);
         }
