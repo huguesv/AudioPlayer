@@ -82,7 +82,7 @@
                 <MenuItem
                     Command="{Binding SelectViewCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownViews.About}"
-                    Header="_About"
+                    Header="A_bout"
                     HotKey="F1"
                     InputGesture="F1"
                     IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.About}}" />
@@ -114,6 +114,13 @@
                     HotKey="F5"
                     InputGesture="F5"
                     IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.AmplitudeGraph}}" />
+                <MenuItem
+                    Command="{Binding SelectViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownViews.FrequencyGraph}"
+                    Header="_Frequencies Graph"
+                    HotKey="F6"
+                    InputGesture="F6"
+                    IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.FrequencyGraph}}" />
             </MenuItem>
             <MenuItem Header="_Playback" IsTabStop="False">
                 <MenuItem
@@ -400,7 +407,28 @@
                         BorderThickness="1">
                         <wc:SignalPlot
                             Dot="#"
-                            Source="{Binding PlotData, Mode=OneWay}"
+                            Source="{Binding WavePlotData, Mode=OneWay}"
+                            Tick="{Binding PlotTick, Mode=OneWay}" />
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.FrequencyGraph}}">
+                <local:NoAlbumPanelControl IsVisible="{Binding IsTipVisible}" />
+                <Grid IsVisible="{Binding !IsTipVisible}" RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding CurrentTrack.ComplexTitle}"
+                        TextWrapping="Wrap" />
+                    <Border
+                        Grid.Row="1"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                        BorderThickness="1">
+                        <wc:SignalPlot
+                            Dot="#"
+                            Source="{Binding PsdPlotData, Mode=OneWay}"
                             Tick="{Binding PlotTick, Mode=OneWay}" />
                     </Border>
                 </Grid>

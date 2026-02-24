@@ -57,7 +57,9 @@ public partial class MainViewModel : ObservableObject
         this.AlbumPerformer = string.Empty;
         this.AlbumTitle = string.Empty;
 
-        this.PlotData = new double[441];
+        this.WavePlotData = new double[441];
+        this.PsdPlotData = new double[257];
+        this.BandsPlotData = new double[8];
 
         this.isLoading = true;
         try
@@ -140,7 +142,13 @@ public partial class MainViewModel : ObservableObject
     public partial TrackViewModel? PlaylistSelectedTrack { get; set; }
 
     [ObservableProperty]
-    public partial double[] PlotData { get; set; }
+    public partial double[] WavePlotData { get; set; }
+
+    [ObservableProperty]
+    public partial double[] PsdPlotData { get; set; }
+
+    [ObservableProperty]
+    public partial double[] BandsPlotData { get; set; }
 
     [ObservableProperty]
     public partial long PlotTick { get; set; }
@@ -325,9 +333,18 @@ public partial class MainViewModel : ObservableObject
             return;
         }
 
-        var plotPsd = new double[257];
-        var plotBands = new double[8];
-        this.Player.Visualization.CopyTo(plotPsd, plotBands, this.PlotData);
+        // Manually scale psd data from (-100,0) to (-1,1)
+        // TODO: make the signal plot control customizable
+        // enough so we don't have to do this.
+        double[] psd = new double[this.PsdPlotData.Length];
+        this.Player.Visualization.CopyTo(psd, this.BandsPlotData, this.WavePlotData);
+        for (int i = 0; i < psd.Length; i++)
+        {
+            psd[i] = (psd[i] + 50) / 50.0;
+        }
+        
+        Array.Copy(psd, this.PsdPlotData, psd.Length);
+        
         this.PlotTick++;
         if (this.PlotTick == long.MaxValue)
         {
