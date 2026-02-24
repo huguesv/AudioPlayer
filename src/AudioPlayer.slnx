@@ -13,7 +13,7 @@
   <Project Path="Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj" />
   <Project Path="Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj" />
   <Project Path="Woohoo.Audio.Player/Woohoo.Audio.Player.csproj" />
-  <Project Path="Woohoo.ConsoloniaControls.Gallery/Woohoo.ConsoloniaControls.Gallery.csproj" Id="cc921d22-2549-4de5-8c5b-687f1b9b9773" />
+  <Project Path="Woohoo.ConsoloniaControls.Gallery/Woohoo.ConsoloniaControls.Gallery.csproj" />
   <Project Path="Woohoo.ConsoloniaControls/Woohoo.ConsoloniaControls.csproj" />
   <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
 </Solution>
