@@ -342,9 +342,9 @@ public partial class MainViewModel : ObservableObject
         {
             psd[i] = (psd[i] + 50) / 50.0;
         }
-        
+
         Array.Copy(psd, this.PsdPlotData, psd.Length);
-        
+
         this.PlotTick++;
         if (this.PlotTick == long.MaxValue)
         {
