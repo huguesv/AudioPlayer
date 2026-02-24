@@ -9,4 +9,6 @@ public class KnownViews
     public const string NowPlaying = "NowPlaying";
     public const string Playlist = "Playlist";
     public const string Lyrics = "Lyrics";
+    public const string AmplitudeGraph = "AmplitudeGraph";
+    public const string FrequencyGraph = "FrequencyGraph";
 }

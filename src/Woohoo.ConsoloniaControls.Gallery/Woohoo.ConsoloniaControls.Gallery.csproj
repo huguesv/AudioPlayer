@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyTitle>Audio Player Tui</AssemblyTitle>
+    <AssemblyTitle>Consolonia Controls Gallery</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,15 +23,10 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
     <PackageReference Include="Consolonia" />
-    <PackageReference Include="Consolonia.Fonts" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
-    <ProjectReference Include="..\Woohoo.Audio.Playback\Woohoo.Audio.Playback.csproj" />
     <ProjectReference Include="..\Woohoo.ConsoloniaControls\Woohoo.ConsoloniaControls.csproj" />
   </ItemGroup>
 
