@@ -4,7 +4,7 @@
 
 This is an audio player for Windows, Linux and MacOS.
 
-It is designed to play audio CDs dumped to raw bin/cue files.
+It is designed to play audio CDs dumped to raw bin/cue or chd files.
 
 The bin/cue files can be loaded from a folder on disk, or from a zip archive.
 
@@ -81,9 +81,9 @@ You can optionally use a local version of the LRCLIB database:
 1. Click the **Open cue or zip file** button at the bottom left of the application.
    Also available from the **File** menu on MacOS.
 
-1. Select either a .cue file or a .zip file that contains a .cue file.
+1. Select a .cue file, a .zip file that contains a .cue file, or a .chd file.
 
-1. A new playlist that consists of the audio tracks from the .cue file will be
+1. A new playlist that consists of the audio tracks from the cue sheet will be
    opened and the first track will start playing.
 
 1. You can only load one album at a time. When you load another, the current
@@ -105,9 +105,9 @@ You can optionally use a local version of the LRCLIB database:
 
 1. Click the **File** menu, then **Open**.
 
-1. Select either a .cue file or a .zip file that contains a .cue file.
+1. Select a .cue file, a .zip file that contains a .cue file, or a .chd file.
 
-1. A new playlist that consists of the audio tracks from the .cue file will be
+1. A new playlist that consists of the audio tracks from the cue sheet will be
    opened and the first track will start playing.
 
 1. You can only load one album at a time. When you load another, the current
@@ -125,8 +125,8 @@ You can optionally use a local version of the LRCLIB database:
    Woohoo.Audio.Player.Cli -h
    ```
 
-1. Run the executable and pass a path to a .cue file or a .zip file that contains
-   a .cue file.
+1. Run the executable and pass a path to a .cue file, a .zip file that contains
+   a .cue file, or a .chd file.
    ```shell
    Woohoo.Audio.Player.Cli "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
@@ -204,6 +204,7 @@ This software uses the following libraries:
 - [SDL3-CS from ppy](https://github.com/ppy/SDL3-CS)
 - [SDL3-CS from flibitijibibo](https://github.com/flibitijibibo/SDL3-CS)
 - [SDL3](https://github.com/libsdl-org/SDL)
+- [ZstdSharp.Port](https://github.com/oleg-st/ZstdSharp)
 
 This software uses assets from:
 
@@ -218,3 +219,5 @@ This software queries metadata from:
 This software queries lyrics from:
 
 - [LRCLIB](https://lrclib.net)
+
+Additional material is listed in [ThirdPartyNotices.txt](ThirdPartyNotices.txt).

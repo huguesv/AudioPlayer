@@ -5,12 +5,12 @@ namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
 
 using System.Collections.Generic;
 using System.Linq;
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.IO;
+using Woohoo.Audio.Core.Internal.Cue;
+using Woohoo.Audio.Core.Internal.IO;
 
 internal static class CTDBTocCalculator
 {
-    public static string GetTocFromCue(CueSheet cueSheet, IMusicContainer container)
+    public static string GetTocFromCue(CueSheet cueSheet, IFolder container)
     {
         return GetTocFromCue(cueSheet, container.GetFileSize);
     }

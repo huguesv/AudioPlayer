@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-#define PLAY_USING_STREAM
-
 namespace Woohoo.Audio.Player.Tui.ViewModels;
 
 using System;
@@ -12,9 +10,8 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Woohoo.Audio.Core;
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Core.Lyrics;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Core.Metadata;
 using Woohoo.Audio.Playback;
 using Woohoo.Audio.Player.Tui.Models;
@@ -36,6 +33,7 @@ public partial class MainViewModel : ObservableObject
     private string lastBrowseFolder = string.Empty;
     private int volume;
     private bool isLoading;
+    private IAlbumMedia? media;
 
     public MainViewModel(IFilePickerService filePickerService, IThemeService themeService, IMetadataProvider? metadataProvider, ILyricsProvider? lyricsProvider)
     {
@@ -203,7 +201,7 @@ public partial class MainViewModel : ObservableObject
             allowMultiple: false,
             new List<FilePickerFileType>
             {
-                new("Cue sheets") { Patterns = ["*.cue", "*.zip"] },
+                new("Albums") { Patterns = ["*.cue", "*.zip", "*.chd"] },
                 new("*.* files") { Patterns = ["*.*"] }
             });
 
@@ -391,37 +389,35 @@ public partial class MainViewModel : ObservableObject
 
     private void OpenFile(string filePath)
     {
-        var loader = new AlbumLoader();
-        var tracks = loader.LoadFrom(filePath);
-        if (tracks.Count == 0)
+        var loader = new MediaLoader();
+        var media = loader.LoadFrom(filePath);
+        if (media.Tracks.Length == 0)
         {
             return;
         }
 
+        this.media = media;
+
         this.Tracks.Clear();
 
-        foreach (var track in tracks)
+        foreach (var track in media.Tracks)
         {
-            TrackViewModel trackViewModel = new()
+            TrackViewModel trackViewModel = new(track)
             {
-                Container = track.Container,
-                CueSheet = track.CueSheet,
-                FileName = track.TrackFileName,
                 FileNotFound = track.TrackFileNotFound,
                 TrackNumber = track.TrackNumber,
                 ComplexTitle = TrackViewModel.BuildComplexTitle(track.TrackTitle, track.TrackPerformer),
                 Title = track.TrackTitle.Length > 0 ? track.TrackTitle : $"Track {track.TrackNumber:00}",
                 Performer = track.TrackPerformer,
                 Songwriter = track.TrackSongwriter,
-                TrackOffset = track.TrackOffset,
                 TrackSize = track.TrackSize,
             };
 
             this.Tracks.Add(trackViewModel);
         }
 
-        this.AlbumTitle = tracks[0].AlbumTitle;
-        this.AlbumPerformer = tracks[0].AlbumPerformer;
+        this.AlbumTitle = media.Tracks[0].AlbumTitle;
+        this.AlbumPerformer = media.Tracks[0].AlbumPerformer;
 
         if (string.IsNullOrEmpty(this.AlbumPerformer))
         {
@@ -446,19 +442,19 @@ public partial class MainViewModel : ObservableObject
 
     private void QueryMetadataAndLyrics(bool fetchOnlineMetadata, bool fetchLyrics)
     {
-        if (this.Tracks.Count == 0)
+        if (this.media is null || this.Tracks.Count == 0)
         {
             return;
         }
 
-        var container = this.Tracks[0].Container;
-        var cueSheet = this.Tracks[0].CueSheet;
+        var audioTrackCount = this.media.Tracks.Sum(t => t.IsAudio ? 1 : 0);
+        var toc = this.media.CTDBToc;
 
         _ = Task.Run(async () =>
         {
             if (fetchOnlineMetadata)
             {
-                await this.QueryMetadataAsync(container, cueSheet);
+                await this.QueryMetadataAsync(audioTrackCount, toc);
             }
 
             // Lyrics fetching depends on metadata fetching to have track titles/performers updated
@@ -503,7 +499,7 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private async Task QueryMetadataAsync(IMusicContainer container, CueSheet cueSheet)
+    private async Task QueryMetadataAsync(int audioTrackCount, string toc)
     {
         if (this.metadataProvider is null || this.Tracks.Count == 0)
         {
@@ -516,8 +512,8 @@ public partial class MainViewModel : ObservableObject
             tokenSource.CancelAfter(TimeSpan.FromSeconds(30));
 
             var metadata = await this.metadataProvider.QueryAsync(
-                cueSheet,
-                container,
+                audioTrackCount,
+                toc,
                 cancellationToken: tokenSource.Token);
 
             if (metadata is not null)
@@ -594,20 +590,8 @@ public partial class MainViewModel : ObservableObject
         {
             this.Tracks[trackIndex].IsCurrentTrack = true;
 
-#if PLAY_USING_STREAM
-            var fileStream = this.Tracks[trackIndex].Container.OpenFileStream(this.Tracks[trackIndex].FileName);
-            var trackStream = new SubStream(
-                fileStream,
-                this.Tracks[trackIndex].TrackOffset,
-                this.Tracks[trackIndex].TrackSize);
+            var trackStream = this.Tracks[trackIndex].Track.OpenStream();
             this.player.Play(trackStream, this.Tracks[trackIndex].TrackSize);
-#else
-            var trackData = this.Tracks[trackIndex].Container.ReadFileBytes(
-                this.Tracks[trackIndex].FileName,
-                this.Tracks[trackIndex].TrackOffset,
-                this.Tracks[trackIndex].TrackSize);
-            this.player.Play(trackData);
-#endif
 
             this.IsPlaying = true;
         }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Lyrics;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Core.Metadata;
 
 internal class Program
@@ -18,7 +19,7 @@ internal class Program
 
         var fileArgument = new Argument<FileInfo>("file")
         {
-            Description = "The .cue or .zip file to play.",
+            Description = "The .cue, .zip, or .chd file to play.",
             Arity = ArgumentArity.ZeroOrOne,
         };
 
@@ -50,7 +51,7 @@ internal class Program
             var fileInfo = parseResult.GetValue(fileArgument);
             if (fileInfo is null)
             {
-                Console.Error.WriteLine("No file specified. Please provide a .cue or .zip file name.");
+                Console.Error.WriteLine("No file specified. Please provide a .cue, .zip or .chd file name.");
                 return 1;
             }
 
@@ -75,11 +76,13 @@ internal class Program
     {
         try
         {
-            var tracks = new AlbumLoader().LoadFrom(fileInfo.FullName);
+            var media = new MediaLoader().LoadFrom(fileInfo.FullName);
+            var tracks = media.Tracks;
+
             ConsolePlayer.ClearScreen();
             ConsolePlayer.PrintCopyright();
 
-            if (fetchMetadata && tracks.Count > 0)
+            if (fetchMetadata && tracks.Length > 0)
             {
                 Console.Write("Fetching metadata... ");
 
@@ -87,13 +90,14 @@ internal class Program
                 {
                     var metadataProvider = new MetadataProvider(new HttpClientFactory());
                     var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-                    var metadata = await metadataProvider.QueryAsync(tracks[0].CueSheet, tracks[0].Container, cancellationTokenSource.Token);
+                    var audioTrackCount = media.Tracks.Sum(t => t.IsAudio ? 1 : 0);
+                    var metadata = await metadataProvider.QueryAsync(audioTrackCount, media.CTDBToc, cancellationTokenSource.Token);
                     if (metadata is not null)
                     {
                         var albumTitle = BestString(metadata.Album, tracks[0].AlbumTitle);
                         var albumPerformer = BestString(metadata.Artist, tracks[0].AlbumPerformer);
 
-                        for (int i = 0; i < tracks.Count; i++)
+                        for (int i = 0; i < tracks.Length; i++)
                         {
                             var track = tracks[i];
                             track.AlbumTitle = albumTitle;
@@ -124,7 +128,7 @@ internal class Program
                 }
             }
 
-            if (fetchLyrics && tracks.Count > 0)
+            if (fetchLyrics && tracks.Length > 0)
             {
                 Console.Write("Fetching lyrics... ");
 
@@ -179,7 +183,7 @@ internal class Program
 
                 if (lyricsCount > 0)
                 {
-                    Console.WriteLine($"success ({lyricsCount} / {tracks.Count})");
+                    Console.WriteLine($"success ({lyricsCount} / {tracks.Length})");
                 }
                 else
                 {
@@ -194,7 +198,7 @@ internal class Program
             try
             {
                 var player = new ConsolePlayer();
-                player.LoadAlbum(tracks);
+                player.LoadAlbum(media);
                 player.PlayAll();
 
                 while (player.HandleKey(Console.ReadKey(intercept: true).Key))
@@ -210,7 +214,7 @@ internal class Program
         }
         catch
         {
-            Console.WriteLine($"Unable to load: {fileInfo.FullName}.\nOnly .cue or .zip files are supported.");
+            Console.WriteLine($"Unable to load: {fileInfo.FullName}.\nOnly .cue, .zip, or .chd files are supported.");
             return 1;
         }
 

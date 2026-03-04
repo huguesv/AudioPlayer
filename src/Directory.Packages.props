@@ -32,8 +32,10 @@
     <PackageVersion Include="System.CommandLine" Version="2.0.3" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
+    <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.5.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
+    <PackageVersion Include="ZstdSharp.Port" Version="0.8.7" />
   </ItemGroup>
 </Project>
