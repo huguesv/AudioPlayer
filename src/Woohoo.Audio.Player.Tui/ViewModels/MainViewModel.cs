@@ -69,6 +69,7 @@ public partial class MainViewModel : ObservableObject
             this.SelectedTheme = !string.IsNullOrEmpty(settings.Theme) ? settings.Theme : KnownThemes.ModernDark;
             this.FetchOnlineMetadata = settings.FetchOnlineMetadata;
             this.FetchLyrics = settings.FetchLyrics;
+            this.ShowAlbumArt = settings.ShowAlbumArt;
         }
         finally
         {
@@ -89,10 +90,20 @@ public partial class MainViewModel : ObservableObject
     public partial bool FetchLyrics { get; set; }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NextArtCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousArtCommand))]
+    public partial bool ShowAlbumArt { get; set; }
+
+    [ObservableProperty]
     public partial bool IsTipVisible { get; set; }
 
     [ObservableProperty]
     public partial bool IsAlbumArtVisible { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NextArtCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousArtCommand))]
+    public partial AlbumArtViewModel? CurrentArt { get; private set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PlayPauseCommand))]
@@ -155,6 +166,8 @@ public partial class MainViewModel : ObservableObject
 
     public ObservableCollection<TrackViewModel> Tracks { get; } = [];
 
+    public ObservableCollection<AlbumArtViewModel> Art { get; } = [];
+
     public int Volume
     {
         get => this.volume;
@@ -178,6 +191,7 @@ public partial class MainViewModel : ObservableObject
 
     public bool CanSkipForwardOrBack() => this.IsPlaying;
 
+    public bool CanChangeArt() => this.Art.Count > 1 && this.ShowAlbumArt;
 
     [RelayCommand]
     public void SelectTheme(string theme)
@@ -214,6 +228,32 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanChangeArt))]
+    public void NextArt()
+    {
+        if (this.Art.Count < 2 || this.CurrentArt is null || !this.ShowAlbumArt)
+        {
+            return;
+        }
+
+        int currentIndex = this.Art.IndexOf(this.CurrentArt);
+        int nextIndex = (currentIndex + 1) % this.Art.Count;
+        this.CurrentArt = this.Art[nextIndex];
+    }
+
+    [RelayCommand(CanExecute = nameof(CanChangeArt))]
+    public void PreviousArt()
+    {
+        if (this.Art.Count < 2 || this.CurrentArt is null || !this.ShowAlbumArt)
+        {
+            return;
+        }
+
+        int currentIndex = this.Art.IndexOf(this.CurrentArt);
+        int previousIndex = (currentIndex - 1 + this.Art.Count) % this.Art.Count;
+        this.CurrentArt = this.Art[previousIndex];
+    }
+
     [RelayCommand]
     public void ToggleFetchOnlineMetadata()
     {
@@ -226,6 +266,13 @@ public partial class MainViewModel : ObservableObject
     {
         this.FetchLyrics = !this.FetchLyrics;
         this.QueryMetadataAndLyrics(this.FetchOnlineMetadata, this.FetchLyrics);
+    }
+
+    [RelayCommand]
+    public void ToggleShowAlbumArt()
+    {
+        this.ShowAlbumArt = !this.ShowAlbumArt;
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
     }
 
     [RelayCommand]
@@ -416,6 +463,9 @@ public partial class MainViewModel : ObservableObject
             this.Tracks.Add(trackViewModel);
         }
 
+        this.Art.Clear();
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        this.CurrentArt = null;
         this.AlbumTitle = media.Tracks[0].AlbumTitle;
         this.AlbumPerformer = media.Tracks[0].AlbumPerformer;
 
@@ -543,6 +593,25 @@ public partial class MainViewModel : ObservableObject
             }
         }
 
+        foreach (var art in metadata.Images)
+        {
+            this.Art.Add(new AlbumArtViewModel
+            {
+                Url = art.Url,
+                IsPrimary = art.IsPrimary,
+            });
+        }
+
+        this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        if (this.IsAlbumArtVisible)
+        {
+            this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+        }
+        else
+        {
+            this.CurrentArt = null;
+        }
+
         this.AlbumTitle = BestString(metadata.Album, this.AlbumTitle);
         this.AlbumPerformer = BestString(metadata.Artist, this.AlbumPerformer);
 
@@ -618,6 +687,7 @@ public partial class MainViewModel : ObservableObject
             Theme = this.SelectedTheme,
             FetchOnlineMetadata = this.FetchOnlineMetadata,
             FetchLyrics = this.FetchLyrics,
+            ShowAlbumArt = this.ShowAlbumArt,
         };
 
         this.settingsManager.SaveSettings(settings);
@@ -644,6 +714,16 @@ public partial class MainViewModel : ObservableObject
     }
 
     partial void OnSelectedThemeChanged(string value)
+    {
+        if (this.isLoading)
+        {
+            return;
+        }
+
+        this.SaveSettings();
+    }
+
+    partial void OnShowAlbumArtChanged(bool value)
     {
         if (this.isLoading)
         {
