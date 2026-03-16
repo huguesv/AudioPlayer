@@ -78,7 +78,7 @@ You can optionally use a local version of the LRCLIB database:
 
 ## Usage (Desktop Player)
 
-1. Click the **Open cue or zip file** button at the bottom left of the application.
+1. Click the **Open** button at the bottom left of the application.
    Also available from the **File** menu on MacOS.
 
 1. Select a .cue file, a .zip file that contains a .cue file, or a .chd file.

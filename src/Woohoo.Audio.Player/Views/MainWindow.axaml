@@ -566,7 +566,7 @@
                 Margin="4"
                 AutomationProperties.Name="Open"
                 Command="{Binding BrowseCommand}"
-                ToolTip.Tip="Open .cue or .zip file">
+                ToolTip.Tip="Open">
                 <Grid>
                     <Viewbox Width="24" Height="24">
                         <Canvas Width="32" Height="32">

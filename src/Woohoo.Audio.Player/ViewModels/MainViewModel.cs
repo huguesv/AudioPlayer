@@ -227,7 +227,10 @@ public partial class MainViewModel : ViewModelBase
         var filePaths = await this.filePickerService.GetFilePathsAsync(
             Localized.BrowseDialogTitle,
             allowMultiple: false,
-            [new FilePickerFileType("Albums") { Patterns = ["*.cue", "*.zip", "*.chd"] }]);
+            [
+                new FilePickerFileType("Disc Image Files") { Patterns = ["*.cue", "*.zip", "*.chd"] },
+                new FilePickerFileType("All Files") { Patterns = ["*.*"] },
+            ]);
         if (filePaths.Length > 0)
         {
             this.Open(filePaths);

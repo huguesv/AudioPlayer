@@ -197,13 +197,12 @@ public partial class MainViewModel : ObservableObject
     {
         var filePath = await this.filePickerService.GetFilePathAsync(
             this.lastBrowseFolder,
-            "Open cue sheet",
+            "Open Disc Image",
             allowMultiple: false,
-            new List<FilePickerFileType>
-            {
-                new("Albums") { Patterns = ["*.cue", "*.zip", "*.chd"] },
-                new("*.* files") { Patterns = ["*.*"] }
-            });
+            [
+                new("Disc Image Files") { Patterns = ["*.cue", "*.zip", "*.chd"] },
+                new("All Files") { Patterns = ["*.*"] }
+            ]);
 
         if (!string.IsNullOrEmpty(filePath))
         {
