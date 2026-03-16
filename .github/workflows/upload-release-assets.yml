@@ -17,6 +17,7 @@ jobs:
       desktopBinariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
       consoleBinariesName: Woohoo.Audio.Player.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
       terminalBinariesName: Woohoo.Audio.Player.Tui-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      terminalPublishSingleFile: ${{ (matrix.dotnet-runtime == 'win-x64' || matrix.dotnet-runtime == 'win-arm64' || matrix.dotnet-runtime == 'win-x86') && 'true' || 'false' }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
 
     - name: Terminal App - Build / Publish
       working-directory: src
-      run: dotnet publish Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
+      run: dotnet publish Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False -p:PublishSingleFile=${{ env.terminalPublishSingleFile }}
 
     - name: Desktop App - Zip binaries
       working-directory: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
