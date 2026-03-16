@@ -6,9 +6,7 @@ namespace Woohoo.Audio.Core.Metadata;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Woohoo.Audio.Core.Cue;
 using Woohoo.Audio.Core.Internal.CueToolsDatabase;
-using Woohoo.Audio.Core.IO;
 
 public sealed class MetadataProvider : IMetadataProvider
 {
@@ -19,12 +17,12 @@ public sealed class MetadataProvider : IMetadataProvider
         this.databaseClient = new CTDBCachingWebClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"), new CTDBWebClient(httpClientFactory));
     }
 
-    public async Task<AlbumMetadata?> QueryAsync(CueSheet cueSheet, IMusicContainer container, CancellationToken cancellationToken)
+    public async Task<AlbumMetadata?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken)
     {
         try
         {
             var response = await this.databaseClient.QueryAsync(
-                CTDBTocCalculator.GetTocFromCue(cueSheet, container),
+                toc,
                 cancellationToken: CancellationToken.None);
 
             if (response is null)
@@ -32,9 +30,7 @@ public sealed class MetadataProvider : IMetadataProvider
                 return null;
             }
 
-            var trackCount = cueSheet.GetTotalAudioTrackCount();
-
-            var bestMetadata = response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length == trackCount);
+            var bestMetadata = response.Metadatas?.FirstOrDefault(m => m.Tracks?.Length == audioTrackCount);
             if (bestMetadata is null)
             {
                 return null;
@@ -46,7 +42,7 @@ public sealed class MetadataProvider : IMetadataProvider
                 // The best metadata does not have primary cover art, try to
                 // find another entry with matching album that has primary cover art.
                 bestArtMetadata = response.Metadatas?
-                    .Where(m => m.Tracks?.Length == trackCount)
+                    .Where(m => m.Tracks?.Length == audioTrackCount)
                     .Where(m => m.Album == bestMetadata.Album)
                     .FirstOrDefault(m => m.CoverArts?.Any(a => a.Primary) == true);
             }

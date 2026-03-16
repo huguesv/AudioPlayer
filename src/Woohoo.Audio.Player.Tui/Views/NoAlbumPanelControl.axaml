@@ -15,6 +15,6 @@
         <TextBlock
             Margin="1"
             HorizontalAlignment="Center"
-            Text="Open a cue file or a zip containing a cue file" />
+            Text="Open a cue file, zip file (containing a cue file) or a chd file" />
     </StackPanel>
 </UserControl>

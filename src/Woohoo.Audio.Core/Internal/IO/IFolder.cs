@@ -1,0 +1,26 @@
+﻿// Copyright (c) Hugues Valois. All rights reserved.
+// Licensed under the MIT license. See LICENSE in the project root for license information.
+
+namespace Woohoo.Audio.Core.Internal.IO;
+
+using System.Collections.Generic;
+using System.IO;
+
+internal interface IFolder
+{
+    string ContainerPath { get; }
+
+    IEnumerable<string> EnumerateFilesByExtension(string extension);
+
+    bool FileExists(string fileName);
+
+    long GetFileSize(string fileName);
+
+    string ReadFileText(string fileName);
+
+    byte[] ReadFileBytes(string fileName);
+
+    byte[] ReadFileBytes(string fileName, long offset, long count);
+
+    Stream OpenFileStream(string fileName);
+}

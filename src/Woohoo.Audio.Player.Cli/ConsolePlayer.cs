@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-#define PLAY_USING_STREAM
-
 namespace Woohoo.Audio.Player.Cli;
 
-using System.Collections.Immutable;
 using System.Timers;
 using Woohoo.Audio.Core;
-using Woohoo.Audio.Core.IO;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Playback;
 
 internal class ConsolePlayer
@@ -19,7 +16,7 @@ internal class ConsolePlayer
 
     private int volume;
 
-    private ImmutableList<AlbumTrack> tracks;
+    private IAlbumMedia? media;
 
     private int currentTrack;
 
@@ -39,7 +36,6 @@ internal class ConsolePlayer
     {
         this.player = new SdlAudioPlayer(this.Played);
         this.volume = this.player.Volume;
-        this.tracks = [];
 
         this.currentTrackPosition = 0;
         this.currentTrackEndPosition = 0;
@@ -67,7 +63,7 @@ internal class ConsolePlayer
 
     public static void PrintUsage()
     {
-        Console.WriteLine("Usage: Woohoo.Audio.Player.Cli <cue-or-zip-file>");
+        Console.WriteLine("Usage: Woohoo.Audio.Player.Cli <cue-or-zip-or-chd-file>");
         Console.WriteLine();
     }
 
@@ -79,9 +75,9 @@ internal class ConsolePlayer
         Console.WriteLine();
     }
 
-    public void LoadAlbum(ImmutableList<AlbumTrack> album)
+    public void LoadAlbum(IAlbumMedia media)
     {
-        this.tracks = album;
+        this.media = media;
     }
 
     public bool HandleKey(ConsoleKey key)
@@ -123,22 +119,22 @@ internal class ConsolePlayer
     {
         this.cursorBeginPos = Console.GetCursorPosition();
 
-        if (this.tracks.Count > 0)
+        if (this.media?.Tracks.Length > 0)
         {
             StringBuilder sb = new StringBuilder();
-            if (this.tracks[0].AlbumPerformer.Length > 0)
+            if (this.media.Tracks[0].AlbumPerformer.Length > 0)
             {
-                sb.Append(this.tracks[0].AlbumPerformer);
+                sb.Append(this.media.Tracks[0].AlbumPerformer);
                 sb.Append(" - ");
             }
 
-            if (this.tracks[0].AlbumTitle.Length > 0)
+            if (this.media.Tracks[0].AlbumTitle.Length > 0)
             {
-                sb.Append(this.tracks[0].AlbumTitle);
+                sb.Append(this.media.Tracks[0].AlbumTitle);
             }
             else
             {
-                sb.Append(this.tracks[0].CueSheetName);
+                sb.Append(this.media.Tracks[0].MediaName);
             }
 
             this.PrintAlbumTitle(sb.ToString());
@@ -239,7 +235,7 @@ internal class ConsolePlayer
 
     private void NextTrack()
     {
-        if (this.currentTrack + 1 >= this.tracks.Count)
+        if (this.currentTrack + 1 >= this.media?.Tracks.Length)
         {
             return;
         }
@@ -263,12 +259,19 @@ internal class ConsolePlayer
 
     private void PlayTrack(int trackIndex)
     {
-        if (trackIndex >= this.tracks.Count)
+        if (this.media is null)
         {
             return;
         }
 
-        if (this.tracks[trackIndex].TrackFileNotFound)
+        if (trackIndex >= this.media?.Tracks.Length)
+        {
+            return;
+        }
+
+        var tracks = this.media!.Tracks;
+
+        if (this.media?.Tracks[trackIndex].TrackFileNotFound == true)
         {
             this.player.Pause();
             this.isPlaying = false;
@@ -280,25 +283,13 @@ internal class ConsolePlayer
 
         this.currentTrack = trackIndex;
         this.currentTrackPosition = 0;
-        this.currentTrackEndPosition = this.tracks[trackIndex].TrackSize;
+        this.currentTrackEndPosition = tracks[trackIndex].TrackSize;
 
         this.PrintCurrentlyPlayingInfo();
         this.PrintLyric(string.Empty);
 
-#if PLAY_USING_STREAM
-        var fileStream = this.tracks[trackIndex].Container.OpenFileStream(this.tracks[trackIndex].TrackFileName);
-        var trackStream = new SubStream(
-            fileStream,
-            this.tracks[trackIndex].TrackOffset,
-            this.tracks[trackIndex].TrackSize);
-        this.player.Play(trackStream, this.tracks[trackIndex].TrackSize);
-#else
-        var trackData = this.album[trackIndex].Container.ReadFileBytes(
-            this.album[trackIndex].TrackFileName,
-            this.album[trackIndex].TrackOffset,
-            this.album[trackIndex].TrackSize);
-        this.player.Play(trackData);
-#endif
+        var trackStream = tracks[trackIndex].OpenStream();
+        this.player.Play(trackStream, tracks[trackIndex].TrackSize);
     }
 
     private void Played(byte[] buffer, int count, int position, bool eof)
@@ -310,7 +301,13 @@ internal class ConsolePlayer
 
         this.PrintCurrentlyPlayingInfo();
 
-        var lyric = this.tracks[this.currentTrack].Lyrics?.GetLineAt(TimeConversion.FromPosition(position));
+        if (this.media is null)
+        {
+            return;
+        }
+
+        var tracks = this.media!.Tracks;
+        var lyric = tracks[this.currentTrack].Lyrics?.GetLineAt(TimeConversion.FromPosition(position));
         this.PrintLyric(lyric ?? string.Empty);
 
         if (eof)
@@ -321,21 +318,28 @@ internal class ConsolePlayer
 
     private void PrintCurrentlyPlayingInfo()
     {
+        if (this.media is null)
+        {
+            return;
+        }
+
+        var tracks = this.media!.Tracks;
+
         string trackLength = PositionToString(this.currentTrackEndPosition);
         string trackPos = PositionToString(this.currentTrackPosition);
 
         StringBuilder sb = new StringBuilder();
-        sb.Append($"Track {this.currentTrack + 1:D2} of {this.tracks.Count:D2}");
-        if (this.tracks[this.currentTrack].TrackPerformer.Length > 0)
+        sb.Append($"Track {this.currentTrack + 1:D2} of {tracks.Length:D2}");
+        if (tracks[this.currentTrack].TrackPerformer.Length > 0)
         {
             sb.Append(" - ");
-            sb.Append(this.tracks[this.currentTrack].TrackPerformer);
+            sb.Append(tracks[this.currentTrack].TrackPerformer);
         }
 
-        if (this.tracks[this.currentTrack].TrackTitle.Length > 0)
+        if (tracks[this.currentTrack].TrackTitle.Length > 0)
         {
             sb.Append(" - ");
-            sb.Append(this.tracks[this.currentTrack].TrackTitle);
+            sb.Append(tracks[this.currentTrack].TrackTitle);
         }
 
         string trackNumberAndTitle = sb.ToString();

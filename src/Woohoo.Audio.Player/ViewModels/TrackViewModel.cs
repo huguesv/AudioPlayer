@@ -5,34 +5,23 @@ namespace Woohoo.Audio.Player.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using Woohoo.Audio.Core;
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Core.Lyrics;
+using Woohoo.Audio.Core.Media;
 
 public partial class TrackViewModel : ViewModelBase
 {
-    public TrackViewModel()
+    public TrackViewModel(IAlbumTrack track)
     {
-        this.FileName = string.Empty;
         this.Title = string.Empty;
         this.Performer = string.Empty;
         this.Songwriter = string.Empty;
         this.PlainLyrics = string.Empty;
         this.CurrentLyric = string.Empty;
+        this.Track = track;
     }
-
-    public required IMusicContainer Container { get; init; }
-
-    public required CueSheet CueSheet { get; init; }
-
-    [ObservableProperty]
-    public partial string FileName { get; set; }
 
     [ObservableProperty]
     public partial bool FileNotFound { get; set; }
-
-    [ObservableProperty]
-    public partial int TrackOffset { get; set; }
 
     [ObservableProperty]
     public partial int TrackSize { get; set; }
@@ -64,6 +53,8 @@ public partial class TrackViewModel : ViewModelBase
     public List<LyricLineViewModel> Lyrics { get; } = [];
 
     public LyricsTrack? LyricsData { get; private set; }
+
+    public IAlbumTrack Track { get; }
 
     public void UpdateLyrics(LyricsTrack? lyrics)
     {

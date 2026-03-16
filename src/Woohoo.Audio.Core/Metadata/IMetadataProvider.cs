@@ -4,10 +4,8 @@
 namespace Woohoo.Audio.Core.Metadata;
 
 using System.Threading.Tasks;
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.IO;
 
 public interface IMetadataProvider
 {
-    Task<AlbumMetadata?> QueryAsync(CueSheet cueSheet, IMusicContainer container, CancellationToken cancellationToken);
+    Task<AlbumMetadata?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken);
 }

@@ -408,7 +408,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     IsVisible="{Binding IsTipVisible}"
-                    Text="Open a cue file or a zip containing a cue file"
+                    Text="Open a cue file, zip file (containing a cue file) or a chd file"
                     TextWrapping="Wrap" />
                 <Grid IsVisible="{Binding !IsTipVisible}">
                     <Grid IsVisible="{Binding IsAlbumArtVisible}" RowDefinitions="*,Auto">

@@ -3,8 +3,8 @@
 
 namespace Woohoo.Audio.Core.UnitTest;
 
-using Woohoo.Audio.Core.Cue;
-using Woohoo.Audio.Core.Cue.Serialization;
+using Woohoo.Audio.Core.Internal.Cue;
+using Woohoo.Audio.Core.Internal.Cue.Serialization;
 
 public class CueSheetReaderUnitTest
 {

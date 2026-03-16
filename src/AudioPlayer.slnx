@@ -3,6 +3,7 @@
     <File Path="../LICENSE" />
     <File Path="../README.md" />
     <File Path="../SCREENSHOTS.md" />
+    <File Path="../ThirdPartyNotices.txt" />
     <File Path="Common/stylecop.json" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
@@ -13,7 +14,12 @@
   <Project Path="Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj" />
   <Project Path="Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj" />
   <Project Path="Woohoo.Audio.Player/Woohoo.Audio.Player.csproj" />
+  <Project Path="Woohoo.Codecs.Flake/Woohoo.Codecs.Flake.csproj" />
+  <Project Path="Woohoo.Codecs/Woohoo.Codecs.csproj" />
   <Project Path="Woohoo.ConsoloniaControls.Gallery/Woohoo.ConsoloniaControls.Gallery.csproj" />
   <Project Path="Woohoo.ConsoloniaControls/Woohoo.ConsoloniaControls.csproj" />
+  <Project Path="Woohoo.IO.Compression.Chd.UnitTest/Woohoo.IO.Compression.Chd.UnitTest.csproj" />
+  <Project Path="Woohoo.IO.Compression.Chd/Woohoo.IO.Compression.Chd.csproj" />
+  <Project Path="Woohoo.IO.Compression/Woohoo.IO.Compression.csproj" />
   <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
 </Solution>
