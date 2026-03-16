@@ -21,7 +21,6 @@ public static class Program
             .UseSkia()
             .UseConsolonia()
             .UseAutoDetectedConsole()
-            .LogToException()
             .WithConsoleFonts();
     }
 }
