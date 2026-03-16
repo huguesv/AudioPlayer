@@ -18,9 +18,9 @@ public static class Program
     public static AppBuilder BuildAvaloniaApp()
     {
         return AppBuilder.Configure<App>()
+            .UseSkia()
             .UseConsolonia()
             .UseAutoDetectedConsole()
-            .LogToException()
             .WithConsoleFonts();
     }
 }

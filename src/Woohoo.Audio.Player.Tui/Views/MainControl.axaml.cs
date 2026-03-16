@@ -45,4 +45,12 @@ public partial class MainControl : UserControl
             vm.UpdatePlot();
         }
     }
+
+    private void Image_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        if (this.DataContext is MainViewModel vm)
+        {
+            vm.NextArtCommand.Execute(null);
+        }
+    }
 }

@@ -2,6 +2,7 @@
     x:Class="Woohoo.Audio.Player.Tui.Views.MainControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:converters="using:Woohoo.Audio.Player.Tui.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
@@ -184,6 +185,11 @@
                     Header="Fetch _Lyrics"
                     IsChecked="{Binding FetchLyrics}"
                     ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleShowAlbumArtCommand}"
+                    Header="Show Album _Art"
+                    IsChecked="{Binding ShowAlbumArt}"
+                    ToggleType="CheckBox" />
             </MenuItem>
         </Menu>
 
@@ -319,26 +325,47 @@
 
             <Grid IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.NowPlaying}}">
                 <local:NoAlbumPanelControl IsVisible="{Binding IsTipVisible}" />
-                <StackPanel
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    IsVisible="{Binding !IsTipVisible}">
-                    <TextBlock
-                        Margin="1"
+                <Grid IsVisible="{Binding !IsTipVisible}">
+                    <Grid IsVisible="{Binding IsAlbumArtVisible}" RowDefinitions="*,Auto">
+                        <Image
+                            Grid.Row="0"
+                            Margin="1"
+                            asyncImageLoader:ImageLoader.Source="{Binding CurrentArt.Url}"
+                            Stretch="Uniform"
+                            Tapped="Image_Tapped" />
+                        <StackPanel
+                            Grid.Row="1"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding ComplexAlbumTitle}" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="{Binding CurrentTrackTitle}" />
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel
                         HorizontalAlignment="Center"
-                        Text="{Binding AlbumPerformer}"
-                        TextWrapping="Wrap" />
-                    <TextBlock
-                        Margin="1"
-                        HorizontalAlignment="Center"
-                        Text="{Binding AlbumTitle}"
-                        TextWrapping="Wrap" />
-                    <TextBlock
-                        Margin="1"
-                        HorizontalAlignment="Center"
-                        Text="{Binding CurrentTrackTitle}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding !IsAlbumArtVisible}">
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding AlbumPerformer}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding AlbumTitle}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding CurrentTrackTitle}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <Grid IsVisible="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.Playlist}}">
