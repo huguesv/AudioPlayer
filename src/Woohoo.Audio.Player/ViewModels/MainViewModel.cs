@@ -219,6 +219,14 @@ public partial class MainViewModel : ViewModelBase
     {
         this.ShowAlbumArt = !this.ShowAlbumArt;
         this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        if (this.IsAlbumArtVisible)
+        {
+            this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+        }
+        else
+        {
+            this.CurrentArt = null;
+        }
     }
 
     [RelayCommand]
@@ -525,7 +533,14 @@ public partial class MainViewModel : ViewModelBase
         }
 
         this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
-        this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+        if (this.IsAlbumArtVisible)
+        {
+            this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+        }
+        else
+        {
+            this.CurrentArt = null;
+        }
 
         this.AlbumTitle = BestString(metadata.Album, this.AlbumTitle);
         this.AlbumPerformer = BestString(metadata.Artist, this.AlbumPerformer);

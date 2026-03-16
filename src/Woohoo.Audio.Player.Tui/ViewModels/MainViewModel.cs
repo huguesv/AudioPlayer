@@ -272,6 +272,14 @@ public partial class MainViewModel : ObservableObject
     {
         this.ShowAlbumArt = !this.ShowAlbumArt;
         this.IsAlbumArtVisible = this.Art.Count > 0 && this.ShowAlbumArt;
+        if (this.IsAlbumArtVisible)
+        {
+            this.CurrentArt = this.Art.FirstOrDefault(a => a.IsPrimary) ?? this.Art.FirstOrDefault();
+        }
+        else
+        {
+            this.CurrentArt = null;
+        }
     }
 
     [RelayCommand]
