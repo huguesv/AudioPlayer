@@ -122,6 +122,11 @@
                     HotKey="F6"
                     InputGesture="F6"
                     IsChecked="{Binding SelectedView, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownViews.FrequencyGraph}}" />
+                <Separator />
+                <MenuItem Header="Album Art">
+                    <MenuItem Command="{Binding PreviousArtCommand}" Header="Previous Album Art" />
+                    <MenuItem Command="{Binding NextArtCommand}" Header="Next Album Art" />
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Playback" IsTabStop="False">
                 <MenuItem
