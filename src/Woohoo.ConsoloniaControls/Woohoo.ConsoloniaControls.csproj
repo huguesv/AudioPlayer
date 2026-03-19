@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" VersionOverride="8.4.1" />
     <PackageReference Include="Consolonia" />
   </ItemGroup>
 
