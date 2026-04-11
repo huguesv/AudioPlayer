@@ -9,6 +9,20 @@
     <AssemblyTitle>Audio Player Tui</AssemblyTitle>
   </PropertyGroup>
 
+  <PropertyGroup Label="NuGet Package">
+    <Authors>Hugues Valois</Authors>
+    <Description>Audio Player for CD images in bin/cue or chd format.</Description>
+    <Copyright>Copyright (c) Hugues Valois 2025-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <PackageProjectUrl>https://github.com/huguesv/AudioPlayer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/huguesv/AudioPlayer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>audio;music;zip;cuesheet;cue;chd</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>audioplayer.tui</ToolCommandName>
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />
@@ -29,6 +43,7 @@
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
     <PackageReference Include="Consolonia" />
     <PackageReference Include="Consolonia.Fonts" />
+    <PackageReference Include="Consolonia.ManagedWindows" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 

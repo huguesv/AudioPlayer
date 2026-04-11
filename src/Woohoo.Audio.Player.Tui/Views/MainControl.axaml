@@ -53,6 +53,8 @@
                     CommandParameter="{x:Static services:KnownThemes.ModernLight}"
                     Header="Modern _Light"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernLight}}" />
+<!--
+                These don't work right after upgrading Consolonia
                 <MenuItem
                     Command="{Binding SelectThemeCommand, Mode=OneWay}"
                     CommandParameter="{x:Static services:KnownThemes.ModernContrast}"
@@ -78,7 +80,7 @@
                     CommandParameter="{x:Static services:KnownThemes.TurboVisionElegant}"
                     Header="TurboVision _Elegant"
                     IsChecked="{Binding SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.TurboVisionElegant}}" />
-            </MenuItem>
+-->            </MenuItem>
             <MenuItem Header="_View" IsTabStop="False">
                 <MenuItem
                     Command="{Binding SelectViewCommand, Mode=OneWay}"

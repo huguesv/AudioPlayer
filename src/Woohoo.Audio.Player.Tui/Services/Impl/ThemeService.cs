@@ -22,6 +22,15 @@ internal class ThemeService : IThemeService
 
     private void ApplyTheme()
     {
+        var mainWindow = (App.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        if (mainWindow is null)
+        {
+            return;
+        }
+
+        // Otherwise Avalonia sets some trash template to WindowsPanel
+        mainWindow.Content = null;
+
         App.Current!.Styles[0] = this.SelectedTheme switch
         {
             KnownThemes.ModernContrast => new ModernContrastTheme(),
@@ -32,17 +41,17 @@ internal class ThemeService : IThemeService
             _ => new ModernTheme(),
         };
 
-        App.Current!.RequestedThemeVariant = this.SelectedTheme switch
+        if (App.Current!.Styles[0] is ModernTheme)
         {
-            KnownThemes.ModernDark => ThemeVariant.Dark,
-            KnownThemes.ModernLight => ThemeVariant.Light,
-            _ => ThemeVariant.Default,
-        };
+            App.Current!.RequestedThemeVariant = this.SelectedTheme switch
+            {
+                KnownThemes.ModernDark => ThemeVariant.Dark,
+                KnownThemes.ModernLight => ThemeVariant.Light,
+                _ => ThemeVariant.Default,
+            };
 
-        if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-        {
-            var oldContext = desktopLifetime.MainWindow!.DataContext;
-            desktopLifetime.MainWindow.Content = new MainControl() { DataContext = oldContext };
         }
+
+        mainWindow.Content = new MainControl() { DataContext = mainWindow.DataContext };
     }
 }

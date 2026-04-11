@@ -5,9 +5,14 @@
     xmlns:console="https://github.com/jinek/consolonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
+    xmlns:managedWindows="clr-namespace:Consolonia.ManagedWindows;assembly=Consolonia.ManagedWindows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
     Title="Audio Player">
+
+    <Window.Styles>
+        <managedWindows:AutoManagedWindowStyles />
+    </Window.Styles>
 
     <Window.KeyBindings>
         <KeyBinding Command="{Binding BrowseCommand}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
