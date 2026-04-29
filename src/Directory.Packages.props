@@ -31,7 +31,7 @@
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.58" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.2" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.5" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.7" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.5.0" />
