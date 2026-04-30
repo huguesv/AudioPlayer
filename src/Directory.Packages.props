@@ -5,40 +5,40 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AsyncImageLoader.Avalonia" Version="3.7.0" />
-    <PackageVersion Include="Avalonia" Version="11.3.12" />
+    <PackageVersion Include="Avalonia" Version="11.3.14" />
     <PackageVersion Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Skia" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.14" />
+    <PackageVersion Include="Avalonia.Skia" Version="11.3.14" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.14" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.14" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.14" />
     <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
     <PackageVersion Include="AwesomeAssertions.Analyzers" Version="9.0.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageVersion Include="Consolonia" Version="11.3.12.3" />
-    <PackageVersion Include="Consolonia.Fonts" Version="11.3.12.3" />
-    <PackageVersion Include="Consolonia.ManagedWindows" Version="11.3.12.3" />
-    <PackageVersion Include="coverlet.collector" Version="8.0.1" />
+    <PackageVersion Include="Consolonia" Version="11.3.12.4" />
+    <PackageVersion Include="Consolonia.Fonts" Version="11.3.12.4" />
+    <PackageVersion Include="Consolonia.ManagedWindows" Version="11.3.12.4" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.0" />
     <PackageVersion Include="FftSharp" Version="2.2.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
     <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
-    <PackageVersion Include="ppy.SDL3-CS" Version="2026.320.0" />
+    <PackageVersion Include="ppy.SDL3-CS" Version="2026.429.0" />
     <PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.58" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.2" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.5" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.7" />
     <PackageVersion Include="Woohoo.Platform.MacOS" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.5.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
-    <PackageVersion Include="ZstdSharp.Port" Version="0.8.7" />
+    <PackageVersion Include="ZstdSharp.Port" Version="0.8.8" />
     <!-- Pin transitive package to address vulnerabilities -->
     <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
   </ItemGroup>
