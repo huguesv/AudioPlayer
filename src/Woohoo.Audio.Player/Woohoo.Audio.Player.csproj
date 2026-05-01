@@ -43,8 +43,6 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'" />
     <PackageReference Include="Woohoo.Platform.MacOS" />
     <PackageReference Include="Woohoo.Platform.Windows" />
-    <!-- Explicit reference to override vulnerable transitive dependency -->
-    <PackageReference Include="Tmds.DBus.Protocol" />
   </ItemGroup>
 
   <ItemGroup>

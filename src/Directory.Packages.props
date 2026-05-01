@@ -15,9 +15,9 @@
     <PackageVersion Include="AwesomeAssertions" Version="9.4.0" />
     <PackageVersion Include="AwesomeAssertions.Analyzers" Version="9.0.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageVersion Include="Consolonia" Version="11.3.12.4" />
-    <PackageVersion Include="Consolonia.Fonts" Version="11.3.12.4" />
-    <PackageVersion Include="Consolonia.ManagedWindows" Version="11.3.12.4" />
+    <PackageVersion Include="Consolonia" Version="11.3.12.5" />
+    <PackageVersion Include="Consolonia.Fonts" Version="11.3.12.5" />
+    <PackageVersion Include="Consolonia.ManagedWindows" Version="11.3.12.5" />
     <PackageVersion Include="coverlet.collector" Version="10.0.0" />
     <PackageVersion Include="FftSharp" Version="2.2.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
@@ -39,7 +39,5 @@
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
     <PackageVersion Include="ZstdSharp.Port" Version="0.8.8" />
-    <!-- Pin transitive package to address vulnerabilities -->
-    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
   </ItemGroup>
 </Project>

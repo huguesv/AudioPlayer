@@ -9,6 +9,9 @@ updates:
     avalonia:
       patterns:
         - "Avalonia*"
+    consolonia:
+      patterns:
+        - "Consolonia*"
     test:
       patterns:
         - "xunit*"
