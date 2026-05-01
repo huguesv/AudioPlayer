@@ -6,68 +6,8 @@ on:
 
 jobs:
   build:
-    name: Build
-    strategy:
-      matrix:
-        dotnet-runtime: [win-x64, win-arm64, win-x86, linux-x64, linux-arm64, osx-x64, osx-arm64]
-    runs-on: ubuntu-latest
-    env:
-      dotnetActionVersion: '10.0.x'
-      dotnetBuildVersion: 'net10.0'
-      desktopBinariesName: Woohoo.Audio.Player-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
-      consoleBinariesName: Woohoo.Audio.Player.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
-      terminalBinariesName: Woohoo.Audio.Player.Tui-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
-      terminalPublishSingleFile: ${{ (matrix.dotnet-runtime == 'win-x64' || matrix.dotnet-runtime == 'win-arm64' || matrix.dotnet-runtime == 'win-x86') && 'true' || 'false' }}
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.dotnetActionVersion }}
-
-    - name: Desktop App - Build / Publish
-      working-directory: src
-      run: dotnet publish Woohoo.Audio.Player/Woohoo.Audio.Player.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
-
-    - name: Console App - Build / Publish
-      working-directory: src
-      run: dotnet publish Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
-
-    - name: Terminal App - Build / Publish
-      working-directory: src
-      run: dotnet publish Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False -p:PublishSingleFile=${{ env.terminalPublishSingleFile }}
-
-    - name: Desktop App - Zip binaries
-      working-directory: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip *
-
-    - name: Console App - Zip binaries
-      working-directory: src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip *
-
-    - name: Terminal App - Zip binaries
-      working-directory: src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.terminalBinariesName }}.zip *
-
-    - name: Desktop App - Upload binaries artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: desktop-${{ matrix.dotnet-runtime }}
-        path: src/Woohoo.Audio.Player/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip
-
-    - name: Console App - Upload binaries artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: console-${{ matrix.dotnet-runtime }}
-        path: src/Woohoo.Audio.Player.Cli/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip
-
-    - name: Terminal App - Upload binaries artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: terminal-${{ matrix.dotnet-runtime }}
-        path: src/Woohoo.Audio.Player.Tui/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.terminalBinariesName }}.zip
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
 
   release:
     name: Upload Release Assets
@@ -77,7 +17,7 @@ jobs:
       contents: write
     steps:
     - name: Download binaries artifacts for all runtimes
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         path: release-artifacts
         merge-multiple: true
@@ -86,7 +26,7 @@ jobs:
       run: ls -R release-artifacts
 
     - name: Upload to release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |

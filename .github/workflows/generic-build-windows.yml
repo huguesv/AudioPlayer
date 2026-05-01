@@ -1,0 +1,64 @@
+name: Windows Build
+
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        required: true
+        type: string
+      project-file-path:
+        required: true
+        type: string
+      build-root-path:
+        required: false
+        type: string
+        default: src
+      app-executable-name:
+        required: true
+        type: string
+      self-contained:
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build for Windows
+    strategy:
+      matrix:
+        dotnet-runtime: [win-x64, win-arm64, win-x86]
+    runs-on: ubuntu-latest
+    env:
+      dotnet-action-version: '10.0.x'
+      dotnet-build-version: 'net10.0'
+      publish-folder: '${{ github.workspace }}/out/publish/${{ matrix.dotnet-runtime }}'
+      artifact-name: ${{ inputs.app-executable-name }}-${{ matrix.dotnet-runtime }}
+      release-name: ${{ inputs.app-executable-name }}-${{ inputs.tag-name }}-${{ matrix.dotnet-runtime }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ env.dotnet-action-version }}
+
+    - name: Build / Publish (self-contained)
+      if: ${{ inputs.self-contained }}
+      working-directory: ${{ inputs.build-root-path }}
+      run: dotnet publish ${{ inputs.project-file-path }} -o ${{ env.publish-folder }} -f ${{ env.dotnet-build-version }} -r ${{ matrix.dotnet-runtime }} -c Release -p:DebugType=None -p:DebugSymbols=False --self-contained
+
+    - name: Build / Publish
+      if: ${{ !inputs.self-contained }}
+      working-directory: ${{ inputs.build-root-path }}
+      run: dotnet publish ${{ inputs.project-file-path }} -o ${{ env.publish-folder }} -f ${{ env.dotnet-build-version }} -r ${{ matrix.dotnet-runtime }} -c Release -p:DebugType=None -p:DebugSymbols=False
+
+    - name: Zip binaries
+      working-directory: ${{ env.publish-folder }}
+      run: zip -r '${{ env.publish-folder }}/${{ env.release-name }}.zip' *
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ env.artifact-name }}
+        path: ${{ env.publish-folder }}/${{ env.release-name }}.zip

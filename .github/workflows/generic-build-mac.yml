@@ -1,0 +1,191 @@
+name: Mac Build
+
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        required: true
+        type: string
+      icon-path:
+        required: true
+        type: string
+      project-file-path:
+        required: true
+        type: string
+      app-short-name:
+        required: true
+        type: string
+      app-display-name:
+        required: true
+        type: string
+      app-executable-name:
+        required: true
+        type: string
+      bundle-identifier:
+        required: true
+        type: string
+      build-root-path:
+        required: false
+        type: string
+        default: src
+      app-version-prop-file-path:
+        required: false
+        type: string
+        default: src/Directory.Build.props
+      self-contained:
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build for macOS
+    strategy:
+      matrix:
+        dotnet-runtime: [osx-arm64]
+    runs-on: macos-latest
+    env:
+      dotnet-action-version: '10.0.x'
+      dotnet-build-version: 'net10.0'
+      publish-folder: '${{ github.workspace }}/out/publish'
+      bundle-artifact-name: ${{ inputs.app-executable-name }}-${{ matrix.dotnet-runtime }}-app
+      pkg-artifact-name: ${{ inputs.app-executable-name }}-${{ matrix.dotnet-runtime }}-pkg
+      dmg-artifact-name: ${{ inputs.app-executable-name }}-${{ matrix.dotnet-runtime }}-dmg
+      release-name: ${{ inputs.app-executable-name }}-${{ inputs.tag-name }}-${{ matrix.dotnet-runtime }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ env.dotnet-action-version }}
+
+    - name: Get App Version
+      id: app_version
+      uses: mavrosxristoforos/get-xml-info@2.1.0
+      with:
+        xml-file: ${{ inputs.app-version-prop-file-path }}
+        xpath: '//ApplicationVersion'
+
+    - name: Print App Version
+      run: echo "App Version is ${{ steps.app_version.outputs.info }}"
+
+    - name: Build / Publish (self-contained)
+      if: ${{ inputs.self-contained }}
+      working-directory: ${{ inputs.build-root-path }}
+      run: dotnet publish ${{ inputs.project-file-path }} -o ${{ env.publish-folder }} -f ${{ env.dotnet-build-version }} -r ${{ matrix.dotnet-runtime }} -c Release -p:DebugType=None -p:DebugSymbols=False --self-contained
+
+    - name: Build / Publish
+      if: ${{ !inputs.self-contained }}
+      working-directory: ${{ inputs.build-root-path }}
+      run: dotnet publish ${{ inputs.project-file-path }} -o ${{ env.publish-folder }} -f ${{ env.dotnet-build-version }} -r ${{ matrix.dotnet-runtime }} -c Release -p:DebugType=None -p:DebugSymbols=False
+
+    - name: Generate macOS icon
+      run: |
+        ICONSET="AppIcon.iconset"
+        mkdir -p "$ICONSET"
+        sips -z 16 16     ${{ inputs.icon-path }} --out "$ICONSET/icon_16x16.png"      > /dev/null
+        sips -z 32 32     ${{ inputs.icon-path }} --out "$ICONSET/icon_16x16@2x.png"   > /dev/null
+        sips -z 32 32     ${{ inputs.icon-path }} --out "$ICONSET/icon_32x32.png"      > /dev/null
+        sips -z 64 64     ${{ inputs.icon-path }} --out "$ICONSET/icon_32x32@2x.png"   > /dev/null
+        sips -z 128 128   ${{ inputs.icon-path }} --out "$ICONSET/icon_128x128.png"    > /dev/null
+        sips -z 256 256   ${{ inputs.icon-path }} --out "$ICONSET/icon_128x128@2x.png" > /dev/null
+        sips -z 256 256   ${{ inputs.icon-path }} --out "$ICONSET/icon_256x256.png"    > /dev/null
+        sips -z 512 512   ${{ inputs.icon-path }} --out "$ICONSET/icon_256x256@2x.png" > /dev/null
+        sips -z 512 512   ${{ inputs.icon-path }} --out "$ICONSET/icon_512x512.png"    > /dev/null
+        sips -z 1024 1024 ${{ inputs.icon-path }} --out "$ICONSET/icon_512x512@2x.png" > /dev/null
+        iconutil -c icns "$ICONSET" -o AppIcon.icns
+        rm -rf "$ICONSET"
+
+    - name: Build MacOS bundle
+      run: |
+        APP="out/bundle/${{ inputs.app-short-name }}.app"
+        mkdir -p "$APP/Contents/MacOS"
+        mkdir -p "$APP/Contents/Resources"
+
+        cp ${{ env.publish-folder }}/* "$APP/Contents/MacOS/"
+        chmod +x "$APP/Contents/MacOS/${{ inputs.app-executable-name }}"
+        cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+
+        cat > "$APP/Contents/Info.plist" << 'PLIST'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>CFBundleName</key>
+          <string>${{ inputs.app-display-name }}</string>
+          <key>CFBundleDisplayName</key>
+          <string>${{ inputs.app-display-name }}</string>
+          <key>CFBundleIdentifier</key>
+          <string>${{ inputs.bundle-identifier }}</string>
+          <key>CFBundleVersion</key>
+          <string>${{ steps.app_version.outputs.info }}</string>
+          <key>CFBundleShortVersionString</key>
+          <string>${{ steps.app_version.outputs.info }}</string>
+          <key>CFBundleExecutable</key>
+          <string>${{ inputs.app-executable-name }}</string>
+          <key>CFBundleIconFile</key>
+          <string>AppIcon</string>
+          <key>CFBundlePackageType</key>
+          <string>APPL</string>
+          <key>LSMinimumSystemVersion</key>
+          <string>10.15</string>
+          <key>NSHighResolutionCapable</key>
+          <true/>
+        </dict>
+        </plist>
+        PLIST
+        
+    - name: Display MacOS bundle folder contents
+      run: ls -R out/bundle/${{ inputs.app-short-name }}.app
+
+    - name: Upload MacOS bundle
+      uses: actions/upload-artifact@v7
+      if: false # Not currently released, but can be useful for testing
+      with:
+        name: ${{ env.bundle-artifact-name }}
+        path: out/bundle/
+
+    - name: Create PKG
+      run: |
+        APP="out/bundle/${{ inputs.app-short-name }}.app"
+        mkdir -p out/pkg-root/Applications
+        cp -r "$APP" out/pkg-root/Applications/
+        
+        pkgbuild \
+          --root out/pkg-root \
+          --identifier ${{ inputs.bundle-identifier }} \
+          --version ${{ steps.app_version.outputs.info }} \
+          --install-location / \
+          ${{ inputs.app-short-name }}.pkg
+
+    - name: Zip PKG
+      run: zip out/${{ env.release-name }}-pkg.zip ${{ inputs.app-short-name }}.pkg
+
+    - name: Upload PKG
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ env.pkg-artifact-name }}
+        path: out/${{ env.release-name }}-pkg.zip
+
+    - name: Create DMG
+      run: |
+        APP="out/bundle/${{ inputs.app-short-name }}.app"
+        mkdir -p out/dmg-stage
+        cp -r "$APP" out/dmg-stage/
+        ln -s /Applications out/dmg-stage/Applications
+        
+        hdiutil create -volname "${{ inputs.app-display-name }}" \
+          -srcfolder out/dmg-stage \
+          -ov -format UDBZ \
+          ${{ inputs.app-short-name }}.dmg
+
+    - name: Zip DMG
+      run: zip out/${{ env.release-name }}-dmg.zip ${{ inputs.app-short-name }}.dmg
+
+    - name: Upload DMG
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ env.dmg-artifact-name }}
+        path: out/${{ env.release-name }}-dmg.zip

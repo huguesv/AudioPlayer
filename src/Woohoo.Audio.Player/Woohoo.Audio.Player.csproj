@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaResource Include="MacOS\Woohoo.Audio.Player.icns" />
   </ItemGroup>
 
   <ItemGroup>
