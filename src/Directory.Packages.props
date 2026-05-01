@@ -40,6 +40,6 @@
     <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
     <PackageVersion Include="ZstdSharp.Port" Version="0.8.8" />
     <!-- Pin transitive package to address vulnerabilities -->
-    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.93.0" />
   </ItemGroup>
 </Project>
