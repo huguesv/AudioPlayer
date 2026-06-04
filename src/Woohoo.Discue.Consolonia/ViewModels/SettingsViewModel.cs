@@ -167,6 +167,16 @@ public sealed partial class SettingsViewModel : ObservableObject
         this.localSettingsService.SaveSetting(KnownSettingKeys.LyricsAutoScroll, value);
     }
 
+    partial void OnSelectedThemeChanged(string value)
+    {
+        if (this.isLoading)
+        {
+            return;
+        }
+
+        this.localSettingsService.SaveSetting(KnownSettingKeys.Theme, value);
+    }
+
     [RelayCommand]
     private void SwitchAudioEngine(int engineType)
     {
