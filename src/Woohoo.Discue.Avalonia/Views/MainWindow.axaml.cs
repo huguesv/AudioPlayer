@@ -6,8 +6,6 @@ namespace Woohoo.Audio.Player.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using AsyncImageLoader;
-using AsyncImageLoader.Loaders;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -39,10 +37,6 @@ public partial class MainWindow : Window
 
         this.visualizationProviderService = (App.Current as App)!.Host.Services.GetRequiredService<IVisualizationProviderService>();
         this.visualizationProviderService.DataAvailable += this.VisualizationProviderService_DataAvailable;
-
-        var oldLoader = ImageLoader.AsyncImageLoader;
-        ImageLoader.AsyncImageLoader = new DiskCachedWebImageLoader(Path.Combine(this.localApplicationData, "Woohoo.Audio.Player", "AlbumArtCache"));
-        oldLoader?.Dispose();
 
         this.StylePlots();
 

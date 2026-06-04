@@ -45,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncImageLoader.Avalonia" />
     <PackageReference Include="Avalonia.Skia" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
