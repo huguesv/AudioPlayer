@@ -24,14 +24,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModels\_OldMainViewModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ViewModels\_OldMainViewModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />
     <Using Include="System.Globalization" />
