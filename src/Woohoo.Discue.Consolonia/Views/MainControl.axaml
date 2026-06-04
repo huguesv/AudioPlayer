@@ -70,8 +70,8 @@
                     Header="_Now Playing"
                     HotKey="F2"
                     InputGesture="F2"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
@@ -79,8 +79,8 @@
                     Header="_Playlist"
                     HotKey="F3"
                     InputGesture="F3"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
@@ -88,8 +88,8 @@
                     Header="_Lyrics"
                     HotKey="F4"
                     InputGesture="F4"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
@@ -97,8 +97,8 @@
                     Header="_Amplitude Graph"
                     HotKey="F5"
                     InputGesture="F5"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
@@ -106,8 +106,8 @@
                     Header="_Frequencies Graph"
                     HotKey="F6"
                     InputGesture="F6"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
@@ -181,7 +181,10 @@
                     IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
                     ToggleType="CheckBox" />
             </MenuItem>
-            <MenuItem Header="Recent" IsTabStop="False" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
+            <MenuItem
+                Header="Recent"
+                IsTabStop="False"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
                 <MenuItem Command="{Binding Home.RemoveSelectedFromRecentCommand, Mode=OneWay}" Header="Remove" />
                 <Separator />
                 <MenuItem Command="{Binding Home.ClearAllFromRecentCommand, Mode=OneWay}" Header="Clear All" />
@@ -200,8 +203,8 @@
                 Grid.Column="1"
                 Height="1"
                 Margin="2,0"
-                Minimum="0"
                 Maximum="1"
+                Minimum="0"
                 ShowProgressText="False"
                 Value="{Binding Playback.CurrentTrackPositionAsDouble, Mode=OneWay}" />
             <TextBlock
@@ -229,33 +232,33 @@
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                IsEnabled="{Binding Playback.IsPreviousEnabled, Mode=OneWay}"
                 Command="{Binding Playback.PreviousTrackCommand, Mode=OneWay}"
-                Content=" &lt; " />
+                Content=" &lt; "
+                IsEnabled="{Binding Playback.IsPreviousEnabled, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                IsEnabled="{Binding Playback.IsSeekBackwardEnabled, Mode=OneWay}"
                 Command="{Binding Playback.SeekBackwardCommand, Mode=OneWay}"
-                Content=" &lt;&lt; " />
+                Content=" &lt;&lt; "
+                IsEnabled="{Binding Playback.IsSeekBackwardEnabled, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                IsEnabled="{Binding Playback.IsPlayPauseEnabled, Mode=OneWay}"
                 Command="{Binding Playback.PlayPauseCommand, Mode=OneWay}"
-                Content="{Binding Playback.PlayPauseCaption, Mode=OneWay}" />
+                Content="{Binding Playback.PlayPauseCaption, Mode=OneWay}"
+                IsEnabled="{Binding Playback.IsPlayPauseEnabled, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                IsEnabled="{Binding Playback.IsSeekForwardEnabled, Mode=OneWay}"
                 Command="{Binding Playback.SeekForwardCommand, Mode=OneWay}"
-                Content=" &gt;&gt; " />
+                Content=" &gt;&gt; "
+                IsEnabled="{Binding Playback.IsSeekForwardEnabled, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
-                IsEnabled="{Binding Playback.IsNextEnabled, Mode=OneWay}"
                 Command="{Binding Playback.NextTrackCommand, Mode=OneWay}"
-                Content=" &gt; " />
+                Content=" &gt; "
+                IsEnabled="{Binding Playback.IsNextEnabled, Mode=OneWay}" />
             <Button
                 Margin="1"
                 VerticalContentAlignment="Center"
@@ -323,15 +326,18 @@
 
             <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" IsVisible="{Binding !Home.HasRecentDiscs, Mode=OneWay}">
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    IsVisible="{Binding !Home.HasRecentDiscs, Mode=OneWay}"
+                    Orientation="Horizontal">
+                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock
                             Margin="0,0,0,1"
                             HorizontalAlignment="Left"
                             Text="Meet Discue" />
                         <TextBlock
-                            Margin="0,0,0,1"
                             MaxWidth="40"
+                            Margin="0,0,0,1"
                             HorizontalAlignment="Left"
                             Text="Discue plays music from CDs in bin/cue, zipped bin/cue and chd format."
                             TextWrapping="Wrap" />
@@ -339,11 +345,11 @@
                             Margin="0,0,0,1"
                             HorizontalAlignment="Left"
                             Command="{Binding BrowseCommand, Mode=OneWay}"
-                            Content="Open"/>
+                            Content="Open" />
                     </StackPanel>
                 </StackPanel>
 
-                <Grid RowDefinitions="Auto,*" IsVisible="{Binding Home.HasRecentDiscs, Mode=OneWay}">
+                <Grid IsVisible="{Binding Home.HasRecentDiscs, Mode=OneWay}" RowDefinitions="Auto,*">
                     <TextBlock
                         Grid.Row="0"
                         Margin="0,1"
@@ -355,8 +361,8 @@
                         Grid.Row="1"
                         DoubleTapped="RecentDiscsListBox_DoubleTapped"
                         ItemsSource="{Binding Home.RecentDiscs, Mode=OneWay}"
-                        SelectedItem="{Binding Home.SelectedRecentDisc, Mode=TwoWay}"
-                        KeyUp="RecentDiscsListBox_KeyUp">
+                        KeyUp="RecentDiscsListBox_KeyUp"
+                        SelectedItem="{Binding Home.SelectedRecentDisc, Mode=TwoWay}">
                         <ListBox.Styles>
                             <Style Selector="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -382,7 +388,7 @@
 
             <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}">
                 <Grid RowDefinitions="*,Auto">
-                    <Grid IsVisible="{Binding NowPlaying.HasAlbumArt, Mode=OneWay}" ColumnDefinitions="1*,1*">
+                    <Grid ColumnDefinitions="1*,1*" IsVisible="{Binding NowPlaying.HasAlbumArt, Mode=OneWay}">
                         <Image
                             Grid.Column="0"
                             Margin="1"
@@ -392,8 +398,8 @@
                             Grid.Column="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Spacing="1"
-                            Orientation="Vertical">
+                            Orientation="Vertical"
+                            Spacing="1">
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontWeight="SemiBold"
@@ -408,8 +414,8 @@
                     <StackPanel
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Spacing="1"
-                        IsVisible="{Binding !NowPlaying.HasAlbumArt, Mode=OneWay}">
+                        IsVisible="{Binding !NowPlaying.HasAlbumArt, Mode=OneWay}"
+                        Spacing="1">
                         <TextBlock
                             HorizontalAlignment="Left"
                             FontWeight="SemiBold"
