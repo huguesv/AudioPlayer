@@ -11,22 +11,18 @@ using Woohoo.Audio.Services;
 public sealed partial class ShellViewModel : ObservableObject
 {
     private readonly IMediaPlayerService mediaPlayerService;
-    private readonly ILocalSettingsService localSettingsService;
     private readonly ILogger logger;
     private readonly IDispatcherQueue dispatcherQueue;
 
     public ShellViewModel(IDispatcherQueueService dispatcherQueueService,
         IMediaPlayerService mediaPlayerService,
-        ILocalSettingsService localSettingsService,
         ILogger<ShellViewModel> logger)
     {
         ArgumentNullException.ThrowIfNull(dispatcherQueueService);
         ArgumentNullException.ThrowIfNull(mediaPlayerService);
-        ArgumentNullException.ThrowIfNull(localSettingsService);
         ArgumentNullException.ThrowIfNull(logger);
 
         this.mediaPlayerService = mediaPlayerService;
-        this.localSettingsService = localSettingsService;
         this.logger = logger;
         this.dispatcherQueue = dispatcherQueueService.GetDispatcherQueue();
 
