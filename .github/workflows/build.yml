@@ -16,58 +16,58 @@ jobs:
     uses: ./.github/workflows/generic-build-mac.yml
     with:
       tag-name: ${{ github.ref_name }}
-      icon-path: src/Woohoo.Audio.Player/Assets/app-logo.png
-      project-file-path: Woohoo.Audio.Player/Woohoo.Audio.Player.csproj
-      app-short-name: AudioPlayer
-      app-display-name: 'Audio Player'
-      app-executable-name: Woohoo.Audio.Player
-      bundle-identifier: com.huguesvalois.Audioplayer
+      icon-path: src/Woohoo.Discue.Avalonia/Assets/app-logo.png
+      project-file-path: Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj
+      app-short-name: Discue
+      app-display-name: 'Discue'
+      app-executable-name: Woohoo.Discue.Avalonia
+      bundle-identifier: com.huguesvalois.discue
     secrets: inherit
 
   build-windows-avalonia:
     uses: ./.github/workflows/generic-build-windows.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player/Woohoo.Audio.Player.csproj
-      app-executable-name: Woohoo.Audio.Player
+      project-file-path: Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj
+      app-executable-name: Woohoo.Discue.Avalonia
     secrets: inherit
 
   build-windows-cli:
     uses: ./.github/workflows/generic-build-windows.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj
-      app-executable-name: Woohoo.Audio.Player.Cli
+      project-file-path: Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj
+      app-executable-name: Woohoo.Discue.Cli
     secrets: inherit
 
   build-windows-tui:
     uses: ./.github/workflows/generic-build-windows.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj
-      app-executable-name: Woohoo.Audio.Player.Tui
+      project-file-path: Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj
+      app-executable-name: Woohoo.Discue.Consolonia
     secrets: inherit
 
   build-linux-avalonia:
     uses: ./.github/workflows/generic-build-linux.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player/Woohoo.Audio.Player.csproj
-      app-executable-name: Woohoo.Audio.Player
+      project-file-path: Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj
+      app-executable-name: Woohoo.Discue.Avalonia
     secrets: inherit
 
   build-linux-cli:
     uses: ./.github/workflows/generic-build-linux.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player.Cli/Woohoo.Audio.Player.Cli.csproj
-      app-executable-name: Woohoo.Audio.Player.Cli
+      project-file-path: Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj
+      app-executable-name: Woohoo.Discue.Cli
     secrets: inherit
 
   build-linux-tui:
     uses: ./.github/workflows/generic-build-linux.yml
     with:
       tag-name: ${{ github.ref_name }}
-      project-file-path: Woohoo.Audio.Player.Tui/Woohoo.Audio.Player.Tui.csproj
-      app-executable-name: Woohoo.Audio.Player.Tui
+      project-file-path: Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj
+      app-executable-name: Woohoo.Discue.Consolonia
     secrets: inherit

@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../LICENSE" />
+    <File Path="../README.md" />
+    <File Path="../SCREENSHOTS.md" />
+    <File Path="../ThirdPartyNotices.txt" />
+    <File Path="Common/stylecop.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="Woohoo.Audio.Core.UnitTest/Woohoo.Audio.Core.UnitTest.csproj" />
+  <Project Path="Woohoo.Audio.Core/Woohoo.Audio.Core.csproj" />
+  <Project Path="Woohoo.Audio.Playback.Sdl3/Woohoo.Audio.Playback.Sdl3.csproj" />
+  <Project Path="Woohoo.Audio.Services.Impl/Woohoo.Audio.Services.Impl.csproj" />
+  <Project Path="Woohoo.Audio.Services/Woohoo.Audio.Services.csproj" />
+  <Project Path="Woohoo.Codecs.Flake/Woohoo.Codecs.Flake.csproj" />
+  <Project Path="Woohoo.Codecs/Woohoo.Codecs.csproj" />
+  <Project Path="Woohoo.ConsoloniaControls.Gallery/Woohoo.ConsoloniaControls.Gallery.csproj" />
+  <Project Path="Woohoo.ConsoloniaControls/Woohoo.ConsoloniaControls.csproj" />
+  <Project Path="Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj" />
+  <Project Path="Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj" />
+  <Project Path="Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj" />
+  <Project Path="Woohoo.IO.Compression.Chd.UnitTest/Woohoo.IO.Compression.Chd.UnitTest.csproj" />
+  <Project Path="Woohoo.IO.Compression.Chd/Woohoo.IO.Compression.Chd.csproj" />
+  <Project Path="Woohoo.IO.Compression/Woohoo.IO.Compression.csproj" />
+  <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
+</Solution>

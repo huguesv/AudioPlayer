@@ -40,8 +40,6 @@ internal class ChdAlbumTrack : IAlbumTrack
 
     public string TrackPerformer { get; set; } = string.Empty;
 
-    public string TrackSongwriter { get; set; } = string.Empty;
-
     public LyricsTrack? Lyrics { get; set; }
 
     public Stream OpenStream()

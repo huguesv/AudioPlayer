@@ -1,0 +1,567 @@
+<UserControl
+    x:Class="Woohoo.Audio.Player.Tui.Views.MainControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
+    xmlns:converters="using:Woohoo.Audio.Player.Tui.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
+    xmlns:vm="clr-namespace:Woohoo.Audio.Player.Tui.ViewModels"
+    xmlns:wc="clr-namespace:Woohoo.ConsoloniaControls;assembly=Woohoo.ConsoloniaControls"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:CompileBindings="True"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:IsEqualConverter x:Key="IsEqualConverter" />
+            <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
+            <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding Path=BrowseCommand, Mode=OneWay}"
+                    Header="_Open..."
+                    HotKey="{OnPlatform Ctrl+O,
+                                        macOS=⌘+O}"
+                    InputGesture="{OnPlatform Ctrl+O,
+                                              macOS=⌘+O}" />
+                <Separator />
+                <MenuItem
+                    Click="OnExit"
+                    Header="E_xit"
+                    HotKey="{OnPlatform Ctrl+Q,
+                                        macOS=⌘+Q}"
+                    InputGesture="{OnPlatform Ctrl+Q,
+                                              macOS=⌘+Q}" />
+            </MenuItem>
+            <MenuItem Header="_Theme" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding Settings.SelectThemeCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownThemes.ModernDark}"
+                    Header="Modern _Dark"
+                    IsChecked="{Binding Settings.SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernDark}}" />
+                <MenuItem
+                    Command="{Binding Settings.SelectThemeCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static services:KnownThemes.ModernLight}"
+                    Header="Modern _Light"
+                    IsChecked="{Binding Settings.SelectedTheme, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static services:KnownThemes.ModernLight}}" />
+            </MenuItem>
+            <MenuItem Header="_View" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.Home}"
+                    Header="_Home"
+                    HotKey="F1"
+                    InputGesture="F1"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Home}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.NowPlaying}"
+                    Header="_Now Playing"
+                    HotKey="F2"
+                    InputGesture="F2"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.Playlist}"
+                    Header="_Playlist"
+                    HotKey="F3"
+                    InputGesture="F3"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.Lyrics}"
+                    Header="_Lyrics"
+                    HotKey="F4"
+                    InputGesture="F4"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerAmplitude}"
+                    Header="_Amplitude Graph"
+                    HotKey="F5"
+                    InputGesture="F5"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequency}"
+                    Header="_Frequencies Graph"
+                    HotKey="F6"
+                    InputGesture="F6"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.About}"
+                    Header="A_bout"
+                    HotKey="F12"
+                    InputGesture="F12"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
+                    ToggleType="Radio" />
+            </MenuItem>
+            <MenuItem Header="_Playback" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding Playback.PlayPauseCommand, Mode=OneWay}"
+                    Header="Play / Pause"
+                    HotKey="{OnPlatform Ctrl+Space,
+                                        macOS=⌘+Space}"
+                    InputGesture="{OnPlatform Ctrl+Space,
+                                              macOS=⌘+Space}" />
+                <Separator />
+                <MenuItem
+                    Command="{Binding Playback.PreviousTrackCommand, Mode=OneWay}"
+                    Header="Previous Track"
+                    HotKey="{OnPlatform Ctrl+P,
+                                        macOS=⌘+P}"
+                    InputGesture="{OnPlatform Ctrl+P,
+                                              macOS=⌘+P}" />
+                <MenuItem
+                    Command="{Binding Playback.NextTrackCommand, Mode=OneWay}"
+                    Header="Next Track"
+                    HotKey="{OnPlatform Ctrl+N,
+                                        macOS=⌘+N}"
+                    InputGesture="{OnPlatform Ctrl+N,
+                                              macOS=⌘+N}" />
+                <Separator />
+                <MenuItem Command="{Binding Playback.SeekBackwardCommand, Mode=OneWay}" Header="Skip Back 15s" />
+                <MenuItem Command="{Binding Playback.SeekForwardCommand, Mode=OneWay}" Header="Skip Forward 15s" />
+            </MenuItem>
+            <MenuItem Header="_Volume" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding Playback.MuteCommand, Mode=OneWay}"
+                    Header="_Mute"
+                    HotKey="{OnPlatform Ctrl+M,
+                                        macOS=⌘+M}"
+                    InputGesture="{OnPlatform Ctrl+M,
+                                              macOS=⌘+M}"
+                    IsChecked="{Binding Playback.IsMuted, Mode=OneWay}" />
+                <Separator />
+                <MenuItem
+                    Command="{Binding Playback.VolumeUpCommand, Mode=OneWay}"
+                    Header="Volume _Up"
+                    HotKey="{OnPlatform Ctrl++,
+                                        macOS=⌘++}"
+                    InputGesture="{OnPlatform Ctrl++,
+                                              macOS=⌘++}" />
+                <MenuItem
+                    Command="{Binding Playback.VolumeDownCommand, Mode=OneWay}"
+                    Header="Volume _Down"
+                    HotKey="{OnPlatform Ctrl+-,
+                                        macOS=⌘+-}"
+                    InputGesture="{OnPlatform Ctrl+-,
+                                              macOS=⌘+-}" />
+            </MenuItem>
+            <MenuItem Header="_Settings" IsTabStop="False">
+                <MenuItem
+                    Command="{Binding Settings.ToggleQueryMetadataOnline, Mode=OneWay}"
+                    Header="Fetch Online _Metadata"
+                    IsChecked="{Binding Settings.QueryMetadataOnline, Mode=OneWay}" />
+                <MenuItem
+                    Command="{Binding Settings.ToggleQueryLyricsOnline, Mode=OneWay}"
+                    Header="Fetch _Lyrics"
+                    IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
+                    ToggleType="CheckBox" />
+            </MenuItem>
+            <MenuItem Header="Recent" IsTabStop="False" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
+                <MenuItem Command="{Binding Home.RemoveSelectedFromRecentCommand, Mode=OneWay}" Header="Remove" />
+                <Separator />
+                <MenuItem Command="{Binding Home.ClearAllFromRecentCommand, Mode=OneWay}" Header="Clear All" />
+            </MenuItem>
+        </Menu>
+
+        <Grid
+            Margin="1,0"
+            ColumnDefinitions="Auto,*,Auto"
+            DockPanel.Dock="Bottom">
+            <TextBlock
+                Grid.Column="0"
+                MinWidth="5"
+                Text="{Binding Playback.CurrentTrackPositionAsText, Mode=OneWay}" />
+            <ProgressBar
+                Grid.Column="1"
+                Height="1"
+                Margin="2,0"
+                Minimum="0"
+                Maximum="1"
+                ShowProgressText="False"
+                Value="{Binding Playback.CurrentTrackPositionAsDouble, Mode=OneWay}" />
+            <TextBlock
+                Grid.Column="2"
+                MinWidth="5"
+                Text="{Binding Playback.CurrentTrackDurationAsText, Mode=OneWay}" />
+        </Grid>
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="2,0"
+                HorizontalAlignment="Center"
+                Text="{Binding Playback.CurrentTrackTitle, Mode=OneWay}"
+                TextWrapping="NoWrap" />
+        </StackPanel>
+
+        <WrapPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                IsEnabled="{Binding Playback.IsPreviousEnabled, Mode=OneWay}"
+                Command="{Binding Playback.PreviousTrackCommand, Mode=OneWay}"
+                Content=" &lt; " />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                IsEnabled="{Binding Playback.IsSeekBackwardEnabled, Mode=OneWay}"
+                Command="{Binding Playback.SeekBackwardCommand, Mode=OneWay}"
+                Content=" &lt;&lt; " />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                IsEnabled="{Binding Playback.IsPlayPauseEnabled, Mode=OneWay}"
+                Command="{Binding Playback.PlayPauseCommand, Mode=OneWay}"
+                Content="{Binding Playback.PlayPauseCaption, Mode=OneWay}" />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                IsEnabled="{Binding Playback.IsSeekForwardEnabled, Mode=OneWay}"
+                Command="{Binding Playback.SeekForwardCommand, Mode=OneWay}"
+                Content=" &gt;&gt; " />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                IsEnabled="{Binding Playback.IsNextEnabled, Mode=OneWay}"
+                Command="{Binding Playback.NextTrackCommand, Mode=OneWay}"
+                Content=" &gt; " />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                Command="{Binding Playback.MuteCommand, Mode=OneWay}"
+                Content="Mute" />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                Command="{Binding Playback.VolumeDownCommand, Mode=OneWay}"
+                Content=" Vol - " />
+            <Button
+                Margin="1"
+                VerticalContentAlignment="Center"
+                Command="{Binding Playback.VolumeUpCommand, Mode=OneWay}"
+                Content=" Vol + " />
+            <TextBlock
+                MinWidth="5"
+                Margin="1"
+                VerticalAlignment="Top"
+                IsVisible="{Binding !Playback.IsMuted, Mode=OneWay}"
+                Text="{Binding Playback.Volume, StringFormat={}{0}%}" />
+            <TextBlock
+                MinWidth="5"
+                Margin="1"
+                VerticalAlignment="Top"
+                IsVisible="{Binding Playback.IsMuted, Mode=OneWay}"
+                Text="Muted" />
+        </WrapPanel>
+
+        <Grid>
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.About}}">
+                <TextBlock
+                    FontFamily="fonts:Consolonia#Doom"
+                    FontSize="8"
+                    Text="Discue" />
+                <TextBlock Margin="0,0,0,1" Text="by Hugues Valois" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="App version:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.AppVersion, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Avalonia version:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.AvaloniaVersion, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Framework:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.DotNetFramework, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Process architecture:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.ProcessArchitecture, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Runtime identifier:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.RuntimeIdentifier, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Operating system:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.OperatingSystem, Mode=OneTime}" />
+                </StackPanel>
+            </StackPanel>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" IsVisible="{Binding !Home.HasRecentDiscs, Mode=OneWay}">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="0,0,0,1"
+                            HorizontalAlignment="Left"
+                            Text="Meet Discue" />
+                        <TextBlock
+                            Margin="0,0,0,1"
+                            MaxWidth="40"
+                            HorizontalAlignment="Left"
+                            Text="Discue plays music from CDs in bin/cue, zipped bin/cue and chd format."
+                            TextWrapping="Wrap" />
+                        <Button
+                            Margin="0,0,0,1"
+                            HorizontalAlignment="Left"
+                            Command="{Binding BrowseCommand, Mode=OneWay}"
+                            Content="Open"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid RowDefinitions="Auto,*" IsVisible="{Binding Home.HasRecentDiscs, Mode=OneWay}">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="Recent discs"
+                        TextWrapping="Wrap" />
+
+                    <ListBox
+                        Grid.Row="1"
+                        DoubleTapped="RecentDiscsListBox_DoubleTapped"
+                        ItemsSource="{Binding Home.RecentDiscs, Mode=OneWay}"
+                        SelectedItem="{Binding Home.SelectedRecentDisc, Mode=TwoWay}"
+                        KeyUp="RecentDiscsListBox_KeyUp">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0" Orientation="Vertical">
+                                    <TextBlock
+                                        FontWeight="SemiBold"
+                                        Text="{Binding FullAlbumTitle, Mode=OneWay}"
+                                        TextWrapping="NoWrap" />
+                                    <TextBlock
+                                        Margin="2,0,0,0"
+                                        Text="{Binding AlbumFilePath, Mode=OneWay}"
+                                        TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}">
+                <Grid RowDefinitions="*,Auto">
+                    <Grid IsVisible="{Binding NowPlaying.HasAlbumArt, Mode=OneWay}" ColumnDefinitions="1*,1*">
+                        <Image
+                            Grid.Column="0"
+                            Margin="1"
+                            Source="{Binding NowPlaying.AlbumArt, Mode=OneWay}"
+                            Stretch="Uniform" />
+                        <StackPanel
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Spacing="1"
+                            Orientation="Vertical">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                FontWeight="SemiBold"
+                                Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="1"
+                        IsVisible="{Binding !NowPlaying.HasAlbumArt, Mode=OneWay}">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            FontWeight="SemiBold"
+                            Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <TextBlock
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding NowPlaying.CurrentLyric, Mode=OneWay}"
+                        TextWrapping="NoWrap" />
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Playback.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+
+                    <ListBox
+                        Grid.Row="1"
+                        DoubleTapped="PlaylistListBox_DoubleTapped"
+                        ItemsSource="{Binding Playlist.Items, Mode=OneWay}"
+                        KeyUp="PlaylistListBox_KeyUp">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" ColumnDefinitions="Auto,Auto,*,Auto">
+                                    <StackPanel
+                                        Grid.Column="0"
+                                        MinWidth="1"
+                                        Margin="0,0,1,0"
+                                        Orientation="Horizontal">
+                                        <TextBlock IsVisible="{Binding IsActive, Mode=OneWay}" Text="&gt;" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        MinWidth="4"
+                                        Margin="0,0,1,0"
+                                        Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding TrackTitle, Mode=OneWay}" />
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        Margin="0,0,1,0"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Playback.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <Border
+                        Grid.Row="1"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                        BorderThickness="1">
+                        <wc:SignalPlot
+                            Dot="#"
+                            Source="{Binding Visualization.WavePlotData, Mode=OneWay}"
+                            Tick="{Binding Visualization.PlotTick, Mode=OneWay}" />
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Playback.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <Border
+                        Grid.Row="1"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                        BorderThickness="1">
+                        <wc:SignalPlot
+                            Dot="#"
+                            Source="{Binding Visualization.PsdPlotData, Mode=OneWay}"
+                            Tick="{Binding Visualization.PlotTick, Mode=OneWay}" />
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Playback.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+
+                    <Border
+                        Grid.Row="1"
+                        Margin="0"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                        BorderThickness="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsRepeater
+                                VerticalAlignment="Center"
+                                IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
+                                ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Orientation="Vertical" />
+                                </ItemsRepeater.Layout>
+                                <ItemsRepeater.Styles>
+                                    <Style Selector="TextBlock.class1">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="FontStyle" Value="Italic" />
+                                    </Style>
+                                    <Style Selector="TextBlock.class2" />
+                                </ItemsRepeater.Styles>
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Margin="2,0"
+                                            HorizontalAlignment="Center"
+                                            Classes.class1="{Binding IsCurrent}"
+                                            Classes.class2="{Binding !IsCurrent}"
+                                            Text="{Binding Text, Mode=OneWay}"
+                                            TextAlignment="Center"
+                                            TextWrapping="Wrap" />
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                            </ItemsRepeater>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+
+    </DockPanel>
+</UserControl>

@@ -7,11 +7,11 @@ using System.Collections.Immutable;
 
 public sealed record class AlbumMetadata
 {
-    public required string Album { get; init; }
+    public required string Title { get; init; }
 
     public required string Artist { get; init; }
 
-    public required ImmutableArray<TrackMetadata> Tracks { get; init; }
+    public required string Year { get; init; }
 
     public required ImmutableArray<ArtMetadata> Images { get; init; }
 }

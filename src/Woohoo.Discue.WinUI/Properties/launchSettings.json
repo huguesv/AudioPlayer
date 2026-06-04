@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Discue (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "Discue (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

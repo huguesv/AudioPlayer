@@ -1,0 +1,33 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="Woohoo.Audio.Core.UnitTest/Woohoo.Audio.Core.UnitTest.csproj" />
+  <Project Path="Woohoo.Audio.Core/Woohoo.Audio.Core.csproj" />
+  <Project Path="Woohoo.Audio.Playback.Sdl3/Woohoo.Audio.Playback.Sdl3.csproj" />
+  <Project Path="Woohoo.Audio.Playback.Windows/Woohoo.Audio.Playback.Windows.csproj" Id="796351ab-4984-43f9-8190-a85d302e22bc" />
+  <Project Path="Woohoo.Audio.Services.Impl/Woohoo.Audio.Services.Impl.csproj" Id="bcd8d76e-c4d0-42ea-b4f3-077110e10dce" />
+  <Project Path="Woohoo.Audio.Services/Woohoo.Audio.Services.csproj" Id="2d861e49-182a-4924-9ac0-4beaa137b229" />
+  <Project Path="Woohoo.Codecs.Flake/Woohoo.Codecs.Flake.csproj" />
+  <Project Path="Woohoo.Codecs/Woohoo.Codecs.csproj" />
+  <Project Path="Woohoo.ConsoloniaControls/Woohoo.ConsoloniaControls.csproj" />
+  <Project Path="Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj" />
+  <Project Path="Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj" />
+  <Project Path="Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj" />
+  <Project Path="Woohoo.Discue.WinUI/Woohoo.Discue.WinUI.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+    <Deploy />
+  </Project>
+  <Project Path="Woohoo.IO.Compression.Chd.UnitTest/Woohoo.IO.Compression.Chd.UnitTest.csproj" />
+  <Project Path="Woohoo.IO.Compression.Chd/Woohoo.IO.Compression.Chd.csproj" />
+  <Project Path="Woohoo.IO.Compression/Woohoo.IO.Compression.csproj" />
+  <Project Path="Woohoo.Sdl3/Woohoo.Sdl3.csproj" />
+</Solution>

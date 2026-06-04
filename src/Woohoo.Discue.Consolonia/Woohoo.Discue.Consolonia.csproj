@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyTitle>Discue Consolonia</AssemblyTitle>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet Package">
+    <Authors>Hugues Valois</Authors>
+    <Description>Audio Player for CD images in bin/cue or chd format.</Description>
+    <Copyright>Copyright (c) Hugues Valois 2025-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <PackageProjectUrl>https://github.com/huguesv/AudioPlayer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/huguesv/AudioPlayer</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>audio;music;zip;cuesheet;cue;chd</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>discue</ToolCommandName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\_OldMainViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ViewModels\_OldMainViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Collections.ObjectModel" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="System.Globalization" />
+    <Using Include="System.Reflection" />
+    <Using Include="System.Runtime.InteropServices" />
+    <Using Include="System.Runtime.Serialization" />
+    <Using Include="System.Security" />
+    <Using Include="System.Security.Cryptography" />
+    <Using Include="System.Text" />
+    <Using Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncImageLoader.Avalonia" />
+    <PackageReference Include="Avalonia.Skia" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
+    <PackageReference Include="Consolonia" />
+    <PackageReference Include="Consolonia.Fonts" />
+    <PackageReference Include="Consolonia.ManagedWindows" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.File" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
+    <ProjectReference Include="..\Woohoo.Audio.Playback.Sdl3\Woohoo.Audio.Playback.Sdl3.csproj" />
+    <ProjectReference Include="..\Woohoo.Audio.Services.Impl\Woohoo.Audio.Services.Impl.csproj" />
+    <ProjectReference Include="..\Woohoo.Audio.Services\Woohoo.Audio.Services.csproj" />
+    <ProjectReference Include="..\Woohoo.ConsoloniaControls\Woohoo.ConsoloniaControls.csproj" />
+  </ItemGroup>
+
+</Project>

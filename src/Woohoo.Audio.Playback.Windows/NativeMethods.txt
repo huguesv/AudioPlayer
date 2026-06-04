@@ -1,0 +1,14 @@
+﻿AUDCLNT_STREAMFLAGS_LOOPBACK
+IAudioCaptureClient
+IAudioClient
+IAudioEndpointVolume
+IMMDevice
+IMMDeviceCollection
+IMMDeviceEnumerator
+IMMNotificationClient
+IPropertyStore
+MMDeviceEnumerator
+PROPERTYKEY
+PROPVARIANT
+WAVEFORMATEX
+WAVEFORMATEXTENSIBLE
