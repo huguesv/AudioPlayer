@@ -34,6 +34,18 @@ public partial class MainViewModel : ObservableObject
         VisualizationViewModel visualizationViewModel,
         ILogger<MainViewModel> logger)
     {
+        ArgumentNullException.ThrowIfNull(dispatcherQueueService);
+        ArgumentNullException.ThrowIfNull(filePickerService);
+        ArgumentNullException.ThrowIfNull(mediaPlayerService);
+        ArgumentNullException.ThrowIfNull(localSettingsService);
+        ArgumentNullException.ThrowIfNull(bitmapCacheService);
+        ArgumentNullException.ThrowIfNull(homeViewModel);
+        ArgumentNullException.ThrowIfNull(playbackViewModel);
+        ArgumentNullException.ThrowIfNull(lyricsViewModel);
+        ArgumentNullException.ThrowIfNull(settingsViewModel);
+        ArgumentNullException.ThrowIfNull(visualizationViewModel);
+        ArgumentNullException.ThrowIfNull(logger);
+
         this.filePickerService = filePickerService;
         this.mediaPlayerService = mediaPlayerService;
         this.localSettingsService = localSettingsService;

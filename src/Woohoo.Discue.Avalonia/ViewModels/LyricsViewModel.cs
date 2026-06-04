@@ -18,6 +18,7 @@ public sealed partial class LyricsViewModel : ObservableObject
     private readonly ILocalSettingsService localSettingsService;
     private readonly ILogger logger;
     private readonly IDispatcherQueue dispatcherQueue;
+
     private LyricsTrack? lyric;
     private bool autoScroll;
 

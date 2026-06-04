@@ -14,8 +14,6 @@ public class DesignMainViewModel : MainViewModel
             new NullFilePickerService(),
             new NullPowerManagementService(),
             new NullMediaPlayerService(),
-            new NullLocalSettingsService(),
-            new NullAvaloniaBitmapCacheService(),
             new HomeViewModel(new DispatcherQueueService(), new NullMruService(), new NullMediaPlayerService(), new NullAvaloniaBitmapCacheService(), new NullLogger<HomeViewModel>()),
             new PlaybackViewModel(new DispatcherQueueService(), new NullMediaPlayerService(), new NullAvaloniaBitmapCacheService(), new NullLogger<PlaybackViewModel>()),
             new NowPlayingViewModel(new DispatcherQueueService(), new NullMediaPlayerService(), new NullAvaloniaBitmapCacheService(), new NullLogger<NowPlayingViewModel>()),

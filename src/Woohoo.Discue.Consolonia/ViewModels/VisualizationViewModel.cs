@@ -19,7 +19,9 @@ public sealed partial class VisualizationViewModel : ObservableObject
         IVisualizationProviderService visualizationProviderService,
         ILogger<VisualizationViewModel> logger)
     {
+        ArgumentNullException.ThrowIfNull(dispatcherQueueService);
         ArgumentNullException.ThrowIfNull(visualizationProviderService);
+        ArgumentNullException.ThrowIfNull(logger);
 
         this.dispatcherQueue = dispatcherQueueService.GetDispatcherQueue();
         this.visualizationProviderService = visualizationProviderService;

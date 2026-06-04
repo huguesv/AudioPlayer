@@ -16,8 +16,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     private readonly IThemeService themeService;
     private readonly ILogger logger;
     private readonly IDispatcherQueue dispatcherQueue;
-
-    private bool isLoading;
+    private readonly bool isLoading;
 
     public SettingsViewModel(
         IDispatcherQueueService dispatcherQueueService,

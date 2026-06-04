@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Player.Services;
 using Woohoo.Audio.Services;
-using Woohoo.Discue.Contracts.Services;
 
 public partial class MainViewModel : ObservableObject
 {
@@ -23,8 +22,6 @@ public partial class MainViewModel : ObservableObject
         IFilePickerService filePickerService,
         IPowerManagementService powerManagementService,
         IMediaPlayerService mediaPlayerService,
-        ILocalSettingsService localSettingsService,
-        IAvaloniaBitmapCacheService bitmapCacheService,
         HomeViewModel homeViewModel,
         PlaybackViewModel playbackViewModel,
         NowPlayingViewModel nowPlayingViewModel,
@@ -33,6 +30,18 @@ public partial class MainViewModel : ObservableObject
         SettingsViewModel settingsViewModel,
         ILogger<MainViewModel> logger)
     {
+        ArgumentNullException.ThrowIfNull(dispatcherQueueService);
+        ArgumentNullException.ThrowIfNull(filePickerService);
+        ArgumentNullException.ThrowIfNull(powerManagementService);
+        ArgumentNullException.ThrowIfNull(mediaPlayerService);
+        ArgumentNullException.ThrowIfNull(homeViewModel);
+        ArgumentNullException.ThrowIfNull(playbackViewModel);
+        ArgumentNullException.ThrowIfNull(nowPlayingViewModel);
+        ArgumentNullException.ThrowIfNull(playlistViewModel);
+        ArgumentNullException.ThrowIfNull(lyricsViewModel);
+        ArgumentNullException.ThrowIfNull(settingsViewModel);
+        ArgumentNullException.ThrowIfNull(logger);
+
         this.filePickerService = filePickerService;
         this.mediaPlayerService = mediaPlayerService;
         this.Home = homeViewModel;
