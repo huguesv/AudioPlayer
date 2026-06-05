@@ -414,15 +414,16 @@
                     <StackPanel
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Orientation="Vertical"
                         IsVisible="{Binding !NowPlaying.HasAlbumArt, Mode=OneWay}"
                         Spacing="1">
                         <TextBlock
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             FontWeight="SemiBold"
                             Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
                             TextWrapping="Wrap" />
                         <TextBlock
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
                             TextWrapping="Wrap" />
                     </StackPanel>
