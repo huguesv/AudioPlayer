@@ -137,11 +137,19 @@
     </Window.Resources>
 
     <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundAccentBrush}" />
+        </Style>
         <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="BorderBrush" Value="{DynamicResource CaptionButtonBorderBrush}" />
         </Style>
-        <Style Selector="Button">
-            <Setter Property="CornerRadius" Value="10" />
+        <Style Selector="Button:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+        </Style>
+        <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="HyperlinkButton">
             <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
@@ -580,9 +588,9 @@
         <StackPanel
             Grid.Row="2"
             HorizontalAlignment="Center"
+            Spacing="4"
             Orientation="Horizontal">
             <Button
-                Margin="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Previous"
@@ -596,7 +604,6 @@
                 </Viewbox>
             </Button>
             <Button
-                Margin="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Seek Backward 15"
@@ -610,12 +617,11 @@
                 </Viewbox>
             </Button>
             <Button
-                Margin="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Play/Pause"
                 Command="{Binding Playback.PlayPauseCommand, Mode=OneWay}"
-                CornerRadius="15"
+                CornerRadius="8"
                 IsEnabled="{Binding Playback.IsPlayPauseEnabled, Mode=OneWay}"
                 ToolTip.Tip="Play/Pause">
                 <Grid>
@@ -638,7 +644,6 @@
                 </Grid>
             </Button>
             <Button
-                Margin="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Seek Forward 15"
@@ -652,7 +657,6 @@
                 </Viewbox>
             </Button>
             <Button
-                Margin="4"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 AutomationProperties.Name="Next"
