@@ -52,13 +52,20 @@ public sealed partial class VisualizationViewModel : ObservableObject
         // TODO: make the signal plot control customizable
         // enough so we don't have to do this.
         double[] psd = new double[this.PsdPlotData.Length];
-        e.Visualization.CopyTo(psd, this.BandsPlotData, this.WavePlotData);
+        double[] bands = new double[this.BandsPlotData.Length];
+        e.Visualization.CopyTo(psd, bands, this.WavePlotData);
         for (int i = 0; i < psd.Length; i++)
         {
             psd[i] = (psd[i] + 50) / 50.0;
         }
 
+        for (int i = 0; i < bands.Length; i++)
+        {
+            bands[i] = bands[i] + 100;
+        }
+
         Array.Copy(psd, this.PsdPlotData, psd.Length);
+        Array.Copy(bands, this.BandsPlotData, bands.Length);
 
         this.PlotTick++;
         if (this.PlotTick == long.MaxValue)

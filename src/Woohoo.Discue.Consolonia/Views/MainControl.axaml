@@ -111,6 +111,15 @@
                     ToggleType="Radio" />
                 <MenuItem
                     Command="{Binding ChangeViewCommand, Mode=OneWay}"
+                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
+                    Header="_Frequencies Bands"
+                    HotKey="F7"
+                    InputGesture="F7"
+                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
+                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+                    ToggleType="Radio" />
+                <MenuItem
+                    Command="{Binding ChangeViewCommand, Mode=OneWay}"
                     CommandParameter="{x:Static vm:ViewType.About}"
                     Header="A_bout"
                     HotKey="F12"
@@ -523,6 +532,28 @@
                         <wc:SignalPlot
                             Dot="#"
                             Source="{Binding Visualization.PsdPlotData, Mode=OneWay}"
+                            Tick="{Binding Visualization.PlotTick, Mode=OneWay}" />
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,1"
+                        HorizontalAlignment="Center"
+                        Text="{Binding Playback.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <Border
+                        Grid.Row="1"
+                        BorderBrush="{DynamicResource ThemeBorderBrush}"
+                        BorderThickness="1">
+                        <wc:BarPlot
+                            RangeMin="0"
+                            RangeMax="100"
+                            Foreground="Gray"
+                            Source="{Binding Visualization.BandsPlotData, Mode=OneWay}"
                             Tick="{Binding Visualization.PlotTick, Mode=OneWay}" />
                     </Border>
                 </Grid>

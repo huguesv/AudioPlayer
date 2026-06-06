@@ -16,6 +16,12 @@ public class BarPlot : Control
     public static readonly StyledProperty<double> ScaleProperty =
         AvaloniaProperty.Register<BarPlot, double>(nameof(Scale), 1);
 
+    public static readonly StyledProperty<double> RangeMinProperty =
+        AvaloniaProperty.Register<BarPlot, double>(nameof(RangeMin), 0);
+
+    public static readonly StyledProperty<double> RangeMaxProperty =
+        AvaloniaProperty.Register<BarPlot, double>(nameof(RangeMax), 1);
+
     public static readonly StyledProperty<long> TickProperty =
         AvaloniaProperty.Register<BarPlot, long>(nameof(Tick), 1);
 
@@ -32,6 +38,18 @@ public class BarPlot : Control
     {
         get => this.GetValue(ScaleProperty);
         set => this.SetValue(ScaleProperty, value);
+    }
+
+    public double RangeMin
+    {
+        get => this.GetValue(RangeMinProperty);
+        set => this.SetValue(RangeMinProperty, value);
+    }
+
+    public double RangeMax
+    {
+        get => this.GetValue(RangeMaxProperty);
+        set => this.SetValue(RangeMaxProperty, value);
     }
 
     public long Tick
@@ -66,22 +84,26 @@ public class BarPlot : Control
 
     public sealed override void Render(DrawingContext context)
     {
-        if (this.Foreground is not null && this.Source is not null && this.Bounds.Width > 0 && this.Bounds.Height > 0)
+        if (this.Foreground is not null && this.Source is not null && this.Bounds.Width > 0 && this.Bounds.Height > 0 && this.Source.Length > 0)
         {
-            double centerY = this.Bounds.Top + (this.Bounds.Height / 2) - 1;
+            int barSpacing = 5;
+            int barWidth = (int)Math.Floor(this.Bounds.Width / this.Source.Length - barSpacing);
+            int barAndSpacesWidth = this.Source.Length * barWidth + ((this.Source.Length - 1) * barSpacing);
+            int leftMargin = (int)Math.Floor((this.Bounds.Width - barAndSpacesWidth) / 2);
+            int bottom = (int)Math.Floor(this.Bounds.Bottom - 2);
+            var yScale = (this.Bounds.Height - 2) / (this.RangeMax - this.RangeMin);
+            var left = this.Bounds.Left + leftMargin;
 
-            for (double i = 0; i < this.Bounds.Width; i++)
+            for (int col = 0; col < this.Source.Length; col++)
             {
-                double xPercent = i / this.Bounds.Width;
-                double originalVal = this.Source[(int)Math.Floor(xPercent * this.Source.Length)];
-                double scaledVal = originalVal * this.Scale;
-                double clampedVal = Math.Clamp(scaledVal, -1.0, 1.0);
-                int height = (int)Math.Floor(clampedVal * this.Bounds.Height / 2);
+                double scaledVal = this.Source[col] * yScale;
+                int clampedVal = (int)Math.Floor(Math.Clamp(scaledVal, 0, this.Bounds.Height));
+                var top = bottom - clampedVal;
 
-                var rect = height >= 0
-                    ? new Rect(new Point(this.Bounds.Left + i - 1, centerY - height), new Size(1, height))
-                    : new Rect(new Point(this.Bounds.Left + i - 1, centerY), new Size(1, 0 - height));
+                var rect = new Rect(new Point(left, top), new Size(barWidth, clampedVal));
                 context.FillRectangle(this.Foreground, rect);
+
+                left += barWidth + barSpacing;
             }
         }
     }
