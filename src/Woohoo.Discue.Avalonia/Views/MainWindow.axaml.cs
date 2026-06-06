@@ -11,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Woohoo.Audio.Player.ViewModels;
 using Woohoo.Audio.Services;
@@ -83,6 +84,11 @@ public partial class MainWindow : Window
         this.BandPlot.Plot.PlotControl?.Menu?.Clear();
         this.BandPlot.Plot.PlotControl?.UserInputProcessor.Disable();
         this.BandPlot.Refresh();
+
+        WeakReferenceMessenger.Default.Register<CurrentLyricChangeMessage>(this, (r, m) =>
+        {
+            this.ScrollToLyricLine(m);
+        });
     }
 
     public void OnDrop(object? sender, DragEventArgs e)
@@ -249,6 +255,16 @@ public partial class MainWindow : Window
             {
                 _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
             }
+        }
+    }
+
+    private void ScrollToLyricLine(CurrentLyricChangeMessage m)
+    {
+        if (m.AutoScroll)
+        {
+            this.LyricsItemsRepeater
+                .GetOrCreateElement(Math.Min(m.Index + 1, m.LineCount - 1))?
+                .BringIntoView();
         }
     }
 }

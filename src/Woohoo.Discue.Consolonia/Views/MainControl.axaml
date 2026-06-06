@@ -180,6 +180,12 @@
                     Header="Fetch _Lyrics"
                     IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
                     ToggleType="CheckBox" />
+                <Separator />
+                <MenuItem
+                    Command="{Binding Settings.ToggleLyricsAutoScroll, Mode=OneWay}"
+                    Header="_Auto Scroll Lyrics"
+                    IsChecked="{Binding Settings.LyricsAutoScroll, Mode=OneWay}"
+                    ToggleType="CheckBox" />
             </MenuItem>
             <MenuItem
                 Header="Recent"
@@ -538,6 +544,7 @@
                         BorderThickness="1">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <ItemsRepeater
+                                x:Name="LyricsItemsRepeater"
                                 VerticalAlignment="Center"
                                 IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
                                 ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">

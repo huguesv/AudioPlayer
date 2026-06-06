@@ -125,6 +125,12 @@
                     Header="Fetch Lyrics"
                     IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
                     ToggleType="CheckBox" />
+                <Separator />
+                <MenuItem
+                    Command="{Binding Settings.ToggleLyricsAutoScroll, Mode=OneWay}"
+                    Header="_Auto Scroll Lyrics"
+                    IsChecked="{Binding Settings.LyricsAutoScroll, Mode=OneWay}"
+                    ToggleType="CheckBox" />
             </MenuFlyout>
             <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
         </ResourceDictionary>
@@ -177,6 +183,12 @@
                         Command="{Binding Settings.ToggleQueryLyricsOnline, Mode=OneWay}"
                         Header="Fetch Lyrics"
                         IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem
+                        Command="{Binding Settings.ToggleLyricsAutoScroll, Mode=OneWay}"
+                        Header="Auto Scroll Lyrics"
+                        IsChecked="{Binding Settings.LyricsAutoScroll, Mode=OneWay}"
                         ToggleType="CheckBox" />
                 </NativeMenu>
             </NativeMenuItem>
@@ -399,6 +411,7 @@
             </Grid>
             <ScrollViewer IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}">
                 <ItemsRepeater
+                    x:Name="LyricsItemsRepeater"
                     Margin="8"
                     VerticalAlignment="Center"
                     IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"

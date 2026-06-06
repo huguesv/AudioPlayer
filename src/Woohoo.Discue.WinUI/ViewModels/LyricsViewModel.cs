@@ -165,6 +165,7 @@ public sealed partial class LyricsViewModel : ObservableObject
                     Line = updated,
                     Index = currentLyricLineIndex,
                     AutoScroll = this.autoScroll,
+                    LineCount = this.Lines.Count,
                 };
 
                 WeakReferenceMessenger.Default.Send(message);

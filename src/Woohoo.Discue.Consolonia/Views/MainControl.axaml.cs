@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.Messaging;
 using Woohoo.Audio.Player.Tui.ViewModels;
 
 public partial class MainControl : UserControl
@@ -15,6 +16,11 @@ public partial class MainControl : UserControl
     public MainControl()
     {
         this.InitializeComponent();
+
+        WeakReferenceMessenger.Default.Register<CurrentLyricChangeMessage>(this, (r, m) =>
+        {
+            this.ScrollToLyricLine(m);
+        });
     }
 
     private void OnExit(object sender, RoutedEventArgs e)
@@ -68,6 +74,16 @@ public partial class MainControl : UserControl
             {
                 _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
             }
+        }
+    }
+
+    private void ScrollToLyricLine(CurrentLyricChangeMessage m)
+    {
+        if (m.AutoScroll)
+        {
+            this.LyricsItemsRepeater
+                .GetOrCreateElement(Math.Min(m.Index + 1, m.LineCount - 1))?
+                .BringIntoView();
         }
     }
 }

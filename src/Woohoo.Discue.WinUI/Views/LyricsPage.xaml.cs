@@ -53,7 +53,9 @@ public sealed partial class LyricsPage : Page
     {
         if (m.AutoScroll)
         {
-            this.LyricsItemsRepeater.TryGetElement(m.Index)?.StartBringIntoView();
+            this.LyricsItemsRepeater
+                .TryGetElement(Math.Min(m.Index + 1, m.LineCount - 1))?
+                .StartBringIntoView();
         }
     }
 }

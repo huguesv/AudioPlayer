@@ -10,4 +10,6 @@ public sealed class CurrentLyricChangeMessage
     public required int Index { get; init; }
 
     public required bool AutoScroll { get; init; }
+
+    public required int LineCount { get; init; }
 }
