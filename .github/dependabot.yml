@@ -17,3 +17,7 @@ updates:
         - "xunit*"
         - "Microsoft.NET.Test.Sdk"
         - "AwesomeAssertions*"
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
