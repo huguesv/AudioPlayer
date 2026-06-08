@@ -18,10 +18,10 @@
   <PropertyGroup>
     <Company>Hugues Valois</Company>
     <Copyright>Copyright (c) Hugues Valois 2025-2026</Copyright>
-    <Product>Audio Player</Product>
-    <Version>0.12.0.0</Version>
-    <FileVersion>0.12.0.0</FileVersion>
-    <ApplicationVersion>0.12.0</ApplicationVersion>
+    <Product>Discue</Product>
+    <Version>0.13.0.0</Version>
+    <FileVersion>0.13.0.0</FileVersion>
+    <ApplicationVersion>0.13.0</ApplicationVersion>
   </PropertyGroup>
 
   <ItemGroup>

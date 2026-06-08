@@ -25,8 +25,6 @@ public interface IAlbumTrack
 
     string TrackPerformer { get; set; }
 
-    string TrackSongwriter { get; set; }
-
     LyricsTrack? Lyrics { get; set; }
 
     Stream OpenStream();

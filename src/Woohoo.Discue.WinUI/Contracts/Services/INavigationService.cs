@@ -1,0 +1,28 @@
+﻿// Copyright (c) Hugues Valois. All rights reserved.
+// Licensed under the MIT license. See LICENSE in the project root for license information.
+
+namespace Woohoo.Discue.Contracts.Services;
+
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+
+public interface INavigationService
+{
+    event NavigatedEventHandler Navigated;
+
+    bool CanGoBack
+    {
+        get;
+    }
+
+    Frame? Frame
+    {
+        get; set;
+    }
+
+    bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
+
+    bool GoBack();
+
+    void SetListDataItemForNextConnectedAnimation(object item);
+}

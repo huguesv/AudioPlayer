@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>Audio Services Implementation</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Woohoo.Audio.Services\Woohoo.Audio.Services.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 public interface IMetadataProvider
 {
-    Task<AlbumMetadata?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken);
+    Task<MetadataResult?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken);
 }

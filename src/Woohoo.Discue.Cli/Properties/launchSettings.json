@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Woohoo.Audio.Player.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Share\\Audio CD (Non-Game) (Personal Dumps)\\Lorde - Virgin (World).zip\" -m -l -ldb \"D:\\Projects\\Temp\\LrcTest\\lrclib-db-dump-20251104T072346Z.sqlite3\\db.sqlite3\""
+    }
+  }
+}

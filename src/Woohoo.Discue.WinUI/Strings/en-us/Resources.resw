@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Discue</value>
+  </data>
+  <data name="Shell_Main.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Shell_Databases.Content" xml:space="preserve">
+    <value>Databases</value>
+  </data>
+  <data name="Shell_History.Content" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Shell_HashCalculator.Content" xml:space="preserve">
+    <value>Hash Calculator</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_Audit.Text" xml:space="preserve">
+    <value>Audit</value>
+  </data>
+  <data name="Settings_Databases.Text" xml:space="preserve">
+    <value>Databases</value>
+  </data>
+  <data name="SettingsPage_ThemeExpander.Description" xml:space="preserve">
+    <value>Select which app theme to display</value>
+  </data>
+  <data name="SettingsPage_ThemeExpander.Header" xml:space="preserve">
+    <value>App theme</value>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>Use system setting</value>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsPage_RemoveDatabaseFolderMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SettingsPage_RemoveCueFolderMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SettingsPage_DatabaseFolderExpander.Description" xml:space="preserve">
+    <value>Configure the folders that contain database files</value>
+  </data>
+  <data name="SettingsPage_CueFolderExpander.Description" xml:space="preserve">
+    <value>Configure the folders that contain cue files for rebuild to search when a game container is missing only its cue file</value>
+  </data>
+  <data name="SettingsPage_DatabaseFolderExpander.Header" xml:space="preserve">
+    <value>Database folders</value>
+  </data>
+  <data name="SettingsPage_CueFolderExpander.Header" xml:space="preserve">
+    <value>Cue folders</value>
+  </data>
+  <data name="SettingsPage_AddDatabaseFolderButton.Content" xml:space="preserve">
+    <value>Add folder</value>
+  </data>
+  <data name="SettingsPage_AddCueFolderButton.Content" xml:space="preserve">
+    <value>Add folder</value>
+  </data>
+  <data name="SettingsPage_ExtractCard.Description" xml:space="preserve">
+    <value>Extract files from archives to calculate checksums instead of using the crc32 stored in the archive</value>
+  </data>
+  <data name="SettingsPage_ExtractCard.Header" xml:space="preserve">
+    <value>Extract files to calculate checksums</value>
+  </data>
+  <data name="SettingsPage_AboutExpander.Description" xml:space="preserve">
+    <value>© 2026 Hugues Valois. All rights reserved.</value>
+  </data>
+  <data name="SettingsPage_AboutExpander.Header" xml:space="preserve">
+    <value>Discue</value>
+  </data>
+  <data name="SettingsPage_LicenseTermsLink.Content" xml:space="preserve">
+    <value>License Terms</value>
+  </data>
+  <data name="SettingsPage_LicenseTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://github.com/huguesv/AudioPlayer/blob/main/LICENSE</value>
+  </data>
+  <data name="SettingsPage_SendFeedback.Content" xml:space="preserve">
+    <value>Send feedback</value>
+  </data>
+  <data name="SettingsPage_SendFeedback.NavigateUri" xml:space="preserve">
+    <value>https://github.com/huguesv/AudioPlayer/issues</value>
+  </data>
+  <data name="AppNotificationSamplePayload" xml:space="preserve">
+    <value>&lt;toast launch="action=ToastClick"&gt;
+  &lt;visual&gt;
+    &lt;binding template="ToastGeneric"&gt;
+      &lt;text&gt;App Notification&lt;/text&gt;
+      &lt;text&gt;&lt;/text&gt;
+      &lt;image placement="appLogoOverride" hint-crop="circle" src="{0}Assets/WindowIcon.ico"/&gt;
+    &lt;/binding&gt;
+  &lt;/visual&gt;
+  &lt;actions&gt;
+    &lt;action content="Settings" arguments="action=Settings"/&gt;
+  &lt;/actions&gt;
+&lt;/toast&gt;</value>
+  </data>
+  <data name="Shell_CreateDatabase.Content" xml:space="preserve">
+    <value>Create Database</value>
+  </data>
+  <data name="SettingsPage_RemoveOfflineFolderMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SettingsPage_AddOfflineFolderButton.Content" xml:space="preserve">
+    <value>Add folder</value>
+  </data>
+  <data name="SettingsPage_OfflineFolderExpander.Header" xml:space="preserve">
+    <value>Offline storage folders</value>
+  </data>
+  <data name="SettingsPage_OfflineFolderExpander.Description" xml:space="preserve">
+    <value>Configure the folders that contain offline storage index files</value>
+  </data>
+  <data name="Settings_OfflineStorage.Text" xml:space="preserve">
+    <value>Offline storage</value>
+  </data>
+  <data name="Shell_CreateDisk.Content" xml:space="preserve">
+    <value>Create Offline Storage</value>
+  </data>
+  <data name="Shell_OfflineExplorer.Content" xml:space="preserve">
+    <value>Offline Storage Explorer</value>
+  </data>
+  <data name="Settings_OfflineStorageExplorer.Text" xml:space="preserve">
+    <value>Offline storage explorer</value>
+  </data>
+  <data name="SettingsPage_ShowArchivesInTree.Header" xml:space="preserve">
+    <value>Show archives in tree</value>
+  </data>
+  <data name="SettingsPage_ShowArchivesInTree.Description" xml:space="preserve">
+    <value>Show zip and 7z files in the tree view just like folders</value>
+  </data>
+  <data name="Settings_ExplorerFolderSortPriority_First.Content" xml:space="preserve">
+    <value>Folders before files</value>
+  </data>
+  <data name="Settings_ExplorerFolderSortPriority_Last.Content" xml:space="preserve">
+    <value>Folders after files</value>
+  </data>
+  <data name="Settings_ExplorerFolderSortPriority_Mixed.Content" xml:space="preserve">
+    <value>Folders mixed with files</value>
+  </data>
+  <data name="SettingsPage_ExplorerFolderSortPriority.Header" xml:space="preserve">
+    <value>Folder sort priority</value>
+  </data>
+  <data name="SettingsPage_ExplorerFolderSortPriority.Description" xml:space="preserve">
+    <value>Choose whether folders should be sorted before the files, with the files or after the files</value>
+  </data>
+  <data name="SettingsPage_ExplorerArchiveGrouping.Description" xml:space="preserve">
+    <value>Choose whether zip and 7z files are listed together with files or with folders</value>
+  </data>
+  <data name="SettingsPage_ExplorerArchiveGrouping.Header" xml:space="preserve">
+    <value>Archive file grouping</value>
+  </data>
+  <data name="Settings_ExplorerArchiveGrouping_WithFiles.Content" xml:space="preserve">
+    <value>Group with files</value>
+  </data>
+  <data name="Settings_ExplorerArchiveGrouping_WithFolders.Content" xml:space="preserve">
+    <value>Group with folders</value>
+  </data>
+  <data name="Settings_Notifications.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="SettingsPage_WindowsNotifications.Header" xml:space="preserve">
+    <value>Windows notifications</value>
+  </data>
+  <data name="SettingsPage_WindowsNotifications.Description" xml:space="preserve">
+    <value>Send a notification when an operation completes</value>
+  </data>
+  <data name="SettingsPage_SystemSounds.Header" xml:space="preserve">
+    <value>System sounds</value>
+  </data>
+  <data name="SettingsPage_SystemSounds.Description" xml:space="preserve">
+    <value>Play a system sound when an operation completes</value>
+  </data>
+  <data name="SettingsPage_OpenOfflineFolderMenuItem.Text" xml:space="preserve">
+    <value>Open in explorer</value>
+  </data>
+  <data name="SettingsPage_OpenCueFolderMenuItem.Text" xml:space="preserve">
+    <value>Open in explorer</value>
+  </data>
+  <data name="SettingsPage_OpenDatabaseFolderMenuItem.Text" xml:space="preserve">
+    <value>Open in explorer</value>
+  </data>
+  <data name="SettingsPage_AboutFramework.Text" xml:space="preserve">
+    <value>Framework</value>
+  </data>
+  <data name="SettingsPage_AboutProcessArchitecture.Text" xml:space="preserve">
+    <value>Process architecture</value>
+  </data>
+  <data name="SettingsPage_AboutAudioEngine.Text" xml:space="preserve">
+    <value>Audio engine</value>
+  </data>
+  <data name="SettingsPage_AboutRuntimeIdentifier.Text" xml:space="preserve">
+    <value>Runtime identifier</value>
+  </data>
+  <data name="SettingsPage_AboutOperatingSystem.Text" xml:space="preserve">
+    <value>Operating system</value>
+  </data>
+  <data name="SettingsPage_SelectAllRedumpSystemsButton.Content" xml:space="preserve">
+    <value>Check all</value>
+  </data>
+  <data name="SettingsPage_UnselectAllRedumpSystemsButton.Content" xml:space="preserve">
+    <value>Uncheck all</value>
+  </data>
+  <data name="SettingsPage_CueFolderOptionsButton.AutomationProperties.Name" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_CueFolderOptionsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_DatabaseFolderOptionsButton.AutomationProperties.Name" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_DatabaseFolderOptionsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_OfflineFolderOptionsButton.AutomationProperties.Name" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_OfflineFolderOptionsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="SettingsPage_AboutWindowsRuntime.Text" xml:space="preserve">
+    <value>Windows App Runtime</value>
+  </data>
+  <data name="SettingsPage_AboutWindowsSDK.Text" xml:space="preserve">
+    <value>Windows App SDK</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Discue is an application that plays music from CD images</value>
+  </data>
+  <data name="SettingsPage_OpenInExplorer.Content" xml:space="preserve">
+    <value>Open settings file in explorer</value>
+  </data>
+  <data name="AppVersionFormat" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="HomePage_Title.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HomePage_StarterHeader.Text" xml:space="preserve">
+    <value>Meet Discue</value>
+  </data>
+  <data name="HomePage_StarterDescription.Text" xml:space="preserve">
+    <value>Discue plays music from CDs in bin/cue, zipped bin/cue and chd format.</value>
+  </data>
+  <data name="HomePage_StarterOpenFile.Text" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="HomePage_RecentDiscs.Text" xml:space="preserve">
+    <value>Recent discs</value>
+  </data>
+  <data name="HomePage_MruOpenMenuItem.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="HomePage_MruClearMenuItem.Text" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="HomePage_MruRemoveMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="HomePage_OpenFile.Text" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="NowPlayingPage_Title.Text" xml:space="preserve">
+    <value>Now playing</value>
+  </data>
+  <data name="LyricsPage_Title.Text" xml:space="preserve">
+    <value>Lyrics</value>
+  </data>
+  <data name="VisualizationPage_Title.Text" xml:space="preserve">
+    <value>Visualization</value>
+  </data>
+  <data name="LyricsPage_NoLyricsAvailable.Text" xml:space="preserve">
+    <value>(no lyrics available)</value>
+  </data>
+  <data name="PlaylistPage_Title.Text" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="PlaylistPage_Empty.Text" xml:space="preserve">
+    <value>Playlist is empty</value>
+  </data>
+  <data name="PlaylistPage_PlayMenuItem.Text" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="PlaybackControl_PreviousTrackButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Previous Track</value>
+  </data>
+  <data name="PlaybackControl_SeekForwardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Fast Forward</value>
+  </data>
+  <data name="PlaybackControl_PlayPauseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Play / Pause</value>
+  </data>
+  <data name="PlaybackControl_SeekBackwardButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rewind</value>
+  </data>
+  <data name="PlaybackControl_NextTrackButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Next Track</value>
+  </data>
+  <data name="PlaybackControl_NowPlaying.Text" xml:space="preserve">
+    <value>Now playing</value>
+  </data>
+  <data name="SettingsPage_Title.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsPage_AutoScrollLyrics.Header" xml:space="preserve">
+    <value>Auto scroll lyrics</value>
+  </data>
+  <data name="SettingsPage_LookupMetadataOnline.Header" xml:space="preserve">
+    <value>Look up album metadata online</value>
+  </data>
+  <data name="SettingsPage_LookupLyricsOnline.Header" xml:space="preserve">
+    <value>Look up lyrics online</value>
+  </data>
+  <data name="SettingsPage_Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SettingsPage_MediaInfo.Text" xml:space="preserve">
+    <value>Media info</value>
+  </data>
+  <data name="SettingsPage_About.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MainWindow_TitleBar.Title" xml:space="preserve">
+    <value>Discue</value>
+  </data>
+  <data name="MainWindow_Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="MainWindow_NowPlaying.Content" xml:space="preserve">
+    <value>Now Playing</value>
+  </data>
+  <data name="MainWindow_Lyrics.Content" xml:space="preserve">
+    <value>Lyrics</value>
+  </data>
+  <data name="MainWindow_Playlist.Content" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="MainWindow_Window.Title" xml:space="preserve">
+    <value>Discue</value>
+  </data>
+  <data name="MainWindow_Visualization.Content" xml:space="preserve">
+    <value>Visualization</value>
+  </data>
+  <data name="Settings_AudioEngine_Sdl3.Content" xml:space="preserve">
+    <value>SDL3</value>
+  </data>
+  <data name="Settings_AudioEngine_Wmp.Content" xml:space="preserve">
+    <value>Windows Media Player</value>
+  </data>
+  <data name="SettingsPage_AudioEngineInfo.Text" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="SettingsPage_AudioEngineExpander.Header" xml:space="preserve">
+    <value>Audio Engine</value>
+  </data>
+  <data name="SettingsPage_AudioEngineExpander.Description" xml:space="preserve">
+    <value>Select the backend that is used to play the audio.</value>
+  </data>
+  <data name="SettingsPage_AudioEngineRestartRequired.Title" xml:space="preserve">
+    <value>Restart required</value>
+  </data>
+  <data name="SettingsPage_AudioEngineRestartRequired.Message" xml:space="preserve">
+    <value>This setting will take effect after you restart the app.</value>
+  </data>
+  <data name="SettingsPage_RestartButton.Content" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+</root>

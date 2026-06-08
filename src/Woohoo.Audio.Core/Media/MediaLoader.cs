@@ -116,7 +116,6 @@ public sealed class MediaLoader
                     AlbumPerformer = cueSheet.Performer ?? string.Empty,
                     TrackTitle = track.Title ?? string.Empty,
                     TrackPerformer = track.Performer ?? cueSheet.Performer ?? string.Empty,
-                    TrackSongwriter = track.Songwriter ?? cueSheet.Songwriter ?? string.Empty,
                 };
 
                 albumTracks.Add(albumTrack);

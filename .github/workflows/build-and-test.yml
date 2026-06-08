@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 10
     env:
       dotnetActionVersion: '10.0.x'
-      solutionFile: AudioPlayer.slnx
+      solutionFile: Discue-XPlat.slnx
 
     steps:
     - name: Checkout repository

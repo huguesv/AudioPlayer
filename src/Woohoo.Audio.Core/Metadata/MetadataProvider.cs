@@ -17,7 +17,7 @@ public sealed class MetadataProvider : IMetadataProvider
         this.databaseClient = new CTDBCachingWebClient(Path.Combine(Path.GetTempPath(), "Woohoo.Audio", "CTDBCache"), new CTDBWebClient(httpClientFactory));
     }
 
-    public async Task<AlbumMetadata?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken)
+    public async Task<MetadataResult?> QueryAsync(int audioTrackCount, string toc, CancellationToken cancellationToken)
     {
         try
         {
@@ -47,20 +47,24 @@ public sealed class MetadataProvider : IMetadataProvider
                     .FirstOrDefault(m => m.CoverArts?.Any(a => a.Primary) == true);
             }
 
-            return new AlbumMetadata
+            return new MetadataResult
             {
-                Album = bestMetadata?.Album ?? string.Empty,
-                Artist = bestMetadata?.Artist ?? string.Empty,
+                Album = new AlbumMetadata
+                {
+                    Title = bestMetadata?.Album ?? string.Empty,
+                    Artist = bestMetadata?.Artist ?? string.Empty,
+                    Year = bestMetadata?.Year ?? string.Empty,
+                    Images = bestArtMetadata?.CoverArts?.Select(img => new ArtMetadata
+                    {
+                        IsPrimary = img.Primary,
+                        Url = img.Uri ?? string.Empty,
+                        SmallUrl = img.Uri150 ?? string.Empty,
+                    }).ToImmutableArray() ?? [],
+                },
                 Tracks = bestMetadata?.Tracks?.Select(t => new TrackMetadata
                 {
                     Name = t.Name ?? string.Empty,
                     Artist = t.Artist ?? string.Empty,
-                }).ToImmutableArray() ?? [],
-                Images = bestArtMetadata?.CoverArts?.Select(img => new ArtMetadata
-                {
-                    IsPrimary = img.Primary,
-                    Url = img.Uri ?? string.Empty,
-                    SmallUrl = img.Uri150 ?? string.Empty,
                 }).ToImmutableArray() ?? [],
             };
         }
