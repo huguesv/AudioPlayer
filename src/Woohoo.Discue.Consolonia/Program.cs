@@ -1,12 +1,12 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui;
+namespace Woohoo.Discue.Consolonia;
 
 using Avalonia;
-using Consolonia;
-using Consolonia.Fonts;
-using Consolonia.ManagedWindows.Storage;
+using global::Consolonia;
+using global::Consolonia.Fonts;
+using global::Consolonia.ManagedWindows.Storage;
 
 public static class Program
 {

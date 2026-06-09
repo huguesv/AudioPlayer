@@ -1,7 +1,7 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui.Views;
+namespace Woohoo.Discue.Consolonia.Views;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -9,7 +9,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Messaging;
-using Woohoo.Audio.Player.Tui.ViewModels;
+using Woohoo.Discue.Consolonia.ViewModels;
 
 public partial class MainControl : UserControl
 {

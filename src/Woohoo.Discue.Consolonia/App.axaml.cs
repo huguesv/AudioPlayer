@@ -1,7 +1,7 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui;
+namespace Woohoo.Discue.Consolonia;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -13,11 +13,12 @@ using Serilog;
 using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Playback.Sdl3;
-using Woohoo.Audio.Player.Tui.Services;
-using Woohoo.Audio.Player.Tui.ViewModels;
-using Woohoo.Audio.Player.Tui.Views;
 using Woohoo.Audio.Services;
 using Woohoo.Audio.Services.Impl;
+using Woohoo.Discue.Consolonia.Services;
+using Woohoo.Discue.Consolonia.Services.Impl;
+using Woohoo.Discue.Consolonia.ViewModels;
+using Woohoo.Discue.Consolonia.Views;
 
 public partial class App : Application
 {

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui.Services;
+namespace Woohoo.Discue.Consolonia.Services.Impl;
 
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
-using Consolonia.Themes;
-using Woohoo.Audio.Player.Tui.Views;
+using global::Consolonia.Themes;
+using Woohoo.Discue.Consolonia.Views;
 
 internal class ThemeService : IThemeService
 {
@@ -31,26 +31,13 @@ internal class ThemeService : IThemeService
         // Otherwise Avalonia sets some trash template to WindowsPanel
         mainWindow.Content = null;
 
-        App.Current!.Styles[0] = this.SelectedTheme switch
+        App.Current!.Styles[0] = new ModernTheme();
+        App.Current!.RequestedThemeVariant = this.SelectedTheme switch
         {
-            KnownThemes.ModernContrast => new ModernContrastTheme(),
-            KnownThemes.TurboVision => new TurboVisionTheme(),
-            KnownThemes.TurboVisionCompatible => new TurboVisionCompatibleTheme(),
-            KnownThemes.TurboVisionGray => new TurboVisionGrayTheme(),
-            KnownThemes.TurboVisionElegant => new TurboVisionElegantTheme(),
-            _ => new ModernTheme(),
+            KnownThemes.ModernDark => ThemeVariant.Dark,
+            KnownThemes.ModernLight => ThemeVariant.Light,
+            _ => ThemeVariant.Default,
         };
-
-        if (App.Current!.Styles[0] is ModernTheme)
-        {
-            App.Current!.RequestedThemeVariant = this.SelectedTheme switch
-            {
-                KnownThemes.ModernDark => ThemeVariant.Dark,
-                KnownThemes.ModernLight => ThemeVariant.Light,
-                _ => ThemeVariant.Default,
-            };
-
-        }
 
         mainWindow.Content = new MainControl() { DataContext = mainWindow.DataContext };
     }

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui.Converters;
+namespace Woohoo.Discue.Consolonia.Converters;
 
 using System;
 using System.Globalization;

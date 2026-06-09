@@ -1,14 +1,14 @@
 <Window
-    x:Class="Woohoo.Audio.Player.Tui.Views.MainWindow"
+    x:Class="Woohoo.Discue.Consolonia.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:console="https://github.com/jinek/consolonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Woohoo.Audio.Player.Tui.Views"
+    xmlns:local="clr-namespace:Woohoo.Discue.Consolonia.Views"
     xmlns:managedWindows="clr-namespace:Consolonia.ManagedWindows;assembly=Consolonia.ManagedWindows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:services="using:Woohoo.Audio.Player.Tui.Services"
-    xmlns:vm="using:Woohoo.Audio.Player.Tui.ViewModels"
+    xmlns:services="using:Woohoo.Discue.Consolonia.Services"
+    xmlns:vm="using:Woohoo.Discue.Consolonia.ViewModels"
     Title="Discue">
 
     <Window.Styles>

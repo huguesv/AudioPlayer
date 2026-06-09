@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Tui.ViewModels;
+namespace Woohoo.Discue.Consolonia.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Woohoo.Audio.Player.Tui.Services;
 using Woohoo.Audio.Services;
+using Woohoo.Discue.Consolonia.Services;
 
 public partial class MainViewModel : ObservableObject
 {
