@@ -1,8 +1,8 @@
 <Application
-    x:Class="Woohoo.Audio.Player.App"
+    x:Class="Woohoo.Discue.Avalonia.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Woohoo.Audio.Player"
+    xmlns:local="using:Woohoo.Discue.Avalonia"
     Name="Discue"
     RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->

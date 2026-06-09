@@ -1,26 +1,27 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player;
+namespace Woohoo.Discue.Avalonia;
 
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core.Plugins;
-using Avalonia.Markup.Xaml;
-using Avalonia.VisualTree;
+using global::Avalonia;
+using global::Avalonia.Controls;
+using global::Avalonia.Controls.ApplicationLifetimes;
+using global::Avalonia.Data.Core.Plugins;
+using global::Avalonia.Markup.Xaml;
+using global::Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Playback.Sdl3;
-using Woohoo.Audio.Player.Services;
-using Woohoo.Audio.Player.ViewModels;
-using Woohoo.Audio.Player.Views;
 using Woohoo.Audio.Services;
 using Woohoo.Audio.Services.Impl;
-using Woohoo.Discue.Contracts.Services;
+using Woohoo.Discue.Avalonia.Services;
+using Woohoo.Discue.Avalonia.Services.DesignTime;
+using Woohoo.Discue.Avalonia.Services.Impl;
+using Woohoo.Discue.Avalonia.ViewModels;
+using Woohoo.Discue.Avalonia.Views;
 
 public partial class App : Application
 {

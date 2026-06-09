@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Converters;
+namespace Woohoo.Discue.Avalonia.Converters;
 
 using System;
-using Avalonia.Data.Converters;
-using Avalonia.Media;
+using global::Avalonia.Data.Converters;
+using global::Avalonia.Media;
 
 public class BoolToBrushConverter : IValueConverter
 {

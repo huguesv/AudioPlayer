@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Services;
+namespace Woohoo.Discue.Avalonia.Services.Impl;
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
+using global::Avalonia.Platform.Storage;
+using Woohoo.Discue.Avalonia.Services;
 
 internal class FilePickerService : IFilePickerService
 {

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.ViewModels;
+namespace Woohoo.Discue.Avalonia.ViewModels;
 
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using global::Avalonia.Platform.Storage;
 using Microsoft.Extensions.Logging;
-using Woohoo.Audio.Player.Services;
 using Woohoo.Audio.Services;
+using Woohoo.Discue.Avalonia.Services;
 
 public partial class MainViewModel : ObservableObject
 {

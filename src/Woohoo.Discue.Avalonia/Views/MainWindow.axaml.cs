@@ -1,20 +1,20 @@
 // Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Views;
+namespace Woohoo.Discue.Avalonia.Views;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Messaging;
+using global::Avalonia;
+using global::Avalonia.Controls;
+using global::Avalonia.Input;
+using global::Avalonia.Media;
+using global::Avalonia.Platform.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Woohoo.Audio.Player.ViewModels;
 using Woohoo.Audio.Services;
+using Woohoo.Discue.Avalonia.ViewModels;
 
 public partial class MainWindow : Window
 {
@@ -161,7 +161,7 @@ public partial class MainWindow : Window
         this.BandPlot.Plot.DataBackground.Color = regionColor;
     }
 
-    private void Window_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    private void Window_KeyUp(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.MediaPlayPause)
         {
@@ -218,7 +218,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void PlaylistListBox_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    private void PlaylistListBox_KeyUp(object? sender, KeyEventArgs e)
     {
         if (e.Key != Key.Enter)
         {
@@ -231,7 +231,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RecentDiscsListBox_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    private void RecentDiscsListBox_DoubleTapped(object? sender, TappedEventArgs e)
     {
         if (sender is ListBox { SelectedItem: HomeRecentDiscViewModel recentDisc })
         {
@@ -242,7 +242,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RecentDiscsListBox_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    private void RecentDiscsListBox_KeyUp(object? sender, KeyEventArgs e)
     {
         if (e.Key != Key.Enter)
         {

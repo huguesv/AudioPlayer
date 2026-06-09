@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Services;
+namespace Woohoo.Discue.Avalonia.Services.Impl;
 
 using System;
-using Avalonia.Controls;
+using global::Avalonia.Controls;
+using Woohoo.Discue.Avalonia.Services;
 
 internal class TopLevelProvider : ITopLevelProvider
 {

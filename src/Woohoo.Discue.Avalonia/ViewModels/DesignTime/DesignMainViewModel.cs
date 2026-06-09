@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.ViewModels.DesignTime;
+namespace Woohoo.Discue.Avalonia.ViewModels.DesignTime;
 
-using Woohoo.Audio.Player.Services;
+using Woohoo.Discue.Avalonia.Services.DesignTime;
+using Woohoo.Discue.Avalonia.Services.Impl;
 
 public class DesignMainViewModel : MainViewModel
 {
