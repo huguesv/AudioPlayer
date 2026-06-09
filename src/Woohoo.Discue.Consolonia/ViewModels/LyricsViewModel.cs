@@ -92,15 +92,13 @@ public sealed partial class LyricsViewModel : ObservableObject
     {
         this.lyric = lyrics;
 
-        IEnumerable<LyricsLineViewModel> lineViewModels = lyrics is not null
-            ? lyrics
-                .EnumerateLines()
-                .Select(lyricsLine => new LyricsLineViewModel
-                {
-                    Timestamp = lyricsLine.Timestamp,
-                    Text = lyricsLine.Text,
-                })
-            : [];
+        IEnumerable<LyricsLineViewModel> lineViewModels = lyrics?
+            .EnumerateLines()
+            .Select(lyricsLine => new LyricsLineViewModel
+            {
+                Timestamp = lyricsLine.Timestamp,
+                Text = lyricsLine.Text,
+            }) ?? [];
 
         // WinRT sometimes throws COM Exception with no details if clearing
         // the lines collection that is bound to the UI.
