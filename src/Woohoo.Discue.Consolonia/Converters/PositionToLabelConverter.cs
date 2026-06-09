@@ -3,8 +3,6 @@
 
 namespace Woohoo.Discue.Consolonia.Converters;
 
-using System;
-using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 

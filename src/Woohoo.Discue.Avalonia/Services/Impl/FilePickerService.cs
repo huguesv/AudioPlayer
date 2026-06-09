@@ -3,9 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.Services.Impl;
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using global::Avalonia.Platform.Storage;
 using Woohoo.Discue.Avalonia.Services;
 
@@ -15,6 +12,8 @@ internal class FilePickerService : IFilePickerService
 
     public FilePickerService(ITopLevelProvider topLevelProvider)
     {
+        ArgumentNullException.ThrowIfNull(topLevelProvider);
+
         this.topLevelProvider = topLevelProvider;
     }
 

@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.Converters;
 
-using System;
 using global::Avalonia.Data.Converters;
 using global::Avalonia.Media;
 

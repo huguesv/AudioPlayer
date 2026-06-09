@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.Services.Impl;
 
-using System;
 using global::Avalonia.Threading;
 using Woohoo.Audio.Services;
 

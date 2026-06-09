@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Consolonia.ViewModels;
 
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Core.Playback;

@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia;
 
-using System;
 using global::Avalonia;
 
 internal sealed class Program

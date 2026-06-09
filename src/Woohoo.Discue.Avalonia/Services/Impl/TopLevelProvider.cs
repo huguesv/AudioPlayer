@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.Services.Impl;
 
-using System;
 using global::Avalonia.Controls;
 using Woohoo.Discue.Avalonia.Services;
 

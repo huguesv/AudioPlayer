@@ -3,9 +3,7 @@
 
 namespace Woohoo.Discue.Consolonia.Services.Impl;
 
-using System.Collections.Generic;
 using Avalonia.Platform.Storage;
-using static System.Net.WebRequestMethods;
 
 internal class FilePickerService : IFilePickerService
 {
@@ -13,6 +11,8 @@ internal class FilePickerService : IFilePickerService
 
     public FilePickerService(ITopLevelProvider topLevelProvider)
     {
+        ArgumentNullException.ThrowIfNull(topLevelProvider);
+
         this.topLevelProvider = topLevelProvider;
     }
 

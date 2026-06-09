@@ -3,9 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.ViewModels;
 
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using global::Avalonia;
 
 public sealed class SettingsAboutInformationViewModel

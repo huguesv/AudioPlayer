@@ -3,8 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.ViewModels;
 
-using System;
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;

@@ -5,7 +5,6 @@ namespace Woohoo.Discue.Avalonia.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using global::Avalonia.Platform.Storage;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Avalonia.Services;

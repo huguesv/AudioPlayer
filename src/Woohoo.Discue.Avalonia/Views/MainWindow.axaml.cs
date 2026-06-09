@@ -3,9 +3,6 @@
 
 namespace Woohoo.Discue.Avalonia.Views;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using CommunityToolkit.Mvvm.Messaging;
 using global::Avalonia;
 using global::Avalonia.Controls;

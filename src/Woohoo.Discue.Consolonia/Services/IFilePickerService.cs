@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Consolonia.Services;
 
-using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
 public interface IFilePickerService

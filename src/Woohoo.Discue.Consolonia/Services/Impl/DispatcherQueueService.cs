@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Consolonia.Services.Impl;
 
-using System;
 using Avalonia.Threading;
 using Woohoo.Audio.Services;
 
