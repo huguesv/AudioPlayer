@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Consolonia.ViewModels;
 
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -18,19 +17,16 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     private const string PlayCaptionPause = " ■ ";
 
     private readonly IMediaPlayerService mediaPlayerService;
-    private readonly IAvaloniaBitmapCacheService bitmapCacheService;
     private readonly ILogger logger;
     private readonly IDispatcherQueue dispatcherQueue;
 
     public PlaybackViewModel(
         IDispatcherQueueService dispatcherQueueService,
         IMediaPlayerService mediaPlayerService,
-        IAvaloniaBitmapCacheService bitmapCacheService,
         ILogger<PlaybackViewModel> logger)
     {
         ArgumentNullException.ThrowIfNull(dispatcherQueueService);
         ArgumentNullException.ThrowIfNull(mediaPlayerService);
-        ArgumentNullException.ThrowIfNull(bitmapCacheService);
         ArgumentNullException.ThrowIfNull(logger);
 
         WeakReferenceMessenger.Default.Register<LoadAlbumMessage>(this, (r, m) =>
@@ -44,7 +40,6 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         });
 
         this.mediaPlayerService = mediaPlayerService;
-        this.bitmapCacheService = bitmapCacheService;
         this.logger = logger;
         this.dispatcherQueue = dispatcherQueueService.GetDispatcherQueue();
 
@@ -88,16 +83,8 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     public partial string AlbumPerformer { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial string AlbumArtUrl { get; set; } = string.Empty;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullAlbumTitle))]
     public partial string AlbumFileName { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial IImage? AlbumArt { get; set; }
 
     [ObservableProperty]
     public partial string CurrentTrackTitle { get; set; } = string.Empty;
@@ -117,8 +104,6 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
             }
         }
     }
-
-    public bool HasAlbumArt => this.AlbumArt is not null;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentTrackDurationAsSeconds))]
@@ -245,8 +230,6 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
                     ? trackMetadata.TrackTitle
                     : $"Track {track.TrackNumber:00}";
 
-                this.AlbumArtUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
-
                 this.CurrentTrackDuration = track.Duration;
                 this.CurrentTrackPosition = this.mediaPlayerService.PlaybackPosition;
 
@@ -276,9 +259,6 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
                 this.CurrentTrackTitle = !string.IsNullOrEmpty(trackMetadata?.TrackTitle)
                     ? trackMetadata.TrackTitle
                     : $"Track {track.TrackNumber:00}";
-
-                var disc = this.mediaPlayerService.FindDisc(e.Track.DiscId);
-                this.AlbumArtUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
             }
         });
     }
@@ -327,28 +307,5 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     {
         this.mediaPlayerService.Volume = value;
         this.IsMuted = false;
-    }
-
-    partial void OnAlbumArtUrlChanged(string value)
-    {
-        _ = this.UpdateAlbumArt(value);
-    }
-
-    private async Task UpdateAlbumArt(string url)
-    {
-        await this.LoadAlbumArtAsync(url);
-    }
-
-    private async Task LoadAlbumArtAsync(string url)
-    {
-        if (url.StartsWith("http:") || url.StartsWith("https:"))
-        {
-            var result = await this.bitmapCacheService.GetLocalImageAsync(new Uri(url));
-            this.AlbumArt = result;
-        }
-        else
-        {
-            this.AlbumArt = null;
-        }
     }
 }

@@ -45,6 +45,8 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         this.logger = logger;
         this.dispatcherQueue = dispatcherQueueService.GetDispatcherQueue();
 
+        this.AlbumArt = new CacheableImageViewModel(bitmapCacheService);
+
         this.mediaPlayerService.ActiveTrackChanged += this.MediaPlayerService_ActiveTrackChanged;
         this.mediaPlayerService.MetadataUpdated += this.MediaPlayerService_MetadataUpdated;
         this.mediaPlayerService.PlaybackPositionChanged += this.MediaPlayerService_PlaybackPositionChanged;
@@ -82,16 +84,11 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     public partial string AlbumPerformer { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial string AlbumArtUrl { get; set; } = string.Empty;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullAlbumTitle))]
     public partial string AlbumFileName { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial IImage? AlbumArt { get; set; }
+    public partial CacheableImageViewModel AlbumArt { get; set; }
 
     [ObservableProperty]
     public partial string CurrentTrackTitle { get; set; } = string.Empty;
@@ -111,8 +108,6 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
             }
         }
     }
-
-    public bool HasAlbumArt => this.AlbumArt is not null;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentTrackDurationAsSeconds))]
@@ -227,7 +222,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
                     ? trackMetadata.TrackTitle
                     : $"Track {track.TrackNumber:00}";
 
-                this.AlbumArtUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
+                this.AlbumArt.ImageUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
 
                 this.CurrentTrackDuration = track.Duration;
                 this.CurrentTrackPosition = this.mediaPlayerService.PlaybackPosition;
@@ -260,7 +255,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
                     : $"Track {track.TrackNumber:00}";
 
                 var disc = this.mediaPlayerService.FindDisc(e.Track.DiscId);
-                this.AlbumArtUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
+                this.AlbumArt.ImageUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
             }
         });
     }
@@ -308,28 +303,5 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     {
         this.mediaPlayerService.Volume = value;
         this.IsMuted = false;
-    }
-
-    partial void OnAlbumArtUrlChanged(string value)
-    {
-        _ = this.UpdateAlbumArt(value);
-    }
-
-    private async Task UpdateAlbumArt(string url)
-    {
-        await this.LoadAlbumArtAsync(url);
-    }
-
-    private async Task LoadAlbumArtAsync(string url)
-    {
-        if (url.StartsWith("http:") || url.StartsWith("https:"))
-        {
-            var result = await this.bitmapCacheService.GetLocalImageAsync(new Uri(url));
-            this.AlbumArt = result;
-        }
-        else
-        {
-            this.AlbumArt = null;
-        }
     }
 }

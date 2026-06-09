@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml.Media;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Contracts.Services;
 
@@ -29,6 +28,8 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
         this.mruService = mruService;
         this.bitmapCacheService = bitmapCacheService;
         this.logger = logger;
+
+        this.AlbumArt = new CacheableImageViewModel(bitmapCacheService);
     }
 
     [ObservableProperty]
@@ -38,14 +39,7 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
     public partial string FullAlbumTitle { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial string AlbumArtUrl { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial ImageSource? AlbumArt { get; set; }
-
-    public bool HasAlbumArt => this.AlbumArt is not null;
+    public partial CacheableImageViewModel AlbumArt { get; set; }
 
     [RelayCommand(CanExecute = nameof(CanLoadAlbum))]
     public void LoadAlbum()
@@ -85,29 +79,6 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Error processing command.");
-        }
-    }
-
-    partial void OnAlbumArtUrlChanged(string value)
-    {
-        _ = this.UpdateAlbumArt(value);
-    }
-
-    private async Task UpdateAlbumArt(string url)
-    {
-        await this.LoadAlbumArtAsync(url);
-    }
-
-    private async Task LoadAlbumArtAsync(string url)
-    {
-        if (url.StartsWith("http:") || url.StartsWith("https:"))
-        {
-            var result = await this.bitmapCacheService.GetLocalImageAsync(new Uri(url));
-            this.AlbumArt = result;
-        }
-        else
-        {
-            this.AlbumArt = null;
         }
     }
 }

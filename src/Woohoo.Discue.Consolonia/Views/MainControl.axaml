@@ -407,11 +407,11 @@
 
             <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}">
                 <Grid RowDefinitions="*,Auto">
-                    <Grid ColumnDefinitions="1*,1*" IsVisible="{Binding NowPlaying.HasAlbumArt, Mode=OneWay}">
+                    <Grid ColumnDefinitions="1*,1*" IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
                         <Image
                             Grid.Column="0"
                             Margin="1"
-                            Source="{Binding NowPlaying.AlbumArt, Mode=OneWay}"
+                            Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
                             Stretch="Uniform" />
                         <StackPanel
                             Grid.Column="1"
@@ -434,7 +434,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Vertical"
-                        IsVisible="{Binding !NowPlaying.HasAlbumArt, Mode=OneWay}"
+                        IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
                         Spacing="1">
                         <TextBlock
                             HorizontalAlignment="Center"

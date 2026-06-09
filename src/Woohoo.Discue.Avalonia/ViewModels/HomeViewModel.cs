@@ -63,8 +63,9 @@ public sealed partial class HomeViewModel : ObservableObject
             {
                 AlbumFilePath = item.FilePath,
                 FullAlbumTitle = item.FullAlbumTitle,
-                AlbumArtUrl = item.AlbumArtUrl ?? string.Empty,
             };
+
+            itemViewModel.AlbumArt.ImageUrl = item.AlbumArtUrl ?? string.Empty;
 
             this.RecentDiscs.Add(itemViewModel);
         }

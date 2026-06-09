@@ -111,12 +111,12 @@
                                         VerticalAlignment="Center"
                                         FontSize="32"
                                         Glyph="&#xEC4F;"
-                                        Visibility="{x:Bind HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
+                                        Visibility="{x:Bind AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
                                     <Image
                                         Width="48"
                                         Height="48"
-                                        Source="{x:Bind AlbumArt, Mode=OneWay}"
-                                        Visibility="{x:Bind HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                                        Source="{x:Bind AlbumArt.LocalImage, Mode=OneWay}"
+                                        Visibility="{x:Bind AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                                 </Grid>
                             </Border>
 

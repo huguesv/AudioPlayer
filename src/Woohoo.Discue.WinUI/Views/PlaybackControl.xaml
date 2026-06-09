@@ -85,12 +85,12 @@
                                         VerticalAlignment="Center"
                                         FontSize="32"
                                         Glyph="&#xEC4F;"
-                                        Visibility="{x:Bind ViewModel.HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
+                                        Visibility="{x:Bind ViewModel.AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
                                     <Image
                                         Width="72"
                                         Height="72"
-                                        Source="{x:Bind ViewModel.AlbumArt, Mode=OneWay}"
-                                        Visibility="{x:Bind ViewModel.HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                                        Source="{x:Bind ViewModel.AlbumArt.LocalImage, Mode=OneWay}"
+                                        Visibility="{x:Bind ViewModel.AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                                 </Grid>
                             </Border>
                             <StackPanel

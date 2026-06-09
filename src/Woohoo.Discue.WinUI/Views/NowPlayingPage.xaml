@@ -54,15 +54,15 @@
                             VerticalAlignment="Center"
                             FontSize="72"
                             Glyph="&#xEC4F;"
-                            Visibility="{x:Bind ViewModel.HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
+                            Visibility="{x:Bind ViewModel.AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}" />
                         <Image
                             Width="256"
                             Height="256"
                             Margin="-4"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Source="{x:Bind ViewModel.AlbumArt, Mode=OneWay}"
-                            Visibility="{x:Bind ViewModel.HasAlbumArt, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                            Source="{x:Bind ViewModel.AlbumArt.LocalImage, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.AlbumArt.HasImage, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                     </Grid>
                 </Border>
             </Grid>

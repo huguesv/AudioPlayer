@@ -33,6 +33,8 @@ public sealed partial class NowPlayingViewModel : ObservableObject
         this.logger = logger;
         this.dispatcherQueue = dispatcherQueueService.GetDispatcherQueue();
 
+        this.AlbumArt = new CacheableImageViewModel(bitmapCacheService);
+
         this.mediaPlayerService.ActiveTrackChanged += this.MediaPlayerService_ActiveTrackChanged;
         this.mediaPlayerService.LyricsUpdated += this.MediaPlayerService_LyricsUpdated;
         this.mediaPlayerService.MetadataUpdated += this.MediaPlayerService_MetadataUpdated;
@@ -48,12 +50,7 @@ public sealed partial class NowPlayingViewModel : ObservableObject
     public partial bool IsNowPlayingEnabled { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial string AlbumArtUrl { get; set; } = string.Empty;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasAlbumArt))]
-    public partial IImage? AlbumArt { get; set; }
+    public partial CacheableImageViewModel AlbumArt { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullAlbumTitle))]
@@ -91,8 +88,6 @@ public sealed partial class NowPlayingViewModel : ObservableObject
             }
         }
     }
-
-    public bool HasAlbumArt => this.AlbumArt is not null;
 
     private void MediaPlayerService_ActiveTrackChanged(object? sender, EventArgs e)
     {
@@ -160,7 +155,7 @@ public sealed partial class NowPlayingViewModel : ObservableObject
             this.AlbumPerformer = trackMetadata?.AlbumPerformer ?? string.Empty;
             this.Position = this.mediaPlayerService.PlaybackPosition;
 
-            this.AlbumArtUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
+            this.AlbumArt.ImageUrl = discMetadata?.GetPrimaryArtUrl() ?? string.Empty;
         }
     }
 
@@ -172,29 +167,6 @@ public sealed partial class NowPlayingViewModel : ObservableObject
             var lyrics = this.mediaPlayerService.GetTrackLyrics(activeTrack.Id);
             var lyric = lyrics?.GetLineAt(this.Position);
             this.CurrentLyric = lyric ?? string.Empty;
-        }
-    }
-
-    partial void OnAlbumArtUrlChanged(string value)
-    {
-        _ = this.UpdateAlbumArt(value);
-    }
-
-    private async Task UpdateAlbumArt(string url)
-    {
-        await this.LoadAlbumArtAsync(url);
-    }
-
-    private async Task LoadAlbumArtAsync(string url)
-    {
-        if (url.StartsWith("http:") || url.StartsWith("https:"))
-        {
-            var result = await this.bitmapCacheService.GetLocalImageAsync(new Uri(url));
-            this.AlbumArt = result;
-        }
-        else
-        {
-            this.AlbumArt = null;
         }
     }
 }

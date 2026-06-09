@@ -321,7 +321,7 @@
                                         Grid.Column="0"
                                         Width="48"
                                         Height="48"
-                                        Source="{Binding AlbumArt, Mode=OneWay}" />
+                                        Source="{Binding AlbumArt.LocalImage, Mode=OneWay}" />
                                     <StackPanel Grid.Column="1" Orientation="Vertical">
                                         <TextBlock
                                             Background="Transparent"
@@ -514,12 +514,12 @@
                 <Grid RowDefinitions="*,Auto">
                     <Grid
                         Grid.Row="0"
-                        IsVisible="{Binding NowPlaying.HasAlbumArt, Mode=OneWay}"
+                        IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
                         ColumnDefinitions="1*,1*">
                         <Image
                             Grid.Column="0"
                             Margin="10"
-                            Source="{Binding NowPlaying.AlbumArt, Mode=OneWay}"
+                            Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
                             Stretch="Uniform">
                             <Image.Effect>
                                 <DropShadowEffect BlurRadius="10" 
@@ -552,7 +552,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Vertical"
-                        IsVisible="{Binding !NowPlaying.HasAlbumArt}"
+                        IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
                         Spacing="10">
                         <TextBlock
                             HorizontalAlignment="Center"

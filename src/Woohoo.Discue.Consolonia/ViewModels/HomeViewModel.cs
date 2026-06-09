@@ -95,11 +95,10 @@ public sealed partial class HomeViewModel : ObservableObject
 
         foreach (var item in this.mruService.GetItems().OrderByDescending(item => item.LastUpdated))
         {
-            var itemViewModel = new HomeRecentDiscViewModel(this.mruService, this.bitmapCacheService, this.logger)
+            var itemViewModel = new HomeRecentDiscViewModel(this.mruService, this.logger)
             {
                 AlbumFilePath = item.FilePath,
                 FullAlbumTitle = item.FullAlbumTitle,
-                AlbumArtUrl = item.AlbumArtUrl ?? string.Empty,
             };
 
             this.RecentDiscs.Add(itemViewModel);
