@@ -55,6 +55,11 @@
     <ProjectReference Include="..\Woohoo.Audio.Services.Impl\Woohoo.Audio.Services.Impl.csproj" />
     <ProjectReference Include="..\Woohoo.Audio.Services\Woohoo.Audio.Services.csproj" />
     <ProjectReference Include="..\Woohoo.ConsoloniaControls\Woohoo.ConsoloniaControls.csproj" />
+    <ProjectReference Include="..\Woohoo.Discue.Shared.Avalonia\Woohoo.Discue.Shared.Avalonia.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 
 </Project>

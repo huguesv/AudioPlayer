@@ -19,6 +19,8 @@ using Woohoo.Discue.Consolonia.Services;
 using Woohoo.Discue.Consolonia.Services.Impl;
 using Woohoo.Discue.Consolonia.ViewModels;
 using Woohoo.Discue.Consolonia.Views;
+using Woohoo.Discue.Shared.Avalonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
 public partial class App : Application
 {

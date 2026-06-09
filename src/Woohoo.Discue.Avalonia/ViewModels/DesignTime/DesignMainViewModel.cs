@@ -4,7 +4,7 @@
 namespace Woohoo.Discue.Avalonia.ViewModels.DesignTime;
 
 using Woohoo.Discue.Avalonia.Services.DesignTime;
-using Woohoo.Discue.Avalonia.Services.Impl;
+using Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
 public class DesignMainViewModel : MainViewModel
 {

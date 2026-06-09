@@ -20,6 +20,7 @@
   <Project Path="Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj" />
   <Project Path="Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj" />
   <Project Path="Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj" />
+  <Project Path="Woohoo.Discue.Shared.Avalonia/Woohoo.Discue.Shared.Avalonia.csproj" Id="0c9b3b57-827e-460f-b043-1ee18be78959" />
   <Project Path="Woohoo.Discue.WinUI/Woohoo.Discue.WinUI.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />

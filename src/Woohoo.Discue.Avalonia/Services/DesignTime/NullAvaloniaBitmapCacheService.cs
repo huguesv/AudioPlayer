@@ -5,7 +5,7 @@ namespace Woohoo.Discue.Avalonia.Services.DesignTime;
 
 using System;
 using global::Avalonia.Media;
-using Woohoo.Discue.Avalonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services;
 
 internal class NullAvaloniaBitmapCacheService : IAvaloniaBitmapCacheService
 {

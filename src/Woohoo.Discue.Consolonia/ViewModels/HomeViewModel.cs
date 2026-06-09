@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Services;
-using Woohoo.Discue.Consolonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services;
 
 public sealed partial class HomeViewModel : ObservableObject
 {

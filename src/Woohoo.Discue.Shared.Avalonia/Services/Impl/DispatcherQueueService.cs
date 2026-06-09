@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Discue.Consolonia.Services.Impl;
+namespace Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
-using Avalonia.Threading;
+using global::Avalonia.Threading;
 using Woohoo.Audio.Services;
 
-internal class DispatcherQueueService : IDispatcherQueueService
+public sealed class DispatcherQueueService : IDispatcherQueueService
 {
     public IDispatcherQueue GetDispatcherQueue()
     {

@@ -22,6 +22,8 @@ using Woohoo.Discue.Avalonia.Services.DesignTime;
 using Woohoo.Discue.Avalonia.Services.Impl;
 using Woohoo.Discue.Avalonia.ViewModels;
 using Woohoo.Discue.Avalonia.Views;
+using Woohoo.Discue.Shared.Avalonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
 public partial class App : Application
 {

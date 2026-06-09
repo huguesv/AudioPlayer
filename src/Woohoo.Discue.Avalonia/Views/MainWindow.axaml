@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-    xmlns:converters="using:Woohoo.Discue.Avalonia.Converters"
+    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Woohoo.Discue.Avalonia.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

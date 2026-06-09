@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Services;
-using Woohoo.Discue.Consolonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services;
 
 public partial class MainViewModel : ObservableObject
 {

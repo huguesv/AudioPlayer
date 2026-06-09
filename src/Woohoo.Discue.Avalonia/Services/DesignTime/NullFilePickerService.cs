@@ -6,7 +6,7 @@ namespace Woohoo.Discue.Avalonia.Services.DesignTime;
 using System;
 using System.Threading.Tasks;
 using global::Avalonia.Platform.Storage;
-using Woohoo.Discue.Avalonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services;
 
 internal class NullFilePickerService : IFilePickerService
 {

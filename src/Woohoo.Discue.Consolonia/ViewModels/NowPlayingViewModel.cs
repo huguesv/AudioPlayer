@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Services;
-using Woohoo.Discue.Consolonia.Services;
+using Woohoo.Discue.Shared.Avalonia.Services;
 
 public sealed partial class NowPlayingViewModel : ObservableObject
 {

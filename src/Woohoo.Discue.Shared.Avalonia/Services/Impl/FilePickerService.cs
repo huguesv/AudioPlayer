@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Discue.Avalonia.Services.Impl;
+namespace Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
 using global::Avalonia.Platform.Storage;
-using Woohoo.Discue.Avalonia.Services;
 
-internal class FilePickerService : IFilePickerService
+public sealed class FilePickerService : IFilePickerService
 {
     private readonly ITopLevelProvider topLevelProvider;
 

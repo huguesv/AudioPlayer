@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Discue.Consolonia.Services.Impl;
+namespace Woohoo.Discue.Shared.Avalonia.Services.Impl;
 
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
+using global::Avalonia.Media;
+using global::Avalonia.Media.Imaging;
 using Woohoo.Audio.Services;
 
 public sealed class AvaloniaBitmapCacheService : IAvaloniaBitmapCacheService
