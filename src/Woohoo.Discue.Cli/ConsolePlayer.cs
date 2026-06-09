@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Cli;
+namespace Woohoo.Discue.Cli;
 
 using System.Timers;
 using Woohoo.Audio.Core.Playback;
@@ -249,14 +249,14 @@ internal class ConsolePlayer
         this.UpdateCurrentLyric(track);
     }
 
-    private void MediaPlayerService_LyricsUpdated(object? sender, Core.Playback.AudioPlayerTrackEventArgs e)
+    private void MediaPlayerService_LyricsUpdated(object? sender, AudioPlayerTrackEventArgs e)
     {
         var track = this.mediaPlayerService.GetActiveTrack();
 
         this.UpdateCurrentLyric(track);
     }
 
-    private void MediaPlayerService_MetadataUpdated(object? sender, Core.Playback.AudioPlayerTrackEventArgs e)
+    private void MediaPlayerService_MetadataUpdated(object? sender, AudioPlayerTrackEventArgs e)
     {
         var track = this.mediaPlayerService.GetActiveTrack();
 

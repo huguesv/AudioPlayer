@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Player.Cli;
+namespace Woohoo.Discue.Cli;
 
 using System.CommandLine;
 using System.IO;
-using Woohoo.Audio.Player.Cli.Services;
 using Woohoo.Audio.Services.Impl;
+using Woohoo.Discue.Cli.Services;
 
 internal class Program
 {

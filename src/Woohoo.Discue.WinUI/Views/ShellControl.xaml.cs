@@ -34,7 +34,7 @@ public sealed partial class ShellControl : UserControl, IDisposable
         this.navigationService.Navigated += this.OnNavigated;
         this.disposables.Add(() => this.navigationService.Navigated -= this.OnNavigated);
 
-        this.navView.SelectedItem = navView.MenuItems.OfType<NavigationViewItem>().First();
+        this.navView.SelectedItem = this.navView.MenuItems.OfType<NavigationViewItem>().First();
 
         this.navigationService.NavigateTo(typeof(HomeViewModel).FullName!, null);
     }

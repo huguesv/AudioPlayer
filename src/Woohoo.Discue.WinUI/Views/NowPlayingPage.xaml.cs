@@ -3,7 +3,6 @@
 
 namespace Woohoo.Discue.Views;
 
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Woohoo.Discue.ViewModels;
 
@@ -19,6 +18,6 @@ public sealed partial class NowPlayingPage : Page
 
     private void Border_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        this.artShadow.Receivers.Add(artShadowCastGrid);
+        this.artShadow.Receivers.Add(this.artShadowCastGrid);
     }
 }
