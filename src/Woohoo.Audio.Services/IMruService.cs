@@ -19,5 +19,5 @@ public interface IMruService
 
     MruItem? FindItem(string filePath);
 
-    event EventHandler<MruItemsChangedEventArgs> ItemsChanged;
+    event EventHandler<EventArgs> ItemsChanged;
 }

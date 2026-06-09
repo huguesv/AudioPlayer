@@ -5,7 +5,6 @@ namespace Woohoo.Discue.Services;
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.UI.Xaml.Controls;
-using Woohoo.Audio.Services;
 using Woohoo.Discue.Contracts.Services;
 using Woohoo.Discue.Helpers;
 using Woohoo.Discue.ViewModels;

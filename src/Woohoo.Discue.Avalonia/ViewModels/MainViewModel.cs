@@ -15,13 +15,17 @@ public partial class MainViewModel : ObservableObject
     private readonly IDispatcherQueue dispatcherQueue;
     private readonly IFilePickerService filePickerService;
     private readonly IMediaPlayerService mediaPlayerService;
+    private readonly ILocalSettingsService localSettingsService;
     private readonly ILogger logger;
+
+    private string lastBrowseFolder = string.Empty;
 
     public MainViewModel(
         IDispatcherQueueService dispatcherQueueService,
         IFilePickerService filePickerService,
         IPowerManagementService powerManagementService,
         IMediaPlayerService mediaPlayerService,
+        ILocalSettingsService localSettingsService,
         HomeViewModel homeViewModel,
         PlaybackViewModel playbackViewModel,
         NowPlayingViewModel nowPlayingViewModel,
@@ -34,6 +38,7 @@ public partial class MainViewModel : ObservableObject
         ArgumentNullException.ThrowIfNull(filePickerService);
         ArgumentNullException.ThrowIfNull(powerManagementService);
         ArgumentNullException.ThrowIfNull(mediaPlayerService);
+        ArgumentNullException.ThrowIfNull(localSettingsService);
         ArgumentNullException.ThrowIfNull(homeViewModel);
         ArgumentNullException.ThrowIfNull(playbackViewModel);
         ArgumentNullException.ThrowIfNull(nowPlayingViewModel);
@@ -44,6 +49,7 @@ public partial class MainViewModel : ObservableObject
 
         this.filePickerService = filePickerService;
         this.mediaPlayerService = mediaPlayerService;
+        this.localSettingsService = localSettingsService;
         this.Home = homeViewModel;
         this.Playback = playbackViewModel;
         this.NowPlaying = nowPlayingViewModel;
@@ -86,16 +92,22 @@ public partial class MainViewModel : ObservableObject
     public async Task BrowseAsync()
     {
         var filePaths = await this.filePickerService.GetFilePathsAsync(
-            Woohoo.Discue.Avalonia.Localized.BrowseDialogTitle,
+            this.lastBrowseFolder,
+            Localized.BrowseDialogTitle,
             allowMultiple: false,
             [
-                new FilePickerFileType("Disc Image Files") { Patterns = ["*.cue", "*.zip", "*.chd"] },
-                new FilePickerFileType("All Files") { Patterns = ["*.*"] },
+                new("Disc Image Files") { Patterns = ["*.cue", "*.zip", "*.chd"] },
+                new("All Files") { Patterns = ["*.*"] },
             ]);
 
         if (filePaths.Length > 0)
         {
-            await this.OpenFileAsync(filePaths[0]);
+            var filePath = filePaths[0];
+
+            this.lastBrowseFolder = Path.GetDirectoryName(filePath) ?? string.Empty;
+            this.localSettingsService.SaveSetting(KnownSettingKeys.LastBrowseFolder, this.lastBrowseFolder);
+
+            await this.OpenFileAsync(filePath);
         }
     }
 

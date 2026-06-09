@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Contracts.Services;
 
-public sealed class WindowsBitmapCacheService : IWindowsBitmapCacheService
+internal sealed class WindowsBitmapCacheService : IWindowsBitmapCacheService
 {
     private readonly IBitmapCacheService bitmapCacheService;
     private readonly Dictionary<Uri, BitmapImage?> memoryCache;

@@ -5,6 +5,7 @@ namespace Woohoo.Discue.Consolonia.Services.Impl;
 
 using System.Collections.Generic;
 using Avalonia.Platform.Storage;
+using static System.Net.WebRequestMethods;
 
 internal class FilePickerService : IFilePickerService
 {
@@ -15,7 +16,7 @@ internal class FilePickerService : IFilePickerService
         this.topLevelProvider = topLevelProvider;
     }
 
-    public async Task<string?> GetFilePathAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
+    public async Task<string[]> GetFilePathsAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
     {
         var window = this.topLevelProvider.GetTopLevel() ?? throw new InvalidOperationException();
         if (window.StorageProvider.CanOpen == true)
@@ -30,14 +31,21 @@ internal class FilePickerService : IFilePickerService
                 FileTypeFilter = filters,
             };
 
-            IReadOnlyList<IStorageFile> files = await window.StorageProvider.OpenFilePickerAsync(options);
-            IStorageFile? file = files?.FirstOrDefault();
-            if (file != null)
+            var files = await window.StorageProvider.OpenFilePickerAsync(options);
+
+            var filePaths = new List<string>();
+            foreach (var file in files)
             {
-                return file.TryGetLocalPath();
+                string? path = file.TryGetLocalPath();
+                if (!string.IsNullOrEmpty(path))
+                {
+                    filePaths.Add(path);
+                }
             }
+
+            return [.. filePaths];
         }
 
-        return null;
+        return [];
     }
 }

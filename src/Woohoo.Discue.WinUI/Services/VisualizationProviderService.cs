@@ -7,7 +7,7 @@ using System;
 using Microsoft.UI.Xaml;
 using Woohoo.Audio.Services;
 
-public sealed class VisualizationProviderService : IVisualizationProviderService
+internal sealed class VisualizationProviderService : IVisualizationProviderService
 {
     private readonly IMediaPlayerService mediaPlayerService;
     private readonly DispatcherTimer visualizationTimer;

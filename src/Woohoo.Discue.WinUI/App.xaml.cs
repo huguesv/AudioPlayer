@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Serilog;
+using Windows.Storage;
 using WinUIEx;
 using Woohoo.Audio.Core;
 using Woohoo.Audio.Core.Playback;
@@ -60,15 +61,37 @@ public partial class App : Application
                         factoryMap);
                 });
 
-                services.AddSingleton<IBitmapCacheService, BitmapCacheService>();
+                services.AddSingleton<IBitmapCacheService>(serviceProvider =>
+                {
+                    var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+                    return new BitmapCacheService(httpClientFactory)
+                    {
+                        CacheFolderPath = ApplicationData.Current.LocalCacheFolder.Path,
+                    };
+                });
                 services.AddSingleton<IWindowsBitmapCacheService, WindowsBitmapCacheService>();
-                services.AddSingleton<ICacheLocationProviderService, CacheLocationProviderService>();
                 services.AddSingleton<IDispatcherQueueService, DispatcherQueueService>();
                 services.AddSingleton<IHttpClientFactory, HttpClientFactory>();
-                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+                services.AddSingleton<ILocalSettingsService>(_ =>
+                {
+                    var settingsFilePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "Woohoo.Discue.WinUI",
+                        "ApplicationData",
+                        "LocalSettings.json");
+                    return new LocalSettingsService() { FilePath = settingsFilePath };
+                });
                 services.AddSingleton<IMediaPlayerService, MediaPlayerService>();
-                services.AddSingleton<IMruLocationProviderService, MruLocationProviderService>();
-                services.AddSingleton<IMruService, MruService>();
+                services.AddSingleton<IMruService>(_ =>
+                {
+                    var mruFilePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "Woohoo.Discue.WinUI",
+                        "ApplicationData",
+                        "Mru.json");
+                    return new MruService() { MruFilePath = mruFilePath };
+                });
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddTransient<INavigationViewService, NavigationViewService>();
                 services.AddSingleton<IPageService, PageService>();

@@ -18,17 +18,22 @@ internal class FilePickerService : IFilePickerService
         this.topLevelProvider = topLevelProvider;
     }
 
-    public async Task<string[]> GetFilePathsAsync(string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
+    public async Task<string[]> GetFilePathsAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
     {
         var window = this.topLevelProvider.GetTopLevel() ?? throw new InvalidOperationException();
         if (window.StorageProvider.CanOpen == true)
         {
-            var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            IStorageFolder? startLocation = await window.StorageProvider.TryGetFolderFromPathAsync(startFolderPath);
+
+            var options = new FilePickerOpenOptions
             {
                 Title = title,
-                FileTypeFilter = filters,
                 AllowMultiple = allowMultiple,
-            });
+                SuggestedStartLocation = startLocation,
+                FileTypeFilter = filters,
+            };
+
+            var files = await window.StorageProvider.OpenFilePickerAsync(options);
 
             var filePaths = new List<string>();
             foreach (var file in files)
@@ -40,7 +45,7 @@ internal class FilePickerService : IFilePickerService
                 }
             }
 
-            return filePaths.ToArray();
+            return [.. filePaths];
         }
 
         return [];

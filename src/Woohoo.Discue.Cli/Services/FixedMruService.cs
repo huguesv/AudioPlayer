@@ -10,7 +10,7 @@ using Woohoo.Audio.Services;
 internal sealed class FixedMruService : IMruService
 {
 #pragma warning disable CS0067 // The event is never used
-    public event EventHandler<MruItemsChangedEventArgs>? ItemsChanged;
+    public event EventHandler<EventArgs>? ItemsChanged;
 #pragma warning restore CS0067
 
     public void AddItem(MruItem item)

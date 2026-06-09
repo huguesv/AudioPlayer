@@ -44,15 +44,42 @@ public partial class App : Application
                 });
 
                 services.AddSingleton<IAvaloniaBitmapCacheService, AvaloniaBitmapCacheService>();
-                services.AddSingleton<IBitmapCacheService, BitmapCacheService>();
-                services.AddSingleton<ICacheLocationProviderService, CacheLocationProviderService>();
+                services.AddSingleton<IBitmapCacheService>(serviceProvider =>
+                {
+                    var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+                    var cacheFolderPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "Woohoo.Discue.Consolonia",
+                        "Cache");
+
+                    return new BitmapCacheService(httpClientFactory)
+                    {
+                        CacheFolderPath = cacheFolderPath,
+                    };
+                });
                 services.AddSingleton<IDispatcherQueueService, DispatcherQueueService>();
                 services.AddSingleton<IFilePickerService, FilePickerService>();
                 services.AddSingleton<IHttpClientFactory, HttpClientFactory>();
-                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+                services.AddSingleton<ILocalSettingsService>(_ =>
+                {
+                    var settingsFilePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "Woohoo.Discue.Consolonia",
+                        "ApplicationData",
+                        "LocalSettings.json");
+                    return new LocalSettingsService() { FilePath = settingsFilePath };
+                });
                 services.AddSingleton<IMediaPlayerService, MediaPlayerService>();
-                services.AddSingleton<IMruLocationProviderService, MruLocationProviderService>();
-                services.AddSingleton<IMruService, MruService>();
+                services.AddSingleton<IMruService>(_ =>
+                {
+                    var mruFilePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "Woohoo.Discue.Consolonia",
+                        "ApplicationData",
+                        "Mru.json");
+                    return new MruService() { MruFilePath = mruFilePath };
+                });
                 services.AddSingleton<IVisualizationProviderService, VisualizationProviderService>();
                 services.AddSingleton<ITopLevelProvider, TopLevelProvider>();
 

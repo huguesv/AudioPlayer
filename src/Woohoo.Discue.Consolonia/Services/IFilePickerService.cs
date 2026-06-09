@@ -8,5 +8,5 @@ using Avalonia.Platform.Storage;
 
 public interface IFilePickerService
 {
-    Task<string?> GetFilePathAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters);
+    Task<string[]> GetFilePathsAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters);
 }

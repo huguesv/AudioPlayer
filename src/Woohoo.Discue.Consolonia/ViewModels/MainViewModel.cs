@@ -104,7 +104,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public async Task BrowseAsync()
     {
-        var filePath = await this.filePickerService.GetFilePathAsync(
+        var filePaths = await this.filePickerService.GetFilePathsAsync(
             this.lastBrowseFolder,
             "Open Disc Image",
             allowMultiple: false,
@@ -113,12 +113,14 @@ public partial class MainViewModel : ObservableObject
                 new("All Files") { Patterns = ["*.*"] }
             ]);
 
-        if (!string.IsNullOrEmpty(filePath))
+        if (filePaths.Length > 0)
         {
-            await this.OpenFileAsync(filePath);
+            var filePath = filePaths[0];
 
             this.lastBrowseFolder = Path.GetDirectoryName(filePath) ?? string.Empty;
             this.localSettingsService.SaveSetting(KnownSettingKeys.LastBrowseFolder, this.lastBrowseFolder);
+
+            await this.OpenFileAsync(filePath);
         }
     }
 

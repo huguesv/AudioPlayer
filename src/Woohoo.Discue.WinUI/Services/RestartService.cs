@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Windows.AppLifecycle;
 using Woohoo.Discue.Contracts.Services;
 
-internal class RestartService : IRestartService
+internal sealed class RestartService : IRestartService
 {
-    public RestartService()
-    {
-    }
-
     public Task RestartAsync()
     {
         _ = AppInstance.Restart(string.Empty);

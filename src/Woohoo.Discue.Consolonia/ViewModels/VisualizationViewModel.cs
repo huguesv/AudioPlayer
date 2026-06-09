@@ -14,6 +14,9 @@ public sealed partial class VisualizationViewModel : ObservableObject
     private readonly IVisualizationProviderService visualizationProviderService;
     private readonly ILogger logger;
 
+    private readonly double[] psdPlotTemp;
+    private readonly double[] bandsPlotTemp;
+
     public VisualizationViewModel(
         IDispatcherQueueService dispatcherQueueService,
         IVisualizationProviderService visualizationProviderService,
@@ -29,7 +32,9 @@ public sealed partial class VisualizationViewModel : ObservableObject
 
         this.WavePlotData = new double[441];
         this.PsdPlotData = new double[257];
+        this.psdPlotTemp = new double[257];
         this.BandsPlotData = new double[8];
+        this.bandsPlotTemp = new double[8];
 
         this.visualizationProviderService.DataAvailable += this.VisualizationProviderService_DataAvailable;
     }
@@ -51,21 +56,19 @@ public sealed partial class VisualizationViewModel : ObservableObject
         // Manually scale psd data from (-100,0) to (-1,1)
         // TODO: make the signal plot control customizable
         // enough so we don't have to do this.
-        double[] psd = new double[this.PsdPlotData.Length];
-        double[] bands = new double[this.BandsPlotData.Length];
-        e.Visualization.CopyTo(psd, bands, this.WavePlotData);
-        for (int i = 0; i < psd.Length; i++)
+        e.Visualization.CopyTo(psdPlotTemp, bandsPlotTemp, this.WavePlotData);
+        for (int i = 0; i < psdPlotTemp.Length; i++)
         {
-            psd[i] = (psd[i] + 50) / 50.0;
+            psdPlotTemp[i] = (psdPlotTemp[i] + 50) / 50.0;
         }
 
-        for (int i = 0; i < bands.Length; i++)
+        for (int i = 0; i < bandsPlotTemp.Length; i++)
         {
-            bands[i] = bands[i] + 100;
+            bandsPlotTemp[i] = bandsPlotTemp[i] + 100;
         }
 
-        Array.Copy(psd, this.PsdPlotData, psd.Length);
-        Array.Copy(bands, this.BandsPlotData, bands.Length);
+        Array.Copy(psdPlotTemp, this.PsdPlotData, psdPlotTemp.Length);
+        Array.Copy(bandsPlotTemp, this.BandsPlotData, bandsPlotTemp.Length);
 
         this.PlotTick++;
         if (this.PlotTick == long.MaxValue)

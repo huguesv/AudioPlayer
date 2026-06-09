@@ -12,18 +12,15 @@ using Woohoo.Audio.Services;
 public sealed class BitmapCacheService : IBitmapCacheService
 {
     private readonly IHttpClientFactory httpClientFactory;
-    private readonly string cacheFolder;
 
-    public BitmapCacheService(
-        IHttpClientFactory httpClientFactory,
-        ICacheLocationProviderService cacheLocationProviderService)
+    public BitmapCacheService(IHttpClientFactory httpClientFactory)
     {
         ArgumentNullException.ThrowIfNull(httpClientFactory);
-        ArgumentNullException.ThrowIfNull(cacheLocationProviderService);
 
         this.httpClientFactory = httpClientFactory;
-        this.cacheFolder = Path.Combine(cacheLocationProviderService.CacheFolderPath, "AlbumArt");
     }
+
+    public required string CacheFolderPath { get; init; }
 
     public async Task<Uri?> GetLocalUriAsync(Uri uri)
     {
@@ -33,7 +30,7 @@ public sealed class BitmapCacheService : IBitmapCacheService
 
     public async Task<string?> GetLocalFileAsync(Uri uri)
     {
-        var filePath = Path.Combine(this.cacheFolder, ComputeLocalFileName(uri));
+        var filePath = Path.Combine(this.CacheFolderPath, ComputeLocalFileName(uri));
         if (File.Exists(filePath))
         {
             return filePath;
@@ -44,7 +41,7 @@ public sealed class BitmapCacheService : IBitmapCacheService
         {
             var result = await httpClient.GetByteArrayAsync(uri);
 
-            Directory.CreateDirectory(this.cacheFolder);
+            Directory.CreateDirectory(this.CacheFolderPath);
             await File.WriteAllBytesAsync(filePath, result);
 
             return filePath;
@@ -73,7 +70,7 @@ public sealed class BitmapCacheService : IBitmapCacheService
         var lastDotIndex = uri.LastIndexOf('.');
         if (lastDotIndex >= 0)
         {
-            return uri.Substring(lastDotIndex);
+            return uri[lastDotIndex..];
         }
 
         return string.Empty;

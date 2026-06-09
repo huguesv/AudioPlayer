@@ -12,40 +12,22 @@ public sealed class MruService : IMruService
 {
     private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
 
-    private readonly string MruDataFolder;
-    private readonly string MruFilePath;
-
     private readonly List<MruItem> items = [];
 
-    public event EventHandler<MruItemsChangedEventArgs>? ItemsChanged;
+    private bool isInitialized;
 
-    public MruService(IMruLocationProviderService mruLocationProviderService)
+    public event EventHandler<EventArgs>? ItemsChanged;
+
+    public MruService()
     {
-        ArgumentNullException.ThrowIfNull(mruLocationProviderService);
-
-        this.MruFilePath = mruLocationProviderService.MruFilePath;
-        this.MruDataFolder = Path.GetDirectoryName(this.MruFilePath) ?? throw new Exception($"Invalid MRU file path: {this.MruFilePath}");
-
-        try
-        {
-            if (File.Exists(this.MruFilePath))
-            {
-                string json = File.ReadAllText(this.MruFilePath);
-                this.items = JsonSerializer.Deserialize<List<MruItem>>(json) ?? [];
-            }
-            else
-            {
-                this.items = [];
-            }
-        }
-        catch
-        {
-            this.items = [];
-        }
     }
+
+    public required string MruFilePath { get; init; }
 
     public ImmutableArray<MruItem> GetItems()
     {
+        this.EnsureInitialized();
+
         return [.. this.items];
     }
 
@@ -53,34 +35,42 @@ public sealed class MruService : IMruService
     {
         ArgumentNullException.ThrowIfNull(item);
 
+        this.EnsureInitialized();
+
         items.Add(item);
         this.Save();
-        this.ItemsChanged?.Invoke(this, new MruItemsChangedEventArgs());
+        this.ItemsChanged?.Invoke(this, new EventArgs());
     }
 
     public void RemoveItem(string filePath)
     {
         ArgumentNullException.ThrowIfNull(filePath);
 
+        this.EnsureInitialized();
+
         var item = this.items.Find(i => i.FilePath == filePath);
         if (item is not null)
         {
             this.items.Remove(item);
             this.Save();
-            this.ItemsChanged?.Invoke(this, new MruItemsChangedEventArgs());
+            this.ItemsChanged?.Invoke(this, new EventArgs());
         }
     }
 
     public void ClearItems()
     {
+        this.EnsureInitialized();
+
         this.items.Clear();
         this.Save();
-        this.ItemsChanged?.Invoke(this, new MruItemsChangedEventArgs());
+        this.ItemsChanged?.Invoke(this, new EventArgs());
     }
 
     public void AddOrUpdateItem(MruItem item)
     {
         ArgumentNullException.ThrowIfNull(item);
+
+        this.EnsureInitialized();
 
         int index = this.items.FindIndex(i => i.FilePath == item.FilePath);
         if (index >= 0)
@@ -93,19 +83,52 @@ public sealed class MruService : IMruService
         }
 
         this.Save();
-        this.ItemsChanged?.Invoke(this, new MruItemsChangedEventArgs());
+        this.ItemsChanged?.Invoke(this, new EventArgs());
     }
 
     public MruItem? FindItem(string filePath)
     {
         ArgumentNullException.ThrowIfNull(filePath);
 
+        this.EnsureInitialized();
+
         return this.items.Find(i => i.FilePath == filePath);
+    }
+
+    private void EnsureInitialized()
+    {
+        if (this.isInitialized)
+        {
+            return;
+        }
+
+        try
+        {
+            this.items.Clear();
+
+            if (File.Exists(this.MruFilePath))
+            {
+                string json = File.ReadAllText(this.MruFilePath);
+                var deserialized = JsonSerializer.Deserialize<List<MruItem>>(json) ?? [];
+                this.items.AddRange(deserialized);
+            }
+        }
+        catch
+        {
+            this.items.Clear();
+        }
+        finally
+        {
+            this.isInitialized = true;
+        }
     }
 
     private void Save()
     {
-        Directory.CreateDirectory(MruDataFolder);
+        var folderPath = Path.GetDirectoryName(this.MruFilePath)
+           ?? throw new Exception($"Invalid MRU file path: {this.MruFilePath}");
+
+        Directory.CreateDirectory(folderPath);
 
         string json = JsonSerializer.Serialize(this.items, SerializerOptions);
         File.WriteAllText(this.MruFilePath, json);

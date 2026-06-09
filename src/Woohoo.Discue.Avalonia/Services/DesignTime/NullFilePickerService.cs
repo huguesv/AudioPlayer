@@ -10,7 +10,7 @@ using Woohoo.Discue.Avalonia.Services;
 
 internal class NullFilePickerService : IFilePickerService
 {
-    public Task<string[]> GetFilePathsAsync(string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
+    public Task<string[]> GetFilePathsAsync(string startFolderPath, string title, bool allowMultiple, IReadOnlyList<FilePickerFileType> filters)
     {
         return Task.FromResult(Array.Empty<string>());
     }

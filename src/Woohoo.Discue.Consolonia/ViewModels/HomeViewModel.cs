@@ -109,7 +109,7 @@ public sealed partial class HomeViewModel : ObservableObject
         this.HasRecentDiscs = this.RecentDiscs.Count > 0;
     }
 
-    private void OnMruItemsChanged(object? sender, MruItemsChangedEventArgs e)
+    private void OnMruItemsChanged(object? sender, EventArgs e)
     {
         this.LoadRecentDiscs();
     }
