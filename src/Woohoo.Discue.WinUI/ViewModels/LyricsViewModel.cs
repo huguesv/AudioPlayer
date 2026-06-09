@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Shapes;
 using Woohoo.Audio.Core.Lyrics;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Services;
@@ -103,38 +104,20 @@ public sealed partial class LyricsViewModel : ObservableObject
     {
         this.lyric = lyrics;
 
+        IEnumerable<LyricsLineViewModel> lineViewModels = lyrics is not null
+            ? lyrics
+                .EnumerateLines()
+                .Select(lyricsLine => new LyricsLineViewModel
+                {
+                    Timestamp = lyricsLine.Timestamp,
+                    Text = lyricsLine.Text,
+                })
+            : [];
+
         // WinRT sometimes throws COM Exception with no details if clearing
         // the lines collection that is bound to the UI.
         // Trying a workaround by replacing the Lines property value with a whole new collection.
-        var lines = new ObservableCollection<LyricsLineViewModel>();
-
-        if (lyrics is not null)
-        {
-            if (lyrics.SyncedLines.Length > 0)
-            {
-                foreach (var line in lyrics.SyncedLines)
-                {
-                    lines.Add(new LyricsLineViewModel
-                    {
-                        Timestamp = line.Timestamp,
-                        Text = line.Text,
-                    });
-                }
-            }
-            else if (lyrics.PlainText.Length > 0)
-            {
-                foreach (var line in lyrics.PlainText.Split(new[] { '\r', '\n' }, StringSplitOptions.TrimEntries))
-                {
-                    lines.Add(new LyricsLineViewModel
-                    {
-                        Timestamp = TimeSpan.Zero,
-                        Text = line,
-                    });
-                }
-            }
-        }
-
-        this.Lines = lines;
+        this.Lines = new ObservableCollection<LyricsLineViewModel>(lineViewModels);
 
         this.HasLyrics = this.Lines.Count > 0;
     }
