@@ -7,12 +7,15 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Avalonia;
+using global::Consolonia;
 
 public sealed class SettingsAboutInformationViewModel
 {
     public string AppVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
     public string AvaloniaVersion { get; } = typeof(Application).Assembly.GetName().Version!.ToString();
+
+    public string ConsoloniaVersion { get; } = typeof(ApplicationStartup).Assembly.GetName().Version!.ToString();
 
     public string DotNetFramework { get; } = RuntimeInformation.FrameworkDescription;
 

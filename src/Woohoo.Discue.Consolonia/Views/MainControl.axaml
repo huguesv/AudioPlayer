@@ -322,6 +322,10 @@
                     <TextBlock Text="{Binding Settings.AboutInfo.AvaloniaVersion, Mode=OneTime}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,0,1,0" Text="Consolonia version:" />
+                    <TextBlock Text="{Binding Settings.AboutInfo.ConsoloniaVersion, Mode=OneTime}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="0,0,1,0" Text="Framework:" />
                     <TextBlock Text="{Binding Settings.AboutInfo.DotNetFramework, Mode=OneTime}" />
                 </StackPanel>
