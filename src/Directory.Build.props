@@ -25,6 +25,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- See also https://github.com/dotnet/efcore/issues/38257 -->
+    <!-- TODO: Remove this when Microsoft.EntityFrameworkCore.Sqlite is updated -->
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)Common\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
