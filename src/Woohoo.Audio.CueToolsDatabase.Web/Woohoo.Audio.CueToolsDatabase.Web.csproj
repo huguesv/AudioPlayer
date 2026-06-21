@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Noise Core</AssemblyTitle>
+    <AssemblyTitle>Cue Tools Database Web</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,18 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.XmlSerializer.Generator" />
     <PackageReference Include="StyleCop.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Woohoo.Audio.CueToolsDatabase.Web\Woohoo.Audio.CueToolsDatabase.Web.csproj" />
-    <ProjectReference Include="..\Woohoo.IO.Compression.Chd\Woohoo.IO.Compression.Chd.csproj" />
   </ItemGroup>
 
 </Project>

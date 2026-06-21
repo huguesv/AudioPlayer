@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Woohoo.Audio.Core.UnitTest {
+namespace Woohoo.Audio.CueToolsDatabase.Web.UnitTest {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Woohoo.Audio.Core.UnitTest {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Woohoo.Audio.Core.UnitTest.DataResources", typeof(DataResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Woohoo.Audio.CueToolsDatabase.Web.UnitTest.DataResources", typeof(DataResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

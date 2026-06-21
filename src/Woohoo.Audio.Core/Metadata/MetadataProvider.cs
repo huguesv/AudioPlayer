@@ -6,7 +6,7 @@ namespace Woohoo.Audio.Core.Metadata;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Woohoo.Audio.Core.Internal.CueToolsDatabase;
+using Woohoo.Audio.CueToolsDatabase.Web;
 
 public sealed class MetadataProvider : IMetadataProvider
 {

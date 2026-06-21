@@ -36,6 +36,7 @@
     <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
     <PackageVersion Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
+    <PackageVersion Include="Microsoft.XmlSerializer.Generator" Version="10.0.9" />
     <PackageVersion Include="ppy.SDL3-CS" Version="2026.520.0" />
     <PackageVersion Include="RichardSzalay.MockHttp" Version="7.0.0" />
     <PackageVersion Include="ScottPlot.Avalonia" Version="5.1.58" />

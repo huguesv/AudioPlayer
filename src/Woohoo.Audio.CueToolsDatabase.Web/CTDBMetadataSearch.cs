@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.Internal.CueToolsDatabase;
+namespace Woohoo.Audio.CueToolsDatabase.Web;
 
 internal enum CTDBMetadataSearch
 {

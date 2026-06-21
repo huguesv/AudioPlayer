@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.UnitTest;
+namespace Woohoo.Audio.CueToolsDatabase.Web.UnitTest;
 
 using System.Net;
 using RichardSzalay.MockHttp;
-using Woohoo.Audio.Core.Internal.CueToolsDatabase;
-using Woohoo.Audio.Core.UnitTest.Infrastructure;
+using Woohoo.Audio.CueToolsDatabase.Web.UnitTest.Infrastructure;
 
 public class CTDBWebClientUnitTest
 {

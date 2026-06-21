@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyTitle>Audio Core Unit Test</AssemblyTitle>
+    <AssemblyTitle>CueToolsDatabase Unit Test</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +43,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
+    <ProjectReference Include="..\Woohoo.Audio.CueToolsDatabase.Web\Woohoo.Audio.CueToolsDatabase.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataResources.Designer.cs">
+      <DependentUpon>DataResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="DataResources.resx">
+      <LastGenOutput>DataResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
