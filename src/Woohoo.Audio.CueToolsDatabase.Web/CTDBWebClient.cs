@@ -6,7 +6,6 @@ namespace Woohoo.Audio.CueToolsDatabase.Web;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Woohoo.Audio.CueToolsDatabase.Web.Models;
 
 public sealed class CTDBWebClient : ICTDBWebClient
@@ -49,10 +48,8 @@ public sealed class CTDBWebClient : ICTDBWebClient
             throw new HttpRequestException($"Request failed with status code {resp.StatusCode}");
         }
 
-        var serializer = new XmlSerializer(typeof(CTDBResponse));
-
         using var stream = await resp.Content.ReadAsStreamAsync(cancellationToken);
-        var response = serializer.Deserialize(stream) as CTDBResponse;
+        var response = CTDBSerialization.Deserialize(stream) as CTDBResponse;
         return response;
     }
 }

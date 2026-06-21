@@ -5,7 +5,6 @@ namespace Woohoo.Audio.CueToolsDatabase.Web;
 
 using System;
 using System.Text;
-using System.Xml.Serialization;
 using Woohoo.Audio.CueToolsDatabase.Web.Models;
 
 internal sealed class CTDBResponseCache
@@ -76,9 +75,8 @@ internal sealed class CTDBResponseCache
 
         try
         {
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
             using var fileStream = File.OpenRead(cacheFilePath);
-            response = serializer.Deserialize(fileStream) as CTDBResponse;
+            response = CTDBSerialization.Deserialize(fileStream) as CTDBResponse;
             return response is not null;
         }
         catch
@@ -102,9 +100,8 @@ internal sealed class CTDBResponseCache
 
             Directory.CreateDirectory(folderPath);
 
-            var serializer = new XmlSerializer(typeof(CTDBResponse));
             using var fileStream = File.Create(cacheFilePath);
-            serializer.Serialize(fileStream, result);
+            CTDBSerialization.Serialize(fileStream, result);
         }
         catch
         {

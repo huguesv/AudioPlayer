@@ -11,6 +11,12 @@ public sealed class CTDBResponseMeta
 {
     public CTDBResponseMeta()
     {
+        // Trimming support
+        typeof(CTDBResponseMetaImage[]).GetDefaultMembers();
+        typeof(CTDBResponseMetaTrack[]).GetDefaultMembers();
+        typeof(CTDBResponseMetaLabel[]).GetDefaultMembers();
+        typeof(CTDBResponseMetaRelease[]).GetDefaultMembers();
+
         this.Source = string.Empty;
         this.Id = string.Empty;
         this.Artist = string.Empty;

@@ -4,14 +4,20 @@
 namespace Woohoo.Audio.CueToolsDatabase.Web.Models;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;
 
 [Serializable]
 [XmlRoot(ElementName = "ctdb", Namespace = "http://db.cuetools.net/ns/mmd-1.0#")]
 public sealed class CTDBResponse
 {
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(CTDBResponse))]
     public CTDBResponse()
     {
+        // Trimming support
+        typeof(CTDBResponseEntry[]).GetDefaultMembers();
+        typeof(CTDBResponseMeta[]).GetDefaultMembers();
+
         this.Status = string.Empty;
         this.UpdateUrl = string.Empty;
         this.UpdateMsg = string.Empty;
