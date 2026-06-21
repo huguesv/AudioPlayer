@@ -55,12 +55,9 @@ internal sealed class NavigationService : INavigationService
     {
         if (this.CanGoBack)
         {
-            var vmBeforeNavigation = this.frame.GetPageViewModel();
+            var navigationAware = this.frame.GetPageNavigationAware();
             this.frame.GoBack();
-            if (vmBeforeNavigation is INavigationAware navigationAware)
-            {
-                navigationAware.OnNavigatedFrom();
-            }
+            navigationAware?.OnNavigatedFrom();
 
             return true;
         }
@@ -75,15 +72,12 @@ internal sealed class NavigationService : INavigationService
         if (this.frame != null && (this.frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(this.lastParameterUsed))))
         {
             this.frame.Tag = clearNavigation;
-            var vmBeforeNavigation = this.frame.GetPageViewModel();
+            var navigationAware = this.frame.GetPageNavigationAware();
             var navigated = this.frame.Navigate(pageType, parameter);
             if (navigated)
             {
                 this.lastParameterUsed = parameter;
-                if (vmBeforeNavigation is INavigationAware navigationAware)
-                {
-                    navigationAware.OnNavigatedFrom();
-                }
+                navigationAware?.OnNavigatedFrom();
             }
 
             return navigated;
@@ -121,10 +115,8 @@ internal sealed class NavigationService : INavigationService
                 frame.BackStack.Clear();
             }
 
-            if (frame.GetPageViewModel() is INavigationAware navigationAware)
-            {
-                navigationAware.OnNavigatedTo(e.Parameter);
-            }
+            var navigationAware = frame.GetPageNavigationAware();
+            navigationAware?.OnNavigatedTo(e.Parameter);
 
             this.Navigated?.Invoke(sender, e);
         }

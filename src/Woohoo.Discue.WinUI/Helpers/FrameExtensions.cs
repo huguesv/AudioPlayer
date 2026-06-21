@@ -4,8 +4,9 @@
 namespace Woohoo.Discue.Helpers;
 
 using Microsoft.UI.Xaml.Controls;
+using Woohoo.Discue.Contracts.ViewModel;
 
 internal static class FrameExtensions
 {
-    public static object? GetPageViewModel(this Frame frame) => frame?.Content?.GetType().GetProperty("ViewModel")?.GetValue(frame.Content, null);
+    public static INavigationAware? GetPageNavigationAware(this Frame frame) => frame?.Content as INavigationAware;
 }

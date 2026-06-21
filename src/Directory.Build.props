@@ -13,6 +13,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <SignAssembly>false</SignAssembly>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <PublishTrimmed>false</PublishTrimmed>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
   </PropertyGroup>
 
   <PropertyGroup>
