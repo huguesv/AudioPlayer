@@ -56,7 +56,7 @@ public sealed class LrcLibWebClient : ILrcLibWebClient
         }
 
         using var stream = await resp.Content.ReadAsStreamAsync(cancellationToken);
-        var response = await JsonSerializer.DeserializeAsync<LrcLibResponse>(stream, SerializationOptions, cancellationToken);
+        var response = await JsonSerializer.DeserializeAsync<LrcLibResponse>(stream, LrcLibResponseJsonContext.Default.LrcLibResponse, cancellationToken);
 
         return response;
     }

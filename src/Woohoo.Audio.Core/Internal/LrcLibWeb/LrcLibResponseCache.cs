@@ -11,11 +11,6 @@ using Woohoo.Audio.Core.Internal.LrcLibWeb.Models;
 
 internal sealed class LrcLibResponseCache
 {
-    private static readonly JsonSerializerOptions SerializationOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
-
     private readonly string filePath;
 
     public LrcLibResponseCache(string cacheFolder, string albumTitle, string artistName, string trackTitle, TimeSpan duration)
@@ -90,7 +85,7 @@ internal sealed class LrcLibResponseCache
             }
 
             using var fileStream = File.OpenRead(cacheFilePath);
-            response = JsonSerializer.Deserialize<LrcLibResponse>(fileStream, SerializationOptions);
+            response = JsonSerializer.Deserialize<LrcLibResponse>(fileStream, LrcLibResponseJsonContext.Default.LrcLibResponse);
             return response is not null;
         }
         catch
@@ -119,7 +114,7 @@ internal sealed class LrcLibResponseCache
             // Empty file indicates no result
             if (result is not null)
             {
-                JsonSerializer.Serialize(fileStream, result, SerializationOptions);
+                JsonSerializer.Serialize(fileStream, result, LrcLibResponseJsonContext.Default.LrcLibResponse);
             }
         }
         catch
