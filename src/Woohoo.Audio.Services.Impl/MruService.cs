@@ -7,11 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public sealed class MruService : IMruService
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
-
     private readonly List<MruItem> items = [];
 
     private bool isInitialized;
@@ -109,7 +108,7 @@ public sealed class MruService : IMruService
             if (File.Exists(this.MruFilePath))
             {
                 string json = File.ReadAllText(this.MruFilePath);
-                var deserialized = JsonSerializer.Deserialize<List<MruItem>>(json) ?? [];
+                var deserialized = JsonSerializer.Deserialize<List<MruItem>>(json, MruListJsonContext.Default.ListMruItem) ?? [];
                 this.items.AddRange(deserialized);
             }
         }
@@ -130,7 +129,13 @@ public sealed class MruService : IMruService
 
         Directory.CreateDirectory(folderPath);
 
-        string json = JsonSerializer.Serialize(this.items, SerializerOptions);
+        string json = JsonSerializer.Serialize(this.items, MruListJsonContext.Default.ListMruItem);
         File.WriteAllText(this.MruFilePath, json);
     }
+}
+
+[JsonSerializable(typeof(List<MruItem>))]
+[JsonSourceGenerationOptions(WriteIndented = true)]
+internal partial class MruListJsonContext : JsonSerializerContext
+{
 }
