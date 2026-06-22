@@ -1,0 +1,31 @@
+﻿DATABASE TABLES
+---------------
+
+CREATE TABLE [tracks] (
+  [id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [name] text NULL
+, [name_lower] text NULL
+, [artist_name] text NULL
+, [artist_name_lower] text NULL
+, [album_name] text NULL
+, [album_name_lower] text NULL
+, [duration] float NULL
+, [last_lyrics_id] bigint NULL
+, [created_at] datetime NULL
+, [updated_at] datetime NULL
+, CONSTRAINT [FK_tracks_0_0] FOREIGN KEY ([last_lyrics_id]) REFERENCES [lyrics] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+CREATE TABLE [lyrics] (
+  [id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [plain_lyrics] text NULL
+, [synced_lyrics] text NULL
+, [track_id] bigint NULL
+, [has_plain_lyrics] bit NULL
+, [has_synced_lyrics] bit NULL
+, [instrumental] bit NULL
+, [source] text NULL
+, [created_at] datetime NULL
+, [updated_at] datetime NULL
+, CONSTRAINT [FK_lyrics_0_0] FOREIGN KEY ([track_id]) REFERENCES [tracks] ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
