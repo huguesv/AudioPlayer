@@ -5,10 +5,6 @@
     <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyTitle>Discue Cli</AssemblyTitle>
-  </PropertyGroup>
-
   <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />

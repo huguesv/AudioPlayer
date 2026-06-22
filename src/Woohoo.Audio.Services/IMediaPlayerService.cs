@@ -10,10 +10,15 @@ using Woohoo.Audio.Core.Playback;
 public interface IMediaPlayerService
 {
     event EventHandler<EventArgs>? ActiveTrackChanged;
+
     event EventHandler<AudioPlayerTrackEventArgs>? LyricsUpdated;
+
     event EventHandler<AudioPlayerTrackEventArgs>? MetadataUpdated;
+
     event EventHandler<EventArgs>? PlaybackPositionChanged;
+
     event EventHandler<EventArgs>? PlaybackStateChanged;
+
     event EventHandler<EventArgs>? PlaylistUpdated;
 
     string AudioEngineDisplayName { get; }

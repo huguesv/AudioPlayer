@@ -4,7 +4,6 @@
 namespace Woohoo.Audio.Core.Lyrics;
 
 using System.Collections.Immutable;
-using Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase.Models;
 
 public sealed class LyricsTrack
 {

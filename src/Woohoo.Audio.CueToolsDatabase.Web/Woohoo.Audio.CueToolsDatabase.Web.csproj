@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyTitle>Cue Tools Database Web</AssemblyTitle>
-  </PropertyGroup>
-
   <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />

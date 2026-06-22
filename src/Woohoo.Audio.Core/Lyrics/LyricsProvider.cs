@@ -6,9 +6,9 @@ namespace Woohoo.Audio.Core.Lyrics;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase;
-using Woohoo.Audio.Core.Internal.LrcLibWeb;
 using Woohoo.Audio.Core.Lyrics.Serialization;
+using Woohoo.Audio.LrcDatabase.Local;
+using Woohoo.Audio.LrcDatabase.Web;
 
 public sealed class LyricsProvider : ILyricsProvider
 {

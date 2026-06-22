@@ -7,6 +7,8 @@ using System.Collections.Immutable;
 
 public interface IMruService
 {
+    event EventHandler<EventArgs> ItemsChanged;
+
     void AddItem(MruItem item);
 
     void ClearItems();
@@ -18,6 +20,4 @@ public interface IMruService
     void AddOrUpdateItem(MruItem item);
 
     MruItem? FindItem(string filePath);
-
-    event EventHandler<EventArgs> ItemsChanged;
 }

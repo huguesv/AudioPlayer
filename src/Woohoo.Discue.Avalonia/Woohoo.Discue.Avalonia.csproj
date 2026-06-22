@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <PublishSingleFile>true</PublishSingleFile>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <AssemblyTitle>Discue Avalonia</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase;
+namespace Woohoo.Audio.LrcDatabase.Local;
 
 using System;
 using Microsoft.EntityFrameworkCore;
-using Woohoo.Audio.Core.Internal.LrcLibSqliteDatabase.Models;
+using Woohoo.Audio.LrcDatabase.Local.Models;
 
 public sealed class LrcLibDatabaseClient
 {

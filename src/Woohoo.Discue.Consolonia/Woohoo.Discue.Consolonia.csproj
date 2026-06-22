@@ -5,10 +5,6 @@
     <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyTitle>Discue Consolonia</AssemblyTitle>
-  </PropertyGroup>
-
   <PropertyGroup Label="NuGet Package">
     <Authors>Hugues Valois</Authors>
     <Description>Audio Player for CD images in bin/cue or chd format.</Description>

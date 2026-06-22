@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.UnitTest;
+namespace Woohoo.Audio.LrcDatabase.Web.UnitTest;
 
 using System;
 using System.Net;
 using RichardSzalay.MockHttp;
-using Woohoo.Audio.Core.Internal.LrcLibWeb;
-using Woohoo.Audio.Core.UnitTest.Infrastructure;
+using Woohoo.Audio.LrcDatabase.Web.UnitTest.Infrastructure;
 
 public partial class LrcLibWebClientUnitTest
 {

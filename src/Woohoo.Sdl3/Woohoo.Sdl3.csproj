@@ -4,10 +4,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyTitle>SDL3 Object Model</AssemblyTitle>
-  </PropertyGroup>
-
   <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />

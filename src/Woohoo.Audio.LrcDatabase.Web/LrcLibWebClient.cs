@@ -1,22 +1,17 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Core.Internal.LrcLibWeb;
+namespace Woohoo.Audio.LrcDatabase.Web;
 
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
-using Woohoo.Audio.Core.Internal.LrcLibWeb.Models;
+using Woohoo.Audio.LrcDatabase.Web.Models;
 
 public sealed class LrcLibWebClient : ILrcLibWebClient
 {
     private const string BaseUrl = "https://lrclib.net";
-
-    private static readonly JsonSerializerOptions SerializationOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
 
     private readonly IHttpClientFactory httpClientFactory;
 

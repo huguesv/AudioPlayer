@@ -12,6 +12,9 @@
   <Project Path="Woohoo.Audio.Core/Woohoo.Audio.Core.csproj" />
   <Project Path="Woohoo.Audio.CueToolsDatabase.Web.UnitTest/Woohoo.Audio.CueToolsDatabase.Web.UnitTest.csproj" Id="646eb3b7-3c1b-4348-a6cd-ebaf4372a635" />
   <Project Path="Woohoo.Audio.CueToolsDatabase.Web/Woohoo.Audio.CueToolsDatabase.Web.csproj" Id="78f8749c-1745-42ee-bc19-44e9d5ea6ca6" />
+  <Project Path="Woohoo.Audio.LrcDatabase.Local/Woohoo.Audio.LrcDatabase.Local.csproj" Id="b5abd2f0-1c95-405d-a656-d663461437cb" />
+  <Project Path="Woohoo.Audio.LrcDatabase.Web.UnitTest/Woohoo.Audio.LrcDatabase.Web.UnitTest.csproj" Id="be72be75-422d-4c8e-a017-731acb61346f" />
+  <Project Path="Woohoo.Audio.LrcDatabase.Web/Woohoo.Audio.LrcDatabase.Web.csproj" Id="d1abb3b4-22a6-435f-9542-a7848873f3af" />
   <Project Path="Woohoo.Audio.Playback.Sdl3/Woohoo.Audio.Playback.Sdl3.csproj" />
   <Project Path="Woohoo.Audio.Playback.Windows/Woohoo.Audio.Playback.Windows.csproj" Id="796351ab-4984-43f9-8190-a85d302e22bc" />
   <Project Path="Woohoo.Audio.Services.Impl/Woohoo.Audio.Services.Impl.csproj" Id="bcd8d76e-c4d0-42ea-b4f3-077110e10dce" />

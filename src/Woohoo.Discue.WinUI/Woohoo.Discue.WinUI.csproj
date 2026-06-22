@@ -15,10 +15,6 @@
     <ApplicationIcon>Assets\Tiles\app-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyTitle>Discue WinUI</AssemblyTitle>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Assets\Tiles\app-icon.ico" />
     <None Remove="Styles\ControlSizes.xaml" />
