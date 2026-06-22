@@ -11,18 +11,17 @@ using Woohoo.Audio.Services;
 
 public sealed class LocalSettingsService : ILocalSettingsService
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = true,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-    };
+    private readonly Dictionary<Type, JsonSerializerContext> serializationContexts = [];
 
     private JsonNode doc;
     private bool isInitialized;
 
     public LocalSettingsService()
     {
+        this.RegisterType(typeof(bool), BoolContext.Default);
+        this.RegisterType(typeof(bool?), NullableBoolContext.Default);
+        this.RegisterType(typeof(string), StringContext.Default);
+
         this.doc = JsonNode.Parse("{}") ?? new JsonObject();
     }
 
@@ -36,7 +35,14 @@ public sealed class LocalSettingsService : ILocalSettingsService
 
         if (this.doc is not null && this.doc.AsObject().TryGetPropertyValue(key, out var settingElement))
         {
-            return JsonSerializer.Deserialize<T>(settingElement, SerializerOptions);
+            if (this.serializationContexts.TryGetValue(typeof(T), out var context))
+            {
+                return (T?)JsonSerializer.Deserialize(settingElement, typeof(T), context);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Type '{typeof(T).AssemblyQualifiedName}' does not have a registered serialization context. Call RegisterType first.");
+            }
         }
 
         return default;
@@ -48,9 +54,16 @@ public sealed class LocalSettingsService : ILocalSettingsService
 
         if (value is not null)
         {
-            var jsonString = JsonSerializer.Serialize(value, SerializerOptions);
-            var element = JsonNode.Parse(jsonString);
-            this.doc.AsObject()[key] = element;
+            if (this.serializationContexts.TryGetValue(typeof(T), out var context))
+            {
+                var jsonString = JsonSerializer.Serialize(value, typeof(T), context);
+                var element = JsonNode.Parse(jsonString);
+                this.doc.AsObject()[key] = element;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Type '{typeof(T).AssemblyQualifiedName}' does not have a registered serialization context. Call RegisterType first.");
+            }
         }
         else
         {
@@ -60,6 +73,11 @@ public sealed class LocalSettingsService : ILocalSettingsService
         this.Save();
 
         this.SettingChanged?.Invoke(this, new SettingChangedEventArgs(key));
+    }
+
+    public void RegisterType(Type type, JsonSerializerContext serializerContext)
+    {
+        serializationContexts[type] = serializerContext;
     }
 
     private void Initialize()
@@ -86,7 +104,47 @@ public sealed class LocalSettingsService : ILocalSettingsService
             Directory.CreateDirectory(folderPath);
         }
 
-        var jsonString = JsonSerializer.Serialize(this.doc, SerializerOptions);
+        var jsonString = JsonSerializer.Serialize(this.doc, JsonNodeContext.Default.JsonNode);
         File.WriteAllText(this.FilePath, jsonString);
     }
+}
+
+[JsonSourceGenerationOptions(
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    WriteIndented = true,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+)]
+[JsonSerializable(typeof(JsonNode))]
+public partial class JsonNodeContext : JsonSerializerContext
+{
+}
+
+[JsonSourceGenerationOptions(
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    WriteIndented = true,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+)]
+[JsonSerializable(typeof(string))]
+public partial class StringContext : JsonSerializerContext
+{
+}
+
+[JsonSourceGenerationOptions(
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    WriteIndented = true,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+)]
+[JsonSerializable(typeof(bool))]
+public partial class BoolContext : JsonSerializerContext
+{
+}
+
+[JsonSourceGenerationOptions(
+    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    WriteIndented = true,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+)]
+[JsonSerializable(typeof(bool?))]
+public partial class NullableBoolContext : JsonSerializerContext
+{
 }

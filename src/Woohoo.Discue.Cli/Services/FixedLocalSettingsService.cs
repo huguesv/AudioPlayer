@@ -4,6 +4,7 @@
 namespace Woohoo.Discue.Cli.Services;
 
 using System;
+using System.Text.Json.Serialization;
 using Woohoo.Audio.Services;
 
 internal sealed class FixedLocalSettingsService : ILocalSettingsService
@@ -39,6 +40,10 @@ internal sealed class FixedLocalSettingsService : ILocalSettingsService
     }
 
     public void SaveSetting<T>(string key, T value)
+    {
+    }
+
+    public void RegisterType(Type type, JsonSerializerContext serializerContext)
     {
     }
 }

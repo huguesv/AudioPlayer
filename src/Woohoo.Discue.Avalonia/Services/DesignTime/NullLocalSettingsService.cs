@@ -4,6 +4,7 @@
 namespace Woohoo.Discue.Avalonia.Services.DesignTime;
 
 using System;
+using System.Text.Json.Serialization;
 using Woohoo.Audio.Services;
 
 internal class NullLocalSettingsService : ILocalSettingsService
@@ -32,6 +33,10 @@ internal class NullLocalSettingsService : ILocalSettingsService
     }
 
     public void SaveSetting<T>(string key, T value)
+    {
+    }
+
+    public void RegisterType(Type type, JsonSerializerContext serializerContext)
     {
     }
 }

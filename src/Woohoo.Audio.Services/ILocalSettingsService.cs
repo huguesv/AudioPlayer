@@ -3,6 +3,8 @@
 
 namespace Woohoo.Audio.Services;
 
+using System.Text.Json.Serialization;
+
 public interface ILocalSettingsService
 {
     event EventHandler<SettingChangedEventArgs>? SettingChanged;
@@ -12,4 +14,6 @@ public interface ILocalSettingsService
     T? ReadSetting<T>(string key);
 
     void SaveSetting<T>(string key, T value);
+
+    void RegisterType(Type type, JsonSerializerContext serializerContext);
 }
