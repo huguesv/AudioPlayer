@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Woohoo.Audio.Core.Lyrics.Serialization;
-using Woohoo.Audio.LrcDatabase.Local;
+using Woohoo.Audio.LrcDatabase.Sqlite;
 using Woohoo.Audio.LrcDatabase.Web;
 
 public sealed class LyricsProvider : ILyricsProvider

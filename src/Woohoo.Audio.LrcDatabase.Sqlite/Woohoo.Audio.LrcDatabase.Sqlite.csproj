@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Dapper.AOT</InterceptorsNamespaces>
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="System.Collections.ObjectModel" />
     <Using Include="System.Diagnostics" />
@@ -14,18 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Dapper.AOT" />
+    <PackageReference Include="Microsoft.Data.Sqlite" />
     <PackageReference Include="StyleCop.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Woohoo.Audio.CueToolsDatabase.Web\Woohoo.Audio.CueToolsDatabase.Web.csproj" />
-    <ProjectReference Include="..\Woohoo.Audio.LrcDatabase.Local\Woohoo.Audio.LrcDatabase.Local.csproj" />
-    <ProjectReference Include="..\Woohoo.Audio.LrcDatabase.Sqlite\Woohoo.Audio.LrcDatabase.Sqlite.csproj" />
-    <ProjectReference Include="..\Woohoo.Audio.LrcDatabase.Web\Woohoo.Audio.LrcDatabase.Web.csproj" />
-    <ProjectReference Include="..\Woohoo.IO.Compression.Chd\Woohoo.IO.Compression.Chd.csproj" />
   </ItemGroup>
 
 </Project>
