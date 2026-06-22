@@ -13,6 +13,13 @@ using Windows.UI;
 
 public sealed partial class SignalPlotControl : UserControl
 {
+    public static readonly DependencyProperty SignalDataProperty =
+        DependencyProperty.Register(
+            nameof(SignalData),
+            typeof(double[]),
+            typeof(SignalPlotControl),
+            new PropertyMetadata(new double[0]));
+
     private readonly SolidColorBrush? visualizationBrush;
     private readonly Color visualizationColor;
 
@@ -30,19 +37,12 @@ public sealed partial class SignalPlotControl : UserControl
         set { this.SetValue(SignalDataProperty, value); }
     }
 
-    public static readonly DependencyProperty SignalDataProperty =
-        DependencyProperty.Register(
-            nameof(SignalData),
-            typeof(double[]),
-            typeof(SignalPlotControl),
-            new PropertyMetadata(new double[0]));
-
     public void Invalidate()
     {
         this.canvas?.Invalidate();
     }
 
-    private void canvas_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
+    private void Canvas_Draw(Microsoft.Graphics.Canvas.UI.Xaml.CanvasControl sender, Microsoft.Graphics.Canvas.UI.Xaml.CanvasDrawEventArgs args)
     {
         var data = this.SignalData;
         if (data.Length == 0)
@@ -55,10 +55,10 @@ public sealed partial class SignalPlotControl : UserControl
         float height = (float)sender.ActualHeight;
         float heightFactor = 1f;
         int count = Math.Min((int)sender.ActualWidth, data.Length);
-        Vector2 pt1 = new Vector2(0, (float)data[0] * height * heightFactor + (height / 2));
+        Vector2 pt1 = new Vector2(0, ((float)data[0] * height * heightFactor) + (height / 2));
         for (int i = 1; i < count; i++)
         {
-            Vector2 pt2 = new Vector2(i * width / (float)count, (float)data[i] * height * heightFactor + (height / 2));
+            Vector2 pt2 = new Vector2(i * width / (float)count, ((float)data[i] * height * heightFactor) + (height / 2));
             args.DrawingSession.DrawLine(pt1, pt2, this.visualizationColor);
             pt1 = pt2;
         }

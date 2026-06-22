@@ -43,6 +43,10 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Extensions.Hosting" />
     <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="StyleCop.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -52,10 +56,6 @@
     <ProjectReference Include="..\Woohoo.Audio.Services\Woohoo.Audio.Services.csproj" />
     <ProjectReference Include="..\Woohoo.ConsoloniaControls\Woohoo.ConsoloniaControls.csproj" />
     <ProjectReference Include="..\Woohoo.Discue.Shared.Avalonia\Woohoo.Discue.Shared.Avalonia.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Converters\" />
   </ItemGroup>
 
 </Project>

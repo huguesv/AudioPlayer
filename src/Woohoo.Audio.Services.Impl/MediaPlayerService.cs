@@ -15,16 +15,17 @@ using Woohoo.Audio.Core.Playback;
 
 public sealed class MediaPlayerService : IMediaPlayerService
 {
-    private static readonly string lrcDbPath = Environment.GetEnvironmentVariable("LRCLIB_DB_PATH") ?? string.Empty;
-    private static readonly MetadataProvider metadataProvider = new(new HttpClientFactory());
-    private static readonly LyricsProviderOptions lyricsProviderOptions = new()
+    private static readonly string LrcDbPath = Environment.GetEnvironmentVariable("LRCLIB_DB_PATH") ?? string.Empty;
+    private static readonly MetadataProvider MetadataProvider = new(new HttpClientFactory());
+    private static readonly LyricsProviderOptions LyricsProviderOptions = new()
     {
-        DatabaseFilePath = lrcDbPath,
+        DatabaseFilePath = LrcDbPath,
         UseDatabase = true,
         UseWeb = true,
-        UseWebExternalSources = true
+        UseWebExternalSources = true,
     };
-    private static readonly LyricsProvider lyricsProvider = new(lyricsProviderOptions, new HttpClientFactory());
+
+    private static readonly LyricsProvider LyricsProvider = new(LyricsProviderOptions, new HttpClientFactory());
 
     private readonly IMruService mruService;
     private readonly IBitmapCacheService bitmapCacheService;
@@ -57,10 +58,15 @@ public sealed class MediaPlayerService : IMediaPlayerService
     }
 
     public event EventHandler<EventArgs>? PlaylistUpdated;
+
     public event EventHandler<AudioPlayerTrackEventArgs>? MetadataUpdated;
+
     public event EventHandler<AudioPlayerTrackEventArgs>? LyricsUpdated;
+
     public event EventHandler<EventArgs>? ActiveTrackChanged;
+
     public event EventHandler<EventArgs>? PlaybackStateChanged;
+
     public event EventHandler<EventArgs>? PlaybackPositionChanged;
 
     public string AudioEngineDisplayName => this.player.AudioEngineDisplayName;
@@ -84,6 +90,8 @@ public sealed class MediaPlayerService : IMediaPlayerService
     public bool IsNextTrackEnabled => this.player.IsNextTrackEnabled;
 
     public bool IsPreviousTrackEnabled => this.player.IsPreviousTrackEnabled;
+
+    public IAudioPlayerVisualization Visualization => this.player.Visualization;
 
     public AudioPlayerTrack? GetActiveTrack() => this.player.ActiveTrack;
 
@@ -123,8 +131,6 @@ public sealed class MediaPlayerService : IMediaPlayerService
     public void SeekBackward(TimeSpan span) => this.player.SeekBackward(span);
 
     public void Play(Guid trackId) => this.player.Play(trackId);
-
-    public IAudioPlayerVisualization Visualization => this.player.Visualization;
 
     public async Task LoadFromFileAsync(string albumFilePath)
     {
@@ -175,21 +181,6 @@ public sealed class MediaPlayerService : IMediaPlayerService
         this.player.Shutdown();
     }
 
-    private void Player_PlaybackStateChanged(object? sender, EventArgs e)
-    {
-        this.PlaybackStateChanged?.Invoke(this, e);
-    }
-
-    private void Player_ActiveTrackChanged(object? sender, EventArgs e)
-    {
-        this.ActiveTrackChanged?.Invoke(this, e);
-    }
-
-    private void Player_PlaybackPositionChanged(object? sender, EventArgs e)
-    {
-        this.PlaybackPositionChanged?.Invoke(this, e);
-    }
-
     private static (AudioPlayerDisc Disc, AudioPlayerDiscMetadata DiscMetadata, ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> Tracks) Convert(IAlbumMedia media, string albumFilePath)
     {
         var disc = new AudioPlayerDisc()
@@ -228,6 +219,21 @@ public sealed class MediaPlayerService : IMediaPlayerService
         return (disc, discMetadata, [.. tracks]);
     }
 
+    private void Player_PlaybackStateChanged(object? sender, EventArgs e)
+    {
+        this.PlaybackStateChanged?.Invoke(this, e);
+    }
+
+    private void Player_ActiveTrackChanged(object? sender, EventArgs e)
+    {
+        this.ActiveTrackChanged?.Invoke(this, e);
+    }
+
+    private void Player_PlaybackPositionChanged(object? sender, EventArgs e)
+    {
+        this.PlaybackPositionChanged?.Invoke(this, e);
+    }
+
     private async Task LoadExtrasAsync(
         string albumFilePath,
         Guid discId,
@@ -253,15 +259,15 @@ public sealed class MediaPlayerService : IMediaPlayerService
     {
         var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         var audioTrackCount = tracks.Length;
-        var metadata = await metadataProvider.QueryAsync(audioTrackCount, toc, cancellationTokenSource.Token);
+        var metadata = await MetadataProvider.QueryAsync(audioTrackCount, toc, cancellationTokenSource.Token);
         if (metadata is not null)
         {
             var discMetadata = new AudioPlayerDiscMetadata
             {
-                AlbumTitle = BestString(metadata.Album.Title, tracks[0].Item2.AlbumTitle).Trim(),
-                AlbumPerformer = BestString(metadata.Album.Artist, tracks[0].Item2.AlbumPerformer).Trim(),
+                AlbumTitle = BestString(metadata.Album.Title, tracks[0].TrackMetadata.AlbumTitle).Trim(),
+                AlbumPerformer = BestString(metadata.Album.Artist, tracks[0].TrackMetadata.AlbumPerformer).Trim(),
                 Year = metadata.Album.Year,
-                AlbumArtImages = [.. metadata.Album.Images.Where(im => im is not null)]
+                AlbumArtImages = [.. metadata.Album.Images.Where(im => im is not null)],
             };
 
             this.discMetadataCache.AddOrUpdate(discId, discMetadata, (id, existing) => discMetadata);
@@ -351,7 +357,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
                     continue;
                 }
 
-                var lyrics = await lyricsProvider.QueryAsync(
+                var lyrics = await LyricsProvider.QueryAsync(
                     trackMetadata.AlbumTitle,
                     trackMetadata.AlbumPerformer,
                     trackMetadata.TrackTitle,

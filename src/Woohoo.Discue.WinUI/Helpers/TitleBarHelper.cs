@@ -87,15 +87,6 @@ internal static class TitleBarHelper
         }
     }
 
-    //public static void ApplySystemThemeToCaptionButtons()
-    //{
-    //    var frame = App.AppTitlebar as FrameworkElement;
-    //    if (frame != null)
-    //    {
-    //        UpdateTitleBar(frame.ActualTheme);
-    //    }
-    //}
-
     [DllImport("user32.dll")]
     private static extern IntPtr GetActiveWindow();
 

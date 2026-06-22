@@ -24,13 +24,6 @@ public sealed partial class LyricsPage : Page
         });
     }
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
-    {
-        base.OnNavigatedFrom(e);
-
-        WeakReferenceMessenger.Default.Unregister<CurrentLyricChangeMessage>(this);
-    }
-
     public LyricsViewModel ViewModel { get; }
 
     public static Brush GetLyricBrush(bool isActive)
@@ -47,6 +40,13 @@ public sealed partial class LyricsPage : Page
     public static FontWeight GetLyricFontWeight(bool isActive)
     {
         return isActive ? FontWeights.SemiBold : FontWeights.Normal;
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        base.OnNavigatedFrom(e);
+
+        WeakReferenceMessenger.Default.Unregister<CurrentLyricChangeMessage>(this);
     }
 
     private void ScrollToLyricLine(CurrentLyricChangeMessage m)

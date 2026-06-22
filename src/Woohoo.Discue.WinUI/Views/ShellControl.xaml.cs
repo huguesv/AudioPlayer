@@ -15,6 +15,12 @@ using Woohoo.Discue.ViewModels;
 
 public sealed partial class ShellControl : UserControl, IDisposable
 {
+    public static readonly DependencyProperty NavigationSelectedItemProperty =
+        DependencyProperty.Register(nameof(NavigationSelectedItem), typeof(object), typeof(ShellControl), new PropertyMetadata(null));
+
+    public static readonly DependencyProperty IsBackEnabledProperty =
+        DependencyProperty.Register(nameof(IsBackEnabled), typeof(bool), typeof(ShellControl), new PropertyMetadata(false));
+
     private readonly DisposableBag disposables = DisposableBag.Create<MainWindow>();
     private readonly INavigationService navigationService;
     private readonly INavigationViewService navigationViewService;
@@ -38,12 +44,6 @@ public sealed partial class ShellControl : UserControl, IDisposable
 
         this.navigationService.NavigateTo(typeof(HomeViewModel).FullName!, null);
     }
-
-    public static readonly DependencyProperty NavigationSelectedItemProperty =
-        DependencyProperty.Register(nameof(NavigationSelectedItem), typeof(object), typeof(ShellControl), new PropertyMetadata(null));
-
-    public static readonly DependencyProperty IsBackEnabledProperty =
-        DependencyProperty.Register(nameof(IsBackEnabled), typeof(bool), typeof(ShellControl), new PropertyMetadata(false));
 
     public ShellViewModel ViewModel { get; }
 
@@ -79,12 +79,12 @@ public sealed partial class ShellControl : UserControl, IDisposable
         }
     }
 
-    private void titleBar_Loaded(object sender, RoutedEventArgs e)
+    private void TitleBar_Loaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(App.MainWindow!, this.titleBar.RequestedTheme);
     }
 
-    private void titleBar_ActualThemeChanged(FrameworkElement sender, object args)
+    private void TitleBar_ActualThemeChanged(FrameworkElement sender, object args)
     {
         TitleBarHelper.UpdateTitleBar(App.MainWindow!, this.titleBar.RequestedTheme);
     }

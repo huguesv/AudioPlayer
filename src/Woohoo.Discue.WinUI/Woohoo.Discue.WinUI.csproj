@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -53,6 +54,7 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="CommunityToolkit.WinUI.Animations" />
@@ -68,8 +70,13 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Extensions.Hosting" />
     <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="StyleCop.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="WinUIEx" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Woohoo.Audio.Core\Woohoo.Audio.Core.csproj" />
     <ProjectReference Include="..\Woohoo.Audio.Playback.Sdl3\Woohoo.Audio.Playback.Sdl3.csproj" />
@@ -80,6 +87,7 @@
     <ProjectReference Include="..\Woohoo.IO.Compression.Chd\Woohoo.IO.Compression.Chd.csproj" />
     <ProjectReference Include="..\Woohoo.IO.Compression\Woohoo.IO.Compression.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -159,4 +167,5 @@
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
   </PropertyGroup>
+
 </Project>

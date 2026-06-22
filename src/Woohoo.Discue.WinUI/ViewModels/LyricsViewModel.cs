@@ -54,6 +54,12 @@ public sealed partial class LyricsViewModel : ObservableObject
         this.Load(lyrics);
     }
 
+    [ObservableProperty]
+    public partial ObservableCollection<LyricsLineViewModel> Lines { get; set; } = [];
+
+    [ObservableProperty]
+    public partial bool HasLyrics { get; set; }
+
     private void LocalSettingsService_SettingChanged(object? sender, SettingChangedEventArgs e)
     {
         if (e.SettingKey == KnownSettingKeys.LyricsAutoScroll)
@@ -61,12 +67,6 @@ public sealed partial class LyricsViewModel : ObservableObject
             this.autoScroll = this.localSettingsService.ReadSetting<bool?>(KnownSettingKeys.LyricsAutoScroll) ?? true;
         }
     }
-
-    [ObservableProperty]
-    public partial ObservableCollection<LyricsLineViewModel> Lines { get; set; } = [];
-
-    [ObservableProperty]
-    public partial bool HasLyrics { get; set; }
 
     private void MediaPlayerService_ActiveTrackChanged(object? sender, EventArgs e)
     {

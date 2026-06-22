@@ -20,7 +20,7 @@ internal sealed class VisualizationProviderService : IVisualizationProviderServi
 
         this.visualizationTimer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromMilliseconds(32)
+            Interval = TimeSpan.FromMilliseconds(32),
         };
         this.visualizationTimer.Tick += this.VisualizationTimer_Tick;
         this.visualizationTimer.Start();

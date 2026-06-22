@@ -17,22 +17,24 @@ using winmdroot = global::Windows.Win32;
 [SupportedOSPlatform("windows6.0.6000")]
 internal sealed class AudioCapture
 {
+    private const int MaxBufferSize = 4096;
+
+    private readonly Lock lockObject = new();
+    private readonly Queue<double> sampleBuffer = new();
+
     private IAudioClient? audioClient;
     private IAudioCaptureClient? captureClient;
     private IAudioEndpointVolume? endpointVolume;
     private WAVEFORMATEX waveFormat;
     private Thread? captureThread;
     private bool isCapturing;
-    private readonly Lock lockObject = new();
     private bool isFloat;
     private ushort bitsPerSample;
-    private readonly Queue<double> sampleBuffer = new();
-    private const int maxBufferSize = 4096;
 
     [Flags]
     internal enum AUDCLNT_STREAMFLAGS : uint
     {
-        AUDCLNT_STREAMFLAGS_LOOPBACK = 0x00020000
+        AUDCLNT_STREAMFLAGS_LOOPBACK = 0x00020000,
     }
 
     public double[] GetRecentSamples()
@@ -43,6 +45,35 @@ internal sealed class AudioCapture
         }
     }
 
+    public void Start()
+    {
+        if (this.audioClient is null)
+        {
+            throw new InvalidOperationException("Audio client not initialized");
+        }
+
+        if (this.endpointVolume is null)
+        {
+            throw new InvalidOperationException("Audio endpoint volume not initialized");
+        }
+
+        Debug.Assert(this.isCapturing == false, "Should not already be capturing when calling Start.");
+
+        this.audioClient.Start();
+
+        this.isCapturing = true;
+        this.captureThread = new Thread(this.CaptureLoop);
+        this.captureThread.Start();
+    }
+
+    public void Stop()
+    {
+        this.isCapturing = false;
+        this.captureThread?.Join();
+        this.captureThread = null;
+        this.audioClient?.Stop();
+    }
+
     internal unsafe void Initialize(IMMDevice device)
     {
         try
@@ -51,17 +82,26 @@ internal sealed class AudioCapture
             device.Activate(&iidIAudioClient, winmdroot.System.Com.CLSCTX.CLSCTX_ALL, null, out object audioClientObj);
             this.audioClient = (IAudioClient)audioClientObj;
 
-            if (this.audioClient == null) throw new Exception("Failed to activate audio client");
+            if (this.audioClient == null)
+            {
+                throw new Exception("Failed to activate audio client");
+            }
 
             Guid iidIAudioEndPointVolume = typeof(IAudioEndpointVolume).GUID;
             device.Activate(&iidIAudioEndPointVolume, winmdroot.System.Com.CLSCTX.CLSCTX_ALL, null, out object audioVolumeObj);
             this.endpointVolume = (IAudioEndpointVolume)audioVolumeObj;
 
-            if (this.endpointVolume == null) throw new Exception("Failed to activate audio endpoint volume");
+            if (this.endpointVolume == null)
+            {
+                throw new Exception("Failed to activate audio endpoint volume");
+            }
 
             WAVEFORMATEX* formatPtr = null;
             this.audioClient.GetMixFormat(&formatPtr);
-            if (formatPtr == null) throw new Exception("Failed to get mix format");
+            if (formatPtr == null)
+            {
+                throw new Exception("Failed to get mix format");
+            }
 
             try
             {
@@ -90,6 +130,7 @@ internal sealed class AudioCapture
                     {
                         throw new Exception("Unsupported subformat in WAVEFORMATEXTENSIBLE");
                     }
+
                     this.bitsPerSample = extFormat.Format.wBitsPerSample;
                 }
                 else if (this.waveFormat.wFormatTag == 3)
@@ -125,7 +166,10 @@ internal sealed class AudioCapture
                 this.audioClient.GetService(&iidIAudioCaptureClient, out object occ);
                 this.captureClient = (IAudioCaptureClient)occ;
 
-                if (this.captureClient == null) throw new Exception("Failed to get capture client");
+                if (this.captureClient == null)
+                {
+                    throw new Exception("Failed to get capture client");
+                }
             }
             finally
             {
@@ -136,35 +180,6 @@ internal sealed class AudioCapture
         {
             Console.WriteLine("Error initializing capture: " + ex.Message);
         }
-    }
-
-    public void Start()
-    {
-        if (this.audioClient is null)
-        {
-            throw new InvalidOperationException("Audio client not initialized");
-        }
-
-        if (this.endpointVolume is null)
-        {
-            throw new InvalidOperationException("Audio endpoint volume not initialized");
-        }
-
-        Debug.Assert(this.isCapturing == false);
-
-        this.audioClient.Start();
-
-        this.isCapturing = true;
-        this.captureThread = new Thread(this.CaptureLoop);
-        this.captureThread.Start();
-    }
-
-    public void Stop()
-    {
-        this.isCapturing = false;
-        this.captureThread?.Join();
-        this.captureThread = null;
-        this.audioClient?.Stop();
     }
 
     private unsafe void CaptureLoop()
@@ -207,7 +222,7 @@ internal sealed class AudioCapture
                                 double frameSum = 0.0;
                                 for (ushort ch = 0; ch < this.waveFormat.nChannels; ch++)
                                 {
-                                    int offset = (int)(f * this.waveFormat.nBlockAlign + ch * bytesPerSample);
+                                    int offset = (int)((f * this.waveFormat.nBlockAlign) + (ch * bytesPerSample));
                                     double sample;
                                     if (this.isFloat)
                                     {
@@ -231,6 +246,7 @@ internal sealed class AudioCapture
                                             sample = BitConverter.ToInt32(buffer, offset) / 2147483648.0;
                                         }
                                     }
+
                                     frameSum += sample;
                                 }
 
@@ -251,7 +267,7 @@ internal sealed class AudioCapture
                                         this.sampleBuffer.Enqueue(avgs[f]);
                                     }
 
-                                    if (this.sampleBuffer.Count > maxBufferSize)
+                                    if (this.sampleBuffer.Count > MaxBufferSize)
                                     {
                                         this.sampleBuffer.Dequeue();
                                     }

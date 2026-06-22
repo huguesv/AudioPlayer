@@ -21,17 +21,10 @@ using Woohoo.Discue.Services;
 using Woohoo.Discue.ViewModels;
 using Woohoo.Discue.Views;
 
-/// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
-/// </summary>
 public partial class App : Application
 {
-    private WindowEx? _window;
+    private WindowEx? window;
 
-    /// <summary>
-    /// Initializes the singleton application object.  This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
-    /// </summary>
     public App()
     {
         this.InitializeComponent();
@@ -122,6 +115,8 @@ public partial class App : Application
             .Build();
     }
 
+    public static WindowEx? MainWindow { get; set; }
+
     // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
     // https://docs.microsoft.com/dotnet/core/extensions/generic-host
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
@@ -143,8 +138,6 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx? MainWindow { get; set; }
-
     protected static string GetLogFilePath()
     {
         var logsFolder = Path.GetTempPath();
@@ -158,9 +151,9 @@ public partial class App : Application
     /// <param name="args">Details about the launch request and process.</param>
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        this._window = GetService<MainWindow>();
-        this._window.Activate();
+        this.window = GetService<MainWindow>();
+        this.window.Activate();
 
-        MainWindow = this._window;
+        MainWindow = this.window;
     }
 }

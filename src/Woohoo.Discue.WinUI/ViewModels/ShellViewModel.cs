@@ -14,7 +14,8 @@ public sealed partial class ShellViewModel : ObservableObject
     private readonly ILogger logger;
     private readonly IDispatcherQueue dispatcherQueue;
 
-    public ShellViewModel(IDispatcherQueueService dispatcherQueueService,
+    public ShellViewModel(
+        IDispatcherQueueService dispatcherQueueService,
         IMediaPlayerService mediaPlayerService,
         ILogger<ShellViewModel> logger)
     {

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 public sealed class MruService : IMruService
 {
@@ -15,11 +14,11 @@ public sealed class MruService : IMruService
 
     private bool isInitialized;
 
-    public event EventHandler<EventArgs>? ItemsChanged;
-
     public MruService()
     {
     }
+
+    public event EventHandler<EventArgs>? ItemsChanged;
 
     public required string MruFilePath { get; init; }
 
@@ -36,7 +35,7 @@ public sealed class MruService : IMruService
 
         this.EnsureInitialized();
 
-        items.Add(item);
+        this.items.Add(item);
         this.Save();
         this.ItemsChanged?.Invoke(this, new EventArgs());
     }
@@ -78,7 +77,7 @@ public sealed class MruService : IMruService
         }
         else
         {
-            items.Add(item);
+            this.items.Add(item);
         }
 
         this.Save();
@@ -132,10 +131,4 @@ public sealed class MruService : IMruService
         string json = JsonSerializer.Serialize(this.items, MruListJsonContext.Default.ListMruItem);
         File.WriteAllText(this.MruFilePath, json);
     }
-}
-
-[JsonSerializable(typeof(List<MruItem>))]
-[JsonSourceGenerationOptions(WriteIndented = true)]
-internal partial class MruListJsonContext : JsonSerializerContext
-{
 }

@@ -44,7 +44,6 @@ internal sealed class DeviceTracker : IMMNotificationClient
         }
     }
 
-
     void IMMNotificationClient.OnDeviceStateChanged(PCWSTR pwstrDeviceId, DEVICE_STATE dwNewState)
     {
     }

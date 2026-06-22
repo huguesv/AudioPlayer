@@ -20,11 +20,11 @@
         <TitleBar
             x:Name="titleBar"
             x:Uid="MainWindow_TitleBar"
-            ActualThemeChanged="titleBar_ActualThemeChanged"
+            ActualThemeChanged="TitleBar_ActualThemeChanged"
             BackRequested="TitleBar_BackRequested"
             IsBackButtonVisible="True"
             IsPaneToggleButtonVisible="True"
-            Loaded="titleBar_Loaded"
+            Loaded="TitleBar_Loaded"
             PaneToggleRequested="TitleBar_PaneToggleRequested">
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="/Assets/Tiles/app-logo.ico" />

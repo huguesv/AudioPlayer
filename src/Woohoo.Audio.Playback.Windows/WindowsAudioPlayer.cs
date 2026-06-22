@@ -38,16 +38,12 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
     private MediaPlaybackItem? currentPlaybackItem;
     private Guid? currentPlaybackTrackId;
 
-    public event EventHandler<EventArgs>? ActiveTrackChanged;
-    public event EventHandler<EventArgs>? PlaybackStateChanged;
-    public event EventHandler<EventArgs>? PlaybackPositionChanged;
-
     public WindowsAudioPlayer()
     {
         this.mediaPlayer = new MediaPlayer();
         this.mediaList = new MediaPlaybackList();
         this.capture = new AudioCapture();
-        this.tracker = new DeviceTracker(capture);
+        this.tracker = new DeviceTracker(this.capture);
         this.visualization = new WindowsAudioPlayerVisualization(this.capture);
 
         this.playlistTracks = [];
@@ -58,6 +54,12 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
         this.mediaPlayer.PlaybackSession.PositionChanged += this.PlaybackSession_PositionChanged;
         this.mediaList.CurrentItemChanged += this.MediaList_CurrentItemChanged;
     }
+
+    public event EventHandler<EventArgs>? ActiveTrackChanged;
+
+    public event EventHandler<EventArgs>? PlaybackStateChanged;
+
+    public event EventHandler<EventArgs>? PlaybackPositionChanged;
 
     public string AudioEngineDisplayName => "Windows Media Player";
 

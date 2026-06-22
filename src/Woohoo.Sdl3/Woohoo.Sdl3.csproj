@@ -18,14 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ppy.SDL3-CS" />
     <PackageReference Include="StyleCop.Analyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ppy.SDL3-CS" />
   </ItemGroup>
 
 </Project>

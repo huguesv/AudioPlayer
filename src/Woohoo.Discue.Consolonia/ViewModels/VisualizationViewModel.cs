@@ -55,19 +55,19 @@ public sealed partial class VisualizationViewModel : ObservableObject
         // Manually scale psd data from (-100,0) to (-1,1)
         // TODO: make the signal plot control customizable
         // enough so we don't have to do this.
-        e.Visualization.CopyTo(psdPlotTemp, bandsPlotTemp, this.WavePlotData);
-        for (int i = 0; i < psdPlotTemp.Length; i++)
+        e.Visualization.CopyTo(this.psdPlotTemp, this.bandsPlotTemp, this.WavePlotData);
+        for (int i = 0; i < this.psdPlotTemp.Length; i++)
         {
-            psdPlotTemp[i] = (psdPlotTemp[i] + 50) / 50.0;
+            this.psdPlotTemp[i] = (this.psdPlotTemp[i] + 50) / 50.0;
         }
 
-        for (int i = 0; i < bandsPlotTemp.Length; i++)
+        for (int i = 0; i < this.bandsPlotTemp.Length; i++)
         {
-            bandsPlotTemp[i] = bandsPlotTemp[i] + 100;
+            this.bandsPlotTemp[i] = this.bandsPlotTemp[i] + 100;
         }
 
-        Array.Copy(psdPlotTemp, this.PsdPlotData, psdPlotTemp.Length);
-        Array.Copy(bandsPlotTemp, this.BandsPlotData, bandsPlotTemp.Length);
+        Array.Copy(this.psdPlotTemp, this.PsdPlotData, this.psdPlotTemp.Length);
+        Array.Copy(this.bandsPlotTemp, this.BandsPlotData, this.bandsPlotTemp.Length);
 
         this.PlotTick++;
         if (this.PlotTick == long.MaxValue)

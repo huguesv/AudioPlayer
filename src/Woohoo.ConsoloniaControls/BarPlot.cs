@@ -87,8 +87,8 @@ public class BarPlot : Control
         if (this.Foreground is not null && this.Source is not null && this.Bounds.Width > 0 && this.Bounds.Height > 0 && this.Source.Length > 0)
         {
             int barSpacing = 5;
-            int barWidth = (int)Math.Floor(this.Bounds.Width / this.Source.Length - barSpacing);
-            int barAndSpacesWidth = this.Source.Length * barWidth + ((this.Source.Length - 1) * barSpacing);
+            int barWidth = (int)Math.Floor((this.Bounds.Width / this.Source.Length) - barSpacing);
+            int barAndSpacesWidth = (this.Source.Length * barWidth) + ((this.Source.Length - 1) * barSpacing);
             int leftMargin = (int)Math.Floor((this.Bounds.Width - barAndSpacesWidth) / 2);
             int bottom = (int)Math.Floor(this.Bounds.Bottom - 2);
             var yScale = (this.Bounds.Height - 2) / (this.RangeMax - this.RangeMin);

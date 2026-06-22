@@ -87,6 +87,7 @@ public partial class MainViewModel : ObservableObject
     public LyricsViewModel Lyrics { get; }
 
     public SettingsViewModel Settings { get; }
+
     public VisualizationViewModel Visualization { get; }
 
     [ObservableProperty]

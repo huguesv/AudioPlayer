@@ -54,8 +54,6 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
         }
     }
 
-    private bool CanLoadAlbum() => File.Exists(this.AlbumFilePath);
-
     [RelayCommand]
     public void RemoveFromRecent()
     {
@@ -81,4 +79,6 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
             this.logger.LogError(ex, "Error processing command.");
         }
     }
+
+    private bool CanLoadAlbum() => File.Exists(this.AlbumFilePath);
 }

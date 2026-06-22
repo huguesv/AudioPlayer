@@ -136,7 +136,6 @@ public partial class App : Application
             themeService.SelectedTheme = vm.Settings.SelectedTheme;
         }
 
-
         base.OnFrameworkInitializationCompleted();
     }
 }

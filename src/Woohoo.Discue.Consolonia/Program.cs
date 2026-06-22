@@ -10,12 +10,6 @@ using global::Consolonia.ManagedWindows.Storage;
 
 public static class Program
 {
-    private static void Main(string[] args)
-    {
-        BuildAvaloniaApp()
-            .StartWithConsoleLifetime(args);
-    }
-
     public static AppBuilder BuildAvaloniaApp()
     {
         return AppBuilder.Configure<App>()
@@ -24,5 +18,11 @@ public static class Program
             .UseConsolonia()
             .UseAutoDetectedConsole()
             .WithConsoleFonts();
+    }
+
+    private static void Main(string[] args)
+    {
+        BuildAvaloniaApp()
+            .StartWithConsoleLifetime(args);
     }
 }

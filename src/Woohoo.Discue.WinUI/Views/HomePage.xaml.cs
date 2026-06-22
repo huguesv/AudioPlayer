@@ -52,7 +52,6 @@ public sealed partial class HomePage : Page
             {
                 this.ViewModel.LoadAlbum(file.Path);
             }
-
         }
         catch (Exception ex)
         {

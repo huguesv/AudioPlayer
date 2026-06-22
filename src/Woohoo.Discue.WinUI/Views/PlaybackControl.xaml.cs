@@ -1,5 +1,5 @@
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+// Copyright (c) Hugues Valois. All rights reserved.
+// Licensed under the MIT license. See LICENSE in the project root for license information.
 
 namespace Woohoo.Discue.Views;
 
@@ -28,13 +28,13 @@ public sealed partial class PlaybackControl : UserControl
         this.visualizationProviderService.DataAvailable += this.VisualizationProviderService_DataAvailable;
     }
 
+    public PlaybackViewModel ViewModel { get; }
+
     private void VisualizationProviderService_DataAvailable(object? sender, VisualizationEventArgs e)
     {
         this.SignalControl.SignalData = e.Visualization.Waveform;
         this.SignalControl.Invalidate();
     }
-
-    public PlaybackViewModel ViewModel { get; }
 
     private void PreviousTrackButton_Click(object sender, RoutedEventArgs e)
     {

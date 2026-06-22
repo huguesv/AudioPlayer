@@ -77,7 +77,7 @@ public sealed class LocalSettingsService : ILocalSettingsService
 
     public void RegisterType(Type type, JsonSerializerContext serializerContext)
     {
-        serializationContexts[type] = serializerContext;
+        this.serializationContexts[type] = serializerContext;
     }
 
     private void Initialize()
@@ -107,44 +107,4 @@ public sealed class LocalSettingsService : ILocalSettingsService
         var jsonString = JsonSerializer.Serialize(this.doc, JsonNodeContext.Default.JsonNode);
         File.WriteAllText(this.FilePath, jsonString);
     }
-}
-
-[JsonSourceGenerationOptions(
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-)]
-[JsonSerializable(typeof(JsonNode))]
-public partial class JsonNodeContext : JsonSerializerContext
-{
-}
-
-[JsonSourceGenerationOptions(
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-)]
-[JsonSerializable(typeof(string))]
-public partial class StringContext : JsonSerializerContext
-{
-}
-
-[JsonSourceGenerationOptions(
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-)]
-[JsonSerializable(typeof(bool))]
-public partial class BoolContext : JsonSerializerContext
-{
-}
-
-[JsonSourceGenerationOptions(
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    WriteIndented = true,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-)]
-[JsonSerializable(typeof(bool?))]
-public partial class NullableBoolContext : JsonSerializerContext
-{
 }

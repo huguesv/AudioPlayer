@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <canvas:CanvasControl x:Name="canvas" Draw="canvas_Draw" />
+        <canvas:CanvasControl x:Name="canvas" Draw="Canvas_Draw" />
     </Grid>
 
 </UserControl>

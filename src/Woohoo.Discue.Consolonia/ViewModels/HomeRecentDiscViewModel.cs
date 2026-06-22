@@ -31,7 +31,6 @@ public sealed partial class HomeRecentDiscViewModel : ObservableObject
     [ObservableProperty]
     public partial string FullAlbumTitle { get; set; } = string.Empty;
 
-
     [RelayCommand(CanExecute = nameof(CanLoadAlbum))]
     public void LoadAlbum()
     {

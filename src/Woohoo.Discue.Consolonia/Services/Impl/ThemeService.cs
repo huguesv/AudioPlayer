@@ -12,13 +12,15 @@ internal class ThemeService : IThemeService
 {
     public string SelectedTheme
     {
-        get => field;
+        get;
         set
         {
             field = value;
             this.ApplyTheme();
         }
-    } = KnownThemes.ModernDark;
+    }
+
+    = KnownThemes.ModernDark;
 
     private void ApplyTheme()
     {

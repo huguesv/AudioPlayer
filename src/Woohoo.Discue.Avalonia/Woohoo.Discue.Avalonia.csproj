@@ -40,6 +40,10 @@
     <PackageReference Include="Serilog.Extensions.Hosting" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'" />
+    <PackageReference Include="StyleCop.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Woohoo.Platform.MacOS" />
     <PackageReference Include="Woohoo.Platform.Windows" />
   </ItemGroup>
@@ -50,13 +54,6 @@
     <ProjectReference Include="..\Woohoo.Audio.Services.Impl\Woohoo.Audio.Services.Impl.csproj" />
     <ProjectReference Include="..\Woohoo.Audio.Services\Woohoo.Audio.Services.csproj" />
     <ProjectReference Include="..\Woohoo.Discue.Shared.Avalonia\Woohoo.Discue.Shared.Avalonia.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
