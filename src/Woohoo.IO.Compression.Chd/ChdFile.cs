@@ -23,6 +23,7 @@ public sealed class ChdFile : IDisposable
     private static readonly byte[] ExpectedSignature = [(byte)'M', (byte)'C', (byte)'o', (byte)'m', (byte)'p', (byte)'r', (byte)'H', (byte)'D'];
 
     private readonly Stream stream;
+    private readonly Lock streamLock = new();
     private readonly bool keepStreamOpen;
     private readonly ChdHeader header;
     private readonly ImmutableArray<MetadataTagAndValue> metadata;
@@ -112,35 +113,38 @@ public sealed class ChdFile : IDisposable
         uint firstHunk = (uint)(offset / this.header.BlockSize);
         uint lastHunk = (uint)(offset + count - 1) / this.header.BlockSize;
 
-        uint bufferPos = 0;
-        for (uint curHunk = firstHunk; curHunk <= lastHunk; curHunk++)
+        lock (this.streamLock)
         {
-            uint startOffs = curHunk == firstHunk ? (uint)(offset % this.header.BlockSize) : 0;
-            uint endOffs = curHunk == lastHunk ? (uint)((offset + count - 1) % this.header.BlockSize) : this.header.BlockSize - 1;
+            uint bufferPos = 0;
+            for (uint curHunk = firstHunk; curHunk <= lastHunk; curHunk++)
+            {
+                uint startOffs = curHunk == firstHunk ? (uint)(offset % this.header.BlockSize) : 0;
+                uint endOffs = curHunk == lastHunk ? (uint)((offset + count - 1) % this.header.BlockSize) : this.header.BlockSize - 1;
 
-            if (startOffs == 0 && endOffs == (this.header.BlockSize - 1) && curHunk != this.cacheHunk)
-            {
-                // if it's a full block, just read directly from disk unless it's the cached hunk
-                this.ReadHunk(curHunk, buffer, bufferPos);
-            }
-            else
-            {
-                // otherwise, read from the cache
-                if (curHunk != this.cacheHunk)
+                if (startOffs == 0 && endOffs == (this.header.BlockSize - 1) && curHunk != this.cacheHunk)
                 {
-                    this.ReadHunk(curHunk, this.cacheData);
-                    this.cacheHunk = curHunk;
+                    // if it's a full block, just read directly from disk unless it's the cached hunk
+                    this.ReadHunk(curHunk, buffer, bufferPos);
+                }
+                else
+                {
+                    // otherwise, read from the cache
+                    if (curHunk != this.cacheHunk)
+                    {
+                        this.ReadHunk(curHunk, this.cacheData);
+                        this.cacheHunk = curHunk;
+                    }
+
+                    Array.Copy(this.cacheData, startOffs, buffer, bufferPos, endOffs + 1 - startOffs);
                 }
 
-                Array.Copy(this.cacheData, startOffs, buffer, bufferPos, endOffs + 1 - startOffs);
+                // advance
+                bufferPos += endOffs + 1 - startOffs;
             }
-
-            // advance
-            bufferPos += endOffs + 1 - startOffs;
         }
     }
 
-    public void ReadHunk(uint hunkNum, byte[] buffer)
+    private void ReadHunk(uint hunkNum, byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer);
         ObjectDisposedException.ThrowIf(this.disposedValue, this);
@@ -148,7 +152,7 @@ public sealed class ChdFile : IDisposable
         this.ReadHunk(hunkNum, buffer, 0);
     }
 
-    public void ReadHunk(uint hunkNum, byte[] buffer, long offset)
+    private void ReadHunk(uint hunkNum, byte[] buffer, long offset)
     {
         ArgumentNullException.ThrowIfNull(buffer);
         ArgumentOutOfRangeException.ThrowIfNegative(offset);

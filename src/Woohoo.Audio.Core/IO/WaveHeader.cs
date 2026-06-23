@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Playback.Windows.Internal.IO;
+namespace Woohoo.Audio.Core.IO;
 
 using System.Text;
 
-internal static class WaveHeader
+public static class WaveHeader
 {
     public static byte[] Create(int dataSize)
     {

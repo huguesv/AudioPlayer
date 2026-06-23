@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Hugues Valois. All rights reserved.
 // Licensed under the MIT license. See LICENSE in the project root for license information.
 
-namespace Woohoo.Audio.Playback.Windows.Internal.IO;
+namespace Woohoo.Audio.Core.IO;
 
 using System;
 
-internal sealed class HeaderedStream : Stream
+public sealed class HeaderedStream : Stream
 {
     private readonly Stream headerStream;
     private readonly Stream innerStream;

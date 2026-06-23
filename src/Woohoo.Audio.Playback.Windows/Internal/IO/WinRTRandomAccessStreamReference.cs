@@ -6,6 +6,7 @@ namespace Woohoo.Audio.Playback.Windows.Internal.IO;
 using System;
 using global::Windows.Foundation;
 using global::Windows.Storage.Streams;
+using Woohoo.Audio.Core.IO;
 using Woohoo.Audio.Core.Media;
 
 internal sealed partial class WinRTRandomAccessStreamReference : IRandomAccessStreamReference
@@ -20,6 +21,21 @@ internal sealed partial class WinRTRandomAccessStreamReference : IRandomAccessSt
     }
 
     public IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadAsync()
+    {
+        return this.OpenReadDirectAsync();
+    }
+
+    private IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadDirectAsync()
+    {
+        var trackStream = this.track.OpenStream();
+
+        var waveStream = new HeaderedStream(WaveHeader.Create((int)trackStream.Length), trackStream);
+
+        IRandomAccessStreamWithContentType stream = new WinRTRandomAccessStreamWithContentType(waveStream.AsRandomAccessStream(), this.contentType);
+        return Task.FromResult(stream).AsAsyncOperation();
+    }
+
+    private IAsyncOperation<IRandomAccessStreamWithContentType> OpenReadCacheAsync()
     {
         var trackStream = this.track.OpenStream();
 

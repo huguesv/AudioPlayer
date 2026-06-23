@@ -44,4 +44,37 @@ public class ExtractCdUnitTest
             actualSha1.Should().Be(expectedSha1, $"{trackFilePath} sha1 does not match.");
         }
     }
+
+    [Theory]
+    [InlineData("audio_silence_wav_20_tracks")]
+    [InlineData("audio_silence_wav_20_tracks_cdfl")]
+    [InlineData("audio_silence_wav_20_tracks_cdlz")]
+    [InlineData("audio_silence_wav_20_tracks_cdzl")]
+    [InlineData("audio_silence_wav_20_tracks_cdzs")]
+    [InlineData("audio_silence_wav_20_tracks_none")]
+    public void ReadCdTracksMultiThreaded(string folderName)
+    {
+        // Arrange
+        using var tempFolder = new DisposableTempFolder();
+        var chdFilePath = Path.Combine(TestDataFolder, folderName, "in.chd");
+        using var chdFile = new ChdFile(chdFilePath);
+        var cdRomFile = new CdRomFile(chdFile);
+
+        // Act
+        var random = new Random(42);
+        Parallel.For(0, (int)cdRomFile.Toc.NumTracks, (trackNum) =>
+        {
+            using var inputStream = cdRomFile.OpenStream(trackNum);
+            var data = new byte[inputStream.Length];
+            var dataPosition = 0;
+            int remaining = (int)inputStream.Length;
+            while (remaining > 0)
+            {
+                int toRead = Math.Min(remaining, random.Next(10, 1000));
+                inputStream.ReadExactly(data, dataPosition, toRead);
+                dataPosition += toRead;
+                remaining -= toRead;
+            }
+        });
+    }
 }
