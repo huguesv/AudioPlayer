@@ -317,10 +317,23 @@
                                             <MenuItem Command="{Binding ClearAllFromRecentCommand, Mode=OneWay}" Header="Clear All" />
                                         </ContextMenu>
                                     </Grid.ContextMenu>
+                                    <Viewbox
+                                        Grid.Column="0"
+                                        Width="48"
+                                        Height="48"
+                                        IsVisible="{Binding !AlbumArt.HasImage, Mode=OneWay}">
+                                        <Canvas Width="32" Height="32">
+                                                <Path
+                                                    Data="{StaticResource MusicGeometry}"
+                                                    Fill="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                                    Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}" />
+                                        </Canvas>
+                                    </Viewbox>
                                     <Image
                                         Grid.Column="0"
                                         Width="48"
                                         Height="48"
+                                        IsVisible="{Binding AlbumArt.HasImage, Mode=OneWay}"
                                         Source="{Binding AlbumArt.LocalImage, Mode=OneWay}" />
                                     <StackPanel Grid.Column="1" Orientation="Vertical">
                                         <TextBlock
