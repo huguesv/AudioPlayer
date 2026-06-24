@@ -433,8 +433,8 @@
                     <StackPanel
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Orientation="Vertical"
                         IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
+                        Orientation="Vertical"
                         Spacing="1">
                         <TextBlock
                             HorizontalAlignment="Center"
@@ -554,9 +554,9 @@
                         BorderBrush="{DynamicResource ThemeBorderBrush}"
                         BorderThickness="1">
                         <wc:BarPlot
-                            RangeMin="0"
-                            RangeMax="100"
                             Foreground="Gray"
+                            RangeMax="100"
+                            RangeMin="0"
                             Source="{Binding Visualization.BandsPlotData, Mode=OneWay}"
                             Tick="{Binding Visualization.PlotTick, Mode=OneWay}" />
                     </Border>

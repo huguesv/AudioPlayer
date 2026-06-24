@@ -298,9 +298,9 @@
                         <ListBox.Styles>
                             <Style Selector="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="CornerRadius" Value="4"/>
-                                <Setter Property="Margin" Value="0,1,0,2"/>
-                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="CornerRadius" Value="4" />
+                                <Setter Property="Margin" Value="0,1,0,2" />
+                                <Setter Property="Padding" Value="5" />
                             </Style>
                         </ListBox.Styles>
                         <ListBox.ItemTemplate>
@@ -323,10 +323,10 @@
                                         Height="48"
                                         IsVisible="{Binding !AlbumArt.HasImage, Mode=OneWay}">
                                         <Canvas Width="32" Height="32">
-                                                <Path
-                                                    Data="{StaticResource MusicGeometry}"
-                                                    Fill="{DynamicResource PlaylistNonPlayingTrackBrush}"
-                                                    Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}" />
+                                            <Path
+                                                Data="{StaticResource MusicGeometry}"
+                                                Fill="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                                Stroke="{DynamicResource PlaylistNonPlayingTrackBrush}" />
                                         </Canvas>
                                     </Viewbox>
                                     <Image
@@ -466,13 +466,13 @@
                 KeyUp="PlaylistListBox_KeyUp">
                 <ListBox.Styles>
                     <Style Selector="ListBoxItem:nth-child(2n+1)">
-                        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+                        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
                     </Style>
                     <Style Selector="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="CornerRadius" Value="4"/>
-                        <Setter Property="Margin" Value="0,1,0,2"/>
-                        <Setter Property="Padding" Value="5"/>
+                        <Setter Property="CornerRadius" Value="4" />
+                        <Setter Property="Margin" Value="0,1,0,2" />
+                        <Setter Property="Padding" Value="5" />
                     </Style>
                 </ListBox.Styles>
                 <ListBox.ItemTemplate>
@@ -527,19 +527,20 @@
                 <Grid RowDefinitions="*,Auto">
                     <Grid
                         Grid.Row="0"
-                        IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
-                        ColumnDefinitions="1*,1*">
+                        ColumnDefinitions="1*,1*"
+                        IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
                         <Image
                             Grid.Column="0"
                             Margin="10"
                             Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
                             Stretch="Uniform">
                             <Image.Effect>
-                                <DropShadowEffect BlurRadius="10" 
-                                                  Color="Black" 
-                                                  Opacity="0.5" 
-                                                  OffsetX="3" 
-                                                  OffsetY="3" />
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    OffsetX="3"
+                                    OffsetY="3"
+                                    Opacity="0.5"
+                                    Color="Black" />
                             </Image.Effect>
                         </Image>
                         <StackPanel
@@ -552,20 +553,20 @@
                                 HorizontalAlignment="Left"
                                 FontSize="24"
                                 Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
-                                TextWrapping="Wrap"/>
+                                TextWrapping="Wrap" />
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="16"
                                 Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
-                                TextWrapping="Wrap"/>
+                                TextWrapping="Wrap" />
                         </StackPanel>
                     </Grid>
                     <StackPanel
                         Grid.Row="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Orientation="Vertical"
                         IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
+                        Orientation="Vertical"
                         Spacing="10">
                         <TextBlock
                             HorizontalAlignment="Center"
@@ -613,8 +614,8 @@
         <StackPanel
             Grid.Row="2"
             HorizontalAlignment="Center"
-            Spacing="4"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            Spacing="4">
             <Button
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
