@@ -9,6 +9,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Messaging;
+using global::Consolonia.Controls;
 using Woohoo.Discue.Consolonia.ViewModels;
 
 public partial class MainControl : UserControl
@@ -20,6 +21,11 @@ public partial class MainControl : UserControl
         WeakReferenceMessenger.Default.Register<CurrentLyricChangeMessage>(this, (r, m) =>
         {
             this.ScrollToLyricLine(m);
+        });
+
+        WeakReferenceMessenger.Default.Register<MediaErrorMessage>(this, (r, m) =>
+        {
+            this.ShowError(m);
         });
     }
 
@@ -85,5 +91,17 @@ public partial class MainControl : UserControl
                 .GetOrCreateElement(Math.Min(m.Index + 1, m.LineCount - 1))?
                 .BringIntoView();
         }
+    }
+
+    private void ShowError(MediaErrorMessage m)
+    {
+        var mb = new MessageBox
+        {
+            MessageBoxStyle = MessageBoxStyle.Ok,
+            Title = "Error",
+            Message = m.Text,
+        };
+
+        mb.ShowDialog();
     }
 }

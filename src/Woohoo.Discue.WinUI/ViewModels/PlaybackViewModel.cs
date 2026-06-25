@@ -6,6 +6,7 @@ namespace Woohoo.Discue.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Contracts.Services;
@@ -40,6 +41,11 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         WeakReferenceMessenger.Default.Register<PlayTrackMessage>(this, (r, m) =>
         {
             this.PlayTrack(m);
+        });
+
+        WeakReferenceMessenger.Default.Register<MediaErrorMessage>(this, (r, m) =>
+        {
+            this.ShowError(m);
         });
 
         this.mediaPlayerService = mediaPlayerService;
@@ -142,6 +148,12 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
             ? this.CurrentTrackPosition.TotalMilliseconds / this.CurrentTrackDuration.TotalMilliseconds
             : 0;
 
+    [ObservableProperty]
+    public partial string ErrorMessage { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool IsErrorVisible { get; set; }
+
     public void PreviousTrack()
     {
         this.mediaPlayerService.PreviousTrack();
@@ -169,12 +181,37 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
 
     private void LoadAlbum(LoadAlbumMessage message)
     {
-        _ = this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+        _ = this.LoadAlbumAsync(message);
+    }
+
+    private async Task LoadAlbumAsync(LoadAlbumMessage message)
+    {
+        try
+        {
+            await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+        }
+        catch (MediaLoadException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
+        catch (FileNotFoundException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
     }
 
     private void PlayTrack(PlayTrackMessage message)
     {
         this.mediaPlayerService.Play(message.TrackId);
+    }
+
+    private void ShowError(MediaErrorMessage m)
+    {
+        _ = this.dispatcherQueue.TryEnqueue(() =>
+        {
+            this.ErrorMessage = m.Text;
+            this.IsErrorVisible = true;
+        });
     }
 
     private void MediaPlayerService_ActiveTrackChanged(object? sender, EventArgs e)
@@ -216,6 +253,9 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
             this.IsPlayPauseEnabled = track is not null;
             this.IsSeekBackwardEnabled = track is not null;
             this.IsSeekForwardEnabled = track is not null;
+
+            this.ErrorMessage = string.Empty;
+            this.IsErrorVisible = false;
         });
     }
 

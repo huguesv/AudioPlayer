@@ -5,7 +5,9 @@ namespace Woohoo.Discue.Avalonia.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Avalonia.Services;
 using Woohoo.Discue.Shared.Avalonia.Services;
@@ -84,8 +86,19 @@ public partial class MainViewModel : ObservableObject
 
     public async Task OpenFileAsync(string filePath)
     {
-        await this.mediaPlayerService.LoadFromFileAsync(filePath);
-        this.View = ViewType.NowPlaying;
+        try
+        {
+            await this.mediaPlayerService.LoadFromFileAsync(filePath);
+            this.View = ViewType.NowPlaying;
+        }
+        catch (MediaLoadException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
+        catch (FileNotFoundException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
     }
 
     [RelayCommand]

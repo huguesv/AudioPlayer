@@ -7,9 +7,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Services;
-using Woohoo.Discue.Shared.Avalonia.Services;
 
 public sealed partial class PlaybackViewModel : ObservableRecipient
 {
@@ -195,7 +195,23 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
 
     private void LoadAlbum(LoadAlbumMessage message)
     {
-        _ = this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+        _ = this.LoadAlbumAsync(message);
+    }
+
+    private async Task LoadAlbumAsync(LoadAlbumMessage message)
+    {
+        try
+        {
+            await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+        }
+        catch (MediaLoadException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
+        catch (FileNotFoundException ex)
+        {
+            WeakReferenceMessenger.Default.Send(new MediaErrorMessage { Text = ex.Message });
+        }
     }
 
     private void PlayTrack(PlayTrackMessage message)

@@ -15,6 +15,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
@@ -184,6 +185,15 @@
                         </Button>
                     </Grid>
                 </Grid>
+
+                <InfoBar
+                    Title="Error"
+                    Grid.Row="2"
+                    Margin="10,0"
+                    IsOpen="{x:Bind ViewModel.IsErrorVisible, Mode=TwoWay}"
+                    Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    Severity="Error"
+                    Visibility="{x:Bind ViewModel.IsErrorVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
             </Grid>
         </Border>
         <VisualStateManager.VisualStateGroups>

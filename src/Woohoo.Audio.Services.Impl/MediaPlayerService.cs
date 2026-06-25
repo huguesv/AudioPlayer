@@ -134,7 +134,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
 
     public async Task LoadFromFileAsync(string albumFilePath)
     {
-        var media = new MediaLoader().LoadFrom(albumFilePath);
+        var media = MediaLoader.LoadFrom(albumFilePath);
 
         this.discMetadataCache.Clear();
         this.trackMetadataCache.Clear();

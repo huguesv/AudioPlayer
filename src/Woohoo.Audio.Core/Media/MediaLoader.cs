@@ -12,38 +12,38 @@ using Woohoo.Audio.Core.Internal.CueToolsDatabase;
 using Woohoo.Audio.Core.Internal.IO;
 using Woohoo.IO.Compression.Chd;
 
-public sealed class MediaLoader
+public static class MediaLoader
 {
-    public IAlbumMedia LoadFrom(string filePath)
+    public static IAlbumMedia LoadFrom(string filePath)
     {
         string ext = Path.GetExtension(filePath);
         if (string.Equals(ext, ".cue", StringComparison.OrdinalIgnoreCase))
         {
-            return this.OpenCue(filePath);
+            return OpenCue(filePath);
         }
         else if (string.Equals(ext, ".zip", StringComparison.OrdinalIgnoreCase))
         {
-            return this.OpenArchive(filePath);
+            return OpenArchive(filePath);
         }
         else if (string.Equals(ext, ".chd", StringComparison.OrdinalIgnoreCase))
         {
-            return this.OpenChd(filePath);
+            return OpenChd(filePath);
         }
 
-        throw new ArgumentException("Unsupported file format.", nameof(filePath));
+        throw new MediaLoadException("Unsupported file format.");
     }
 
-    private IAlbumMedia OpenArchive(string filePath)
+    private static IAlbumMedia OpenArchive(string filePath)
     {
         if (!File.Exists(filePath))
         {
             throw new FileNotFoundException("File not found.", filePath);
         }
 
-        return this.ProcessContainer(new ZipFolder(filePath));
+        return ProcessContainer(new ZipFolder(filePath));
     }
 
-    private IAlbumMedia OpenCue(string filePath)
+    private static IAlbumMedia OpenCue(string filePath)
     {
         if (!File.Exists(filePath))
         {
@@ -56,15 +56,15 @@ public sealed class MediaLoader
             throw new ArgumentException("Invalid file path.", nameof(filePath));
         }
 
-        return this.ProcessContainer(new RegularFolder(folder));
+        return ProcessContainer(new RegularFolder(folder));
     }
 
-    private IAlbumMedia ProcessContainer(IFolder folder)
+    private static IAlbumMedia ProcessContainer(IFolder folder)
     {
         var cueFile = folder.EnumerateFilesByExtension("cue").FirstOrDefault();
         if (cueFile is null)
         {
-            throw new InvalidOperationException("No .cue file found in the container.");
+            throw new MediaLoadException("No .cue file found in the container.");
         }
 
         var cueSheetName = Path.GetFileNameWithoutExtension(cueFile);
@@ -127,7 +127,7 @@ public sealed class MediaLoader
         return new BinCueAlbumMedia(cueSheet, folder, albumTracks, toc);
     }
 
-    private IAlbumMedia OpenChd(string filePath)
+    private static IAlbumMedia OpenChd(string filePath)
     {
         var chdFile = new ChdFile(filePath);
         var cdRomFile = new CdRomFile(chdFile);
