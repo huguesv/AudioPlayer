@@ -5,10 +5,10 @@ namespace Woohoo.Discue.Views;
 
 using System;
 using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Woohoo.Audio.Services;
 using Woohoo.Discue.Contracts.Services;
 using Woohoo.Discue.Helpers;
 using Woohoo.Discue.ViewModels;
@@ -43,6 +43,11 @@ public sealed partial class ShellControl : UserControl, IDisposable
         this.navView.SelectedItem = this.navView.MenuItems.OfType<NavigationViewItem>().First();
 
         this.navigationService.NavigateTo(typeof(HomeViewModel).FullName!, null);
+
+        WeakReferenceMessenger.Default.Register<ViewChangeMessage>(this, (r, m) =>
+        {
+            this.navigationService.NavigateTo(m.ViewName, null);
+        });
     }
 
     public ShellViewModel ViewModel { get; }

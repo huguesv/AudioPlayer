@@ -88,7 +88,7 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
-            await this.mediaPlayerService.LoadFromFileAsync(filePath);
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(filePath));
             this.View = ViewType.NowPlaying;
         }
         catch (MediaLoadException ex)

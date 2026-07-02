@@ -12,6 +12,10 @@ using Woohoo.Audio.Services;
 internal class NullMediaPlayerService : IMediaPlayerService
 {
 #pragma warning disable CS0067 // The event is never used
+    public event EventHandler<EventArgs>? DiscLoading;
+
+    public event EventHandler<EventArgs>? DiscLoaded;
+
     public event EventHandler<EventArgs>? ActiveTrackChanged;
 
     public event EventHandler<AudioPlayerTrackEventArgs>? LyricsUpdated;

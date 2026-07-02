@@ -57,6 +57,10 @@ public sealed class MediaPlayerService : IMediaPlayerService
         this.player.PlaybackStateChanged += this.Player_PlaybackStateChanged;
     }
 
+    public event EventHandler<EventArgs>? DiscLoading;
+
+    public event EventHandler<EventArgs>? DiscLoaded;
+
     public event EventHandler<EventArgs>? PlaylistUpdated;
 
     public event EventHandler<AudioPlayerTrackEventArgs>? MetadataUpdated;
@@ -134,7 +138,11 @@ public sealed class MediaPlayerService : IMediaPlayerService
 
     public async Task LoadFromFileAsync(string albumFilePath)
     {
-        var media = MediaLoader.LoadFrom(albumFilePath);
+        this.DiscLoading?.Invoke(this, EventArgs.Empty);
+
+        await this.player.ClearAsync();
+
+        var media = await MediaLoader.LoadFromAsync(albumFilePath);
 
         this.discMetadataCache.Clear();
         this.trackMetadataCache.Clear();
@@ -149,6 +157,8 @@ public sealed class MediaPlayerService : IMediaPlayerService
         this.discMetadataCache.AddOrUpdate(disc.Id, discMetadata, (id, existing) => discMetadata);
 
         await this.player.LoadAsync(disc, tracks);
+
+        this.DiscLoaded?.Invoke(this, EventArgs.Empty);
 
         this.PlaylistUpdated?.Invoke(this, EventArgs.Empty);
 

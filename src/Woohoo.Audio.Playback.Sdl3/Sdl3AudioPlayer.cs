@@ -144,6 +144,25 @@ public sealed class Sdl3AudioPlayer : IAudioPlayer
         }
     }
 
+    public Task ClearAsync()
+    {
+        if (this.IsPlaying)
+        {
+            this.Pause();
+        }
+
+        lock (this.dataLock)
+        {
+            this.playlistTracks.Clear();
+            this.discs.Clear();
+            this.guidToAlbumTrackMap.Clear();
+        }
+
+        this.SetActiveTrack(-1);
+
+        return Task.CompletedTask;
+    }
+
     public Task LoadAsync(
         AudioPlayerDisc disc,
         ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)

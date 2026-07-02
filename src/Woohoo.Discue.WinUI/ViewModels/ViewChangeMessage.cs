@@ -1,0 +1,9 @@
+﻿// Copyright (c) Hugues Valois. All rights reserved.
+// Licensed under the MIT license. See LICENSE in the project root for license information.
+
+namespace Woohoo.Discue.ViewModels;
+
+public sealed class ViewChangeMessage
+{
+    public string ViewName { get; init; } = string.Empty;
+}

@@ -40,6 +40,8 @@ public interface IAudioPlayer
 
     AudioPlayerDisc? FindDisc(Guid id);
 
+    Task ClearAsync();
+
     Task LoadAsync(
         AudioPlayerDisc disc,
         ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks);

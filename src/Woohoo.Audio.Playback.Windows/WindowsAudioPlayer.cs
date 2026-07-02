@@ -191,6 +191,23 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
         }
     }
 
+    public Task ClearAsync()
+    {
+        this.mediaPlayer.Pause();
+        this.mediaList.Items.Clear();
+
+        lock (this.dataLock)
+        {
+            this.playlistTracks.Clear();
+            this.guidToMediaItemMap.Clear();
+            this.mediaItemToGuidMap.Clear();
+            this.discs.Clear();
+            this.currentPlaybackTrackId = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
     public async Task LoadAsync(
         AudioPlayerDisc disc,
         ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)

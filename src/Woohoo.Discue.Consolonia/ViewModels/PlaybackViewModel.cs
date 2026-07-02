@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Tmds.DBus.Protocol;
 using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Core.Playback;
 using Woohoo.Audio.Services;
@@ -31,7 +32,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
 
         WeakReferenceMessenger.Default.Register<LoadAlbumMessage>(this, (r, m) =>
         {
-            this.LoadAlbum(m);
+            _ = this.LoadAlbumAsync(m);
         });
 
         WeakReferenceMessenger.Default.Register<PlayTrackMessage>(this, (r, m) =>
@@ -193,16 +194,11 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         this.mediaPlayerService.SeekForward(TimeSpan.FromSeconds(5));
     }
 
-    private void LoadAlbum(LoadAlbumMessage message)
-    {
-        _ = this.LoadAlbumAsync(message);
-    }
-
     private async Task LoadAlbumAsync(LoadAlbumMessage message)
     {
         try
         {
-            await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath));
         }
         catch (MediaLoadException ex)
         {

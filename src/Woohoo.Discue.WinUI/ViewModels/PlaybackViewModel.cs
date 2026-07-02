@@ -17,6 +17,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
     private const string PlayIcon = "\uE768";
     private const string PauseIconBold = "\uF8AE";
     private const string PauseIcon = "\uE769";
+
     private readonly IMediaPlayerService mediaPlayerService;
     private readonly IWindowsBitmapCacheService bitmapCacheService;
     private readonly ILogger logger;
@@ -35,7 +36,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
 
         WeakReferenceMessenger.Default.Register<LoadAlbumMessage>(this, (r, m) =>
         {
-            this.LoadAlbum(m);
+            _ = this.LoadAlbumAsync(m);
         });
 
         WeakReferenceMessenger.Default.Register<PlayTrackMessage>(this, (r, m) =>
@@ -60,7 +61,12 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         this.mediaPlayerService.PlaybackPositionChanged += this.MediaPlayerService_PlaybackPositionChanged;
         this.mediaPlayerService.PlaybackStateChanged += this.MediaPlayerService_PlaybackStateChanged;
         this.mediaPlayerService.PlaylistUpdated += this.MediaPlayerService_PlaylistUpdated;
+        this.mediaPlayerService.DiscLoading += this.MediaPlayerService_DiscLoading;
+        this.mediaPlayerService.DiscLoaded += this.MediaPlayerService_DiscLoaded;
     }
+
+    [ObservableProperty]
+    public partial bool IsLoading { get; set; }
 
     [ObservableProperty]
     public partial bool IsNowPlayingEnabled { get; set; }
@@ -179,16 +185,12 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         this.mediaPlayerService.SeekForward(TimeSpan.FromSeconds(5));
     }
 
-    private void LoadAlbum(LoadAlbumMessage message)
-    {
-        _ = this.LoadAlbumAsync(message);
-    }
-
     private async Task LoadAlbumAsync(LoadAlbumMessage message)
     {
         try
         {
-            await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath);
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath));
+            WeakReferenceMessenger.Default.Send(new ViewChangeMessage { ViewName = typeof(NowPlayingViewModel).FullName! });
         }
         catch (MediaLoadException ex)
         {
@@ -211,6 +213,23 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         {
             this.ErrorMessage = m.Text;
             this.IsErrorVisible = true;
+            this.IsLoading = false;
+        });
+    }
+
+    private void MediaPlayerService_DiscLoading(object? sender, EventArgs e)
+    {
+        _ = this.dispatcherQueue.TryEnqueue(() =>
+        {
+            this.IsLoading = true;
+        });
+    }
+
+    private void MediaPlayerService_DiscLoaded(object? sender, EventArgs e)
+    {
+        _ = this.dispatcherQueue.TryEnqueue(() =>
+        {
+            this.IsLoading = false;
         });
     }
 
@@ -246,6 +265,17 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
                 this.CurrentTrackDuration = track.Duration;
                 this.CurrentTrackPosition = this.mediaPlayerService.PlaybackPosition;
 
+                this.UpdatePlaybackButtonStates();
+            }
+            else
+            {
+                this.AlbumFileName = string.Empty;
+                this.AlbumTitle = string.Empty;
+                this.AlbumPerformer = string.Empty;
+                this.CurrentTrackTitle = string.Empty;
+                this.AlbumArt.ImageUrl = string.Empty;
+                this.CurrentTrackDuration = TimeSpan.Zero;
+                this.CurrentTrackPosition = TimeSpan.Zero;
                 this.UpdatePlaybackButtonStates();
             }
 

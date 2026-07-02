@@ -76,6 +76,9 @@ public sealed partial class HomeViewModel : ObservableObject
 
     private void OnMruItemsChanged(object? sender, EventArgs e)
     {
-        this.LoadRecentDiscs();
+        _ = this.dispatcherQueue.TryEnqueue(() =>
+        {
+            this.LoadRecentDiscs();
+        });
     }
 }

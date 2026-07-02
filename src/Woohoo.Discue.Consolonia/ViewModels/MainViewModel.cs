@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
+using Tmds.DBus.Protocol;
 using Woohoo.Audio.Core.Media;
 using Woohoo.Audio.Services;
 using Woohoo.Discue.Shared.Avalonia.Services;
@@ -102,7 +103,7 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
-            await this.mediaPlayerService.LoadFromFileAsync(filePath);
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(filePath));
             this.View = ViewType.NowPlaying;
         }
         catch (MediaLoadException ex)

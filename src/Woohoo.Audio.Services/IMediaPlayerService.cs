@@ -9,6 +9,10 @@ using Woohoo.Audio.Core.Playback;
 
 public interface IMediaPlayerService
 {
+    event EventHandler<EventArgs>? DiscLoading;
+
+    event EventHandler<EventArgs>? DiscLoaded;
+
     event EventHandler<EventArgs>? ActiveTrackChanged;
 
     event EventHandler<AudioPlayerTrackEventArgs>? LyricsUpdated;

@@ -16,6 +16,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
@@ -45,7 +46,7 @@
                 <Grid
                     Grid.Row="1"
                     MinHeight="85"
-                    Margin="10"
+                    Margin="10,0"
                     ColumnSpacing="15">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="400" />
@@ -194,6 +195,13 @@
                     Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                     Severity="Error"
                     Visibility="{x:Bind ViewModel.IsErrorVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                <Grid Grid.Row="3" MinHeight="4">
+                    <ProgressBar
+                        Margin="10,0"
+                        IsIndeterminate="True"
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </Grid>
             </Grid>
         </Border>
         <VisualStateManager.VisualStateGroups>
