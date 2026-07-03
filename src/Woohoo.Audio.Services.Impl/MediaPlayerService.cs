@@ -136,13 +136,13 @@ public sealed class MediaPlayerService : IMediaPlayerService
 
     public void Play(Guid trackId) => this.player.Play(trackId);
 
-    public async Task LoadFromFileAsync(string albumFilePath)
+    public async Task LoadFromFileAsync(string albumFilePath, CancellationToken cancellationToken)
     {
         this.DiscLoading?.Invoke(this, EventArgs.Empty);
 
-        await this.player.ClearAsync();
+        await this.player.ClearAsync(cancellationToken);
 
-        var media = await MediaLoader.LoadFromAsync(albumFilePath);
+        var media = await MediaLoader.LoadFromAsync(albumFilePath, cancellationToken);
 
         this.discMetadataCache.Clear();
         this.trackMetadataCache.Clear();
@@ -156,7 +156,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
 
         this.discMetadataCache.AddOrUpdate(disc.Id, discMetadata, (id, existing) => discMetadata);
 
-        await this.player.LoadAsync(disc, tracks);
+        await this.player.LoadAsync(disc, tracks, cancellationToken);
 
         this.DiscLoaded?.Invoke(this, EventArgs.Empty);
 
@@ -183,7 +183,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
             this.mruService.AddOrUpdateItem(mruItem);
         }
 
-        _ = this.LoadExtrasAsync(albumFilePath, disc.Id, disc.CTDBToc, tracks);
+        _ = this.LoadExtrasAsync(albumFilePath, disc.Id, disc.CTDBToc, tracks, cancellationToken);
     }
 
     public void Shutdown()
@@ -248,16 +248,17 @@ public sealed class MediaPlayerService : IMediaPlayerService
         string albumFilePath,
         Guid discId,
         string toc,
-        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)
+        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks,
+        CancellationToken cancellationToken)
     {
         if (this.localSettingsService.ReadSetting<bool?>(KnownSettingKeys.QueryMetadataOnline) == true)
         {
-            await this.LoadMetadataAsync(albumFilePath, discId, toc, tracks);
+            await this.LoadMetadataAsync(albumFilePath, discId, toc, tracks, cancellationToken);
         }
 
         if (this.localSettingsService.ReadSetting<bool?>(KnownSettingKeys.QueryLyricsOnline) == true)
         {
-            await this.QueryLyricsAsync(tracks.Select(t => t.PlayerTrack.Id));
+            await this.QueryLyricsAsync(tracks.Select(t => t.PlayerTrack.Id), cancellationToken);
         }
     }
 
@@ -265,7 +266,8 @@ public sealed class MediaPlayerService : IMediaPlayerService
         string albumFilePath,
         Guid discId,
         string toc,
-        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)
+        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks,
+        CancellationToken cancellationToken)
     {
         var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         var audioTrackCount = tracks.Length;
@@ -282,7 +284,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
 
             this.discMetadataCache.AddOrUpdate(discId, discMetadata, (id, existing) => discMetadata);
 
-            await this.player.UpdateDiscMetadataAsync(discId, discMetadata);
+            await this.player.UpdateDiscMetadataAsync(discId, discMetadata, cancellationToken);
 
             var imageUrl = metadata.Album.Images.FirstOrDefault(md => md.IsPrimary)?.Url;
 
@@ -305,7 +307,8 @@ public sealed class MediaPlayerService : IMediaPlayerService
                     track.PlayerTrack.Id,
                     trackMetadata,
                     imageUrl is not null ? new Uri(imageUrl) : null,
-                    imageUrl is not null ? await this.bitmapCacheService.GetLocalUriAsync(new Uri(imageUrl)) : null);
+                    imageUrl is not null ? await this.bitmapCacheService.GetLocalUriAsync(new Uri(imageUrl)) : null,
+                    cancellationToken);
 
                 this.MetadataUpdated?.Invoke(this, new AudioPlayerTrackEventArgs(this.player.Tracks[i]));
             }
@@ -340,7 +343,7 @@ public sealed class MediaPlayerService : IMediaPlayerService
         }
     }
 
-    private async Task QueryLyricsAsync(IEnumerable<Guid> trackIds)
+    private async Task QueryLyricsAsync(IEnumerable<Guid> trackIds, CancellationToken cancellationToken)
     {
         try
         {

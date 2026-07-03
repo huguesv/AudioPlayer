@@ -67,10 +67,10 @@ internal class ConsolePlayer
         Console.WriteLine();
     }
 
-    public async Task LoadAlbumAsync(string filePath)
+    public async Task LoadAlbumAsync(string filePath, CancellationToken cancellationToken)
     {
         this.cursorBeginPos = Console.GetCursorPosition();
-        await this.mediaPlayerService.LoadFromFileAsync(filePath);
+        await this.mediaPlayerService.LoadFromFileAsync(filePath, cancellationToken);
     }
 
     public bool HandleKey(ConsoleKey key)

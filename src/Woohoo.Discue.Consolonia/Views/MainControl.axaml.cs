@@ -62,7 +62,7 @@ public partial class MainControl : UserControl
         {
             if (File.Exists(recentDisc.AlbumFilePath))
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
+                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
             }
         }
     }
@@ -78,7 +78,7 @@ public partial class MainControl : UserControl
         {
             if (File.Exists(recentDisc.AlbumFilePath))
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
+                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
             }
         }
     }

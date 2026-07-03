@@ -57,7 +57,7 @@ public interface IMediaPlayerService
 
     LyricsTrack? GetTrackLyrics(Guid id);
 
-    Task LoadFromFileAsync(string albumFilePath);
+    Task LoadFromFileAsync(string albumFilePath, CancellationToken cancellationToken);
 
     void NextTrack();
 

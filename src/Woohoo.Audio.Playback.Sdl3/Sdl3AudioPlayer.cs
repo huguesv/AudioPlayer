@@ -144,7 +144,7 @@ public sealed class Sdl3AudioPlayer : IAudioPlayer
         }
     }
 
-    public Task ClearAsync()
+    public Task ClearAsync(CancellationToken cancellationToken)
     {
         if (this.IsPlaying)
         {
@@ -165,7 +165,8 @@ public sealed class Sdl3AudioPlayer : IAudioPlayer
 
     public Task LoadAsync(
         AudioPlayerDisc disc,
-        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)
+        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks,
+        CancellationToken cancellationToken)
     {
         lock (this.dataLock)
         {
@@ -251,7 +252,7 @@ public sealed class Sdl3AudioPlayer : IAudioPlayer
         }
     }
 
-    public Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata)
+    public Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
@@ -260,7 +261,8 @@ public sealed class Sdl3AudioPlayer : IAudioPlayer
         Guid trackId,
         AudioPlayerTrackMetadata trackMetadata,
         Uri? originalAlbumArtUri,
-        Uri? localAlbumArtUri)
+        Uri? localAlbumArtUri,
+        CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }

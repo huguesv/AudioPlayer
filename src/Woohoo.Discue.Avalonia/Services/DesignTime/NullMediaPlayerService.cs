@@ -79,7 +79,7 @@ internal class NullMediaPlayerService : IMediaPlayerService
         throw new NotImplementedException();
     }
 
-    public Task LoadFromFileAsync(string albumFilePath)
+    public Task LoadFromFileAsync(string albumFilePath, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

@@ -118,7 +118,7 @@ public partial class MainWindow : Window
 
             if (filePaths.Count > 0)
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(filePaths[0]);
+                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(filePaths[0], CancellationToken.None);
             }
         }
     }
@@ -234,7 +234,7 @@ public partial class MainWindow : Window
         {
             if (File.Exists(recentDisc.AlbumFilePath))
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
+                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
             }
         }
     }
@@ -250,7 +250,7 @@ public partial class MainWindow : Window
         {
             if (File.Exists(recentDisc.AlbumFilePath))
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath);
+                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
             }
         }
     }

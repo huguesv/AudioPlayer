@@ -40,11 +40,12 @@ public interface IAudioPlayer
 
     AudioPlayerDisc? FindDisc(Guid id);
 
-    Task ClearAsync();
+    Task ClearAsync(CancellationToken cancellationToken);
 
     Task LoadAsync(
         AudioPlayerDisc disc,
-        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks);
+        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks,
+        CancellationToken cancellationToken);
 
     void NextTrack();
 
@@ -60,11 +61,12 @@ public interface IAudioPlayer
 
     void Shutdown();
 
-    Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata);
+    Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata, CancellationToken cancellationToken);
 
     Task UpdateTrackMetadataAsync(
         Guid trackId,
         AudioPlayerTrackMetadata trackMetadata,
         Uri? originalAlbumArtUri,
-        Uri? localAlbumArtUri);
+        Uri? localAlbumArtUri,
+        CancellationToken cancellationToken);
 }

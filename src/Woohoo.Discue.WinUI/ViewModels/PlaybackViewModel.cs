@@ -36,7 +36,7 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
 
         WeakReferenceMessenger.Default.Register<LoadAlbumMessage>(this, (r, m) =>
         {
-            _ = this.LoadAlbumAsync(m);
+            _ = this.LoadAlbumAsync(m, CancellationToken.None);
         });
 
         WeakReferenceMessenger.Default.Register<PlayTrackMessage>(this, (r, m) =>
@@ -185,11 +185,11 @@ public sealed partial class PlaybackViewModel : ObservableRecipient
         this.mediaPlayerService.SeekForward(TimeSpan.FromSeconds(5));
     }
 
-    private async Task LoadAlbumAsync(LoadAlbumMessage message)
+    private async Task LoadAlbumAsync(LoadAlbumMessage message, CancellationToken cancellationToken)
     {
         try
         {
-            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath));
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(message.AlbumFilePath, cancellationToken));
             WeakReferenceMessenger.Default.Send(new ViewChangeMessage { ViewName = typeof(NowPlayingViewModel).FullName! });
         }
         catch (MediaLoadException ex)

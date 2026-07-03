@@ -95,7 +95,7 @@ internal class Program
 
                 var player = new ConsolePlayer(mediaPlayerService);
 
-                await player.LoadAlbumAsync(fileInfo.FullName);
+                await player.LoadAlbumAsync(fileInfo.FullName, CancellationToken.None);
 
                 while (player.HandleKey(Console.ReadKey(intercept: true).Key))
                 {

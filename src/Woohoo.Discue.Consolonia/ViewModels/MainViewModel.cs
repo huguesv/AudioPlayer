@@ -99,11 +99,11 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     public partial ViewType View { get; set; }
 
-    public async Task OpenFileAsync(string filePath)
+    public async Task OpenFileAsync(string filePath, CancellationToken cancellationToken)
     {
         try
         {
-            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(filePath));
+            await Task.Run(async () => await this.mediaPlayerService.LoadFromFileAsync(filePath, cancellationToken));
             this.View = ViewType.NowPlaying;
         }
         catch (MediaLoadException ex)
@@ -117,7 +117,7 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task BrowseAsync()
+    public async Task BrowseAsync(CancellationToken cancellationToken)
     {
         var filePaths = await this.filePickerService.GetFilePathsAsync(
             this.lastBrowseFolder,
@@ -135,7 +135,7 @@ public partial class MainViewModel : ObservableObject
             this.lastBrowseFolder = Path.GetDirectoryName(filePath) ?? string.Empty;
             this.localSettingsService.SaveSetting(KnownSettingKeys.LastBrowseFolder, this.lastBrowseFolder);
 
-            await this.OpenFileAsync(filePath);
+            await this.OpenFileAsync(filePath, cancellationToken);
         }
     }
 

@@ -14,7 +14,7 @@ using Woohoo.IO.Compression.Chd;
 
 public static class MediaLoader
 {
-    public static async Task<IAlbumMedia> LoadFromAsync(string filePath)
+    public static async Task<IAlbumMedia> LoadFromAsync(string filePath, CancellationToken cancellationToken)
     {
         if (!File.Exists(filePath))
         {
@@ -36,13 +36,13 @@ public static class MediaLoader
         }
         else if (string.Equals(ext, ".7z", StringComparison.OrdinalIgnoreCase))
         {
-            return await OpenSevenZipAsync(filePath);
+            return await OpenSevenZipAsync(filePath, cancellationToken);
         }
 
         throw new MediaLoadException("Unsupported file format.");
     }
 
-    private static async Task<IAlbumMedia> OpenSevenZipAsync(string filePath)
+    private static async Task<IAlbumMedia> OpenSevenZipAsync(string filePath, CancellationToken cancellationToken)
     {
         // TODO: Extract 7z to a temporary folder and process like a cue file
         throw new MediaLoadException("Unsupported file format.");

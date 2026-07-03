@@ -191,7 +191,7 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
         }
     }
 
-    public Task ClearAsync()
+    public Task ClearAsync(CancellationToken cancellationToken)
     {
         this.mediaPlayer.Pause();
         this.mediaList.Items.Clear();
@@ -210,7 +210,8 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
 
     public async Task LoadAsync(
         AudioPlayerDisc disc,
-        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks)
+        ImmutableArray<(AudioPlayerTrack PlayerTrack, AudioPlayerTrackMetadata TrackMetadata, IAlbumTrack AlbumTrack)> tracks,
+        CancellationToken cancellationToken)
     {
         this.mediaList.Items.Clear();
 
@@ -259,7 +260,7 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
         this.mediaPlayer.Play();
     }
 
-    public Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata)
+    public Task UpdateDiscMetadataAsync(Guid discId, AudioPlayerDiscMetadata metadata, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
@@ -268,7 +269,8 @@ public sealed class WindowsAudioPlayer : IAudioPlayer
         Guid trackId,
         AudioPlayerTrackMetadata trackMetadata,
         Uri? originalAlbumArtUri,
-        Uri? localAlbumArtUri)
+        Uri? localAlbumArtUri,
+        CancellationToken cancellationToken)
     {
         MediaPlaybackItem? mediaItem;
 
