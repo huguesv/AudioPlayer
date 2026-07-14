@@ -179,7 +179,7 @@ jobs:
         hdiutil create -volname "${{ inputs.app-display-name }}" \
           -srcfolder out/dmg-stage \
           -ov -format UDBZ \
-          -size 120mb \
+          -size 200mb \
           ${{ inputs.app-short-name }}.dmg
 
     - name: Zip DMG
