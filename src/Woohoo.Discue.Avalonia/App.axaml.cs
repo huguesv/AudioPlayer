@@ -118,15 +118,14 @@ public partial class App : Application
 
     public static TopLevel? GetTopLevel(Application app)
     {
-        if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            return desktopLifetime.MainWindow;
+            return TopLevel.GetTopLevel(desktop.MainWindow);
         }
 
-        if (app.ApplicationLifetime is ISingleViewApplicationLifetime viewLifetime)
+        if (app.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
         {
-            var visualRoot = viewLifetime.MainView?.GetVisualRoot();
-            return visualRoot as TopLevel;
+            return TopLevel.GetTopLevel(viewApp.MainView);
         }
 
         return null;
@@ -139,10 +138,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Line below is needed to remove Avalonia data validation.
-        // Without this line you will get duplicate validations from both Avalonia and CT
-        BindingPlugins.DataValidators.RemoveAt(0);
-
         var vm = this.Host.Services.GetRequiredService<MainViewModel>();
 
         if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)

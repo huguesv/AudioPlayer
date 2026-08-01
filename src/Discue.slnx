@@ -22,6 +22,7 @@
   <Project Path="Woohoo.Audio.Services/Woohoo.Audio.Services.csproj" Id="2d861e49-182a-4924-9ac0-4beaa137b229" />
   <Project Path="Woohoo.Codecs.Flake/Woohoo.Codecs.Flake.csproj" />
   <Project Path="Woohoo.Codecs/Woohoo.Codecs.csproj" />
+  <Project Path="Woohoo.ConsoloniaControls.Gallery/Woohoo.ConsoloniaControls.Gallery.csproj" />
   <Project Path="Woohoo.ConsoloniaControls/Woohoo.ConsoloniaControls.csproj" />
   <Project Path="Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj" />
   <Project Path="Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj" />

@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:Woohoo.Discue.Consolonia.Services"
     xmlns:vm="using:Woohoo.Discue.Consolonia.ViewModels"
+    x:DataType="vm:MainViewModel"
     Title="Discue">
 
     <Window.Styles>
@@ -17,23 +18,6 @@
 
     <Window.KeyBindings>
         <KeyBinding Command="{Binding BrowseCommand}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
-        <KeyBinding Command="{Binding PlayPauseCommand}" Gesture="{OnPlatform Ctrl+Space, macOS=⌘+Space}" />
-        <KeyBinding
-            Command="{Binding SelectViewCommand, Mode=OneWay}"
-            CommandParameter="{x:Static vm:ViewType.About}"
-            Gesture="F1" />
-        <KeyBinding
-            Command="{Binding SelectViewCommand, Mode=OneWay}"
-            CommandParameter="{x:Static vm:ViewType.NowPlaying}"
-            Gesture="F2" />
-        <KeyBinding
-            Command="{Binding SelectViewCommand, Mode=OneWay}"
-            CommandParameter="{x:Static vm:ViewType.Playlist}"
-            Gesture="F3" />
-        <KeyBinding
-            Command="{Binding SelectViewCommand, Mode=OneWay}"
-            CommandParameter="{x:Static vm:ViewType.Lyrics}"
-            Gesture="F4" />
     </Window.KeyBindings>
 
     <local:MainControl />

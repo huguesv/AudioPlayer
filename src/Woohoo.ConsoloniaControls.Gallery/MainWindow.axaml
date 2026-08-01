@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Woohoo.ConsoloniaControls.Gallery"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wc="clr-namespace:Woohoo.ConsoloniaControls;assembly=Woohoo.ConsoloniaControls"
+    x:DataType="local:MainViewModel"
     Title="Woohoo Consolonia Controls Gallery">
 
     <Grid RowDefinitions="Auto,*">

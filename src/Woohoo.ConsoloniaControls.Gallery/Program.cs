@@ -8,6 +8,7 @@ using Consolonia;
 
 internal class Program
 {
+    [STAThread]
     private static void Main(string[] args)
     {
         BuildAvaloniaApp()
@@ -17,8 +18,9 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
     {
         return AppBuilder.Configure<App>()
+            .LogToException()
             .UseConsolonia()
             .UseAutoDetectedConsole()
-            .LogToException();
+            .ThrowOnErrors();
     }
 }

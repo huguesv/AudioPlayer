@@ -34,8 +34,8 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Skia" />
-    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Avalonia.Controls.ItemsRepeater" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Consolonia" />
     <PackageReference Include="Consolonia.Fonts" />
     <PackageReference Include="Consolonia.ManagedWindows" />
