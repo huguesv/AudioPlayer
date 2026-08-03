@@ -200,6 +200,7 @@ This software uses the following libraries:
 - [Avalonia](https://github.com/AvaloniaUI/Avalonia)
 - [CommunityToolkit](https://github.com/CommunityToolkit/dotnet)
 - [FftSharp](https://github.com/swharden/FftSharp)
+- [FluentIcons.Avalonia](https://github.com/davidxuang/FluentIcons)
 - [ScottPlot](https://github.com/ScottPlot/ScottPlot)
 - [SDL3-CS from ppy](https://github.com/ppy/SDL3-CS)
 - [SDL3-CS from flibitijibibo](https://github.com/flibitijibibo/SDL3-CS)
@@ -208,7 +209,6 @@ This software uses the following libraries:
 
 This software uses assets from:
 
-- [Vidstack](https://www.vidstack.io/)
 - [icons-icons.com](https://icon-icons.com/)
   - [Disc Icon Free](https://icon-icons.com/icon/disc/114465)
 
