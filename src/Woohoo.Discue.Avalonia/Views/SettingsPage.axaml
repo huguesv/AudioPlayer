@@ -1,0 +1,281 @@
+<ContentPage
+    x:Class="Woohoo.Discue.Avalonia.Views.SettingsPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    Header="Settings"
+    mc:Ignorable="d">
+
+    <ContentPage.Styles>
+
+        <Style Selector="HyperlinkButton">
+            <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+        </Style>
+        <Style Selector="HyperlinkButton:visited /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource HyperlinkButtonForeground}" />
+        </Style>
+        <Style Selector="Border.SettingCard">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Margin" Value="0,2" />
+        </Style>
+        <Style Selector="Border.SettingCard:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+        </Style>
+        <Style Selector="TextBlock.CategoryHeader">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,16,0,6" />
+        </Style>
+
+    </ContentPage.Styles>
+
+    <ScrollViewer Padding="24,16,24,0">
+        <StackPanel
+            Margin="0,0,0,48"
+            HorizontalAlignment="Stretch"
+            Spacing="4">
+
+            <TextBlock Classes="CategoryHeader" Text="Appearance" />
+
+            <Border Classes="SettingCard">
+                <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="CommentText" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Auto scroll lyrics" />
+                    </StackPanel>
+
+                    <ToggleSwitch
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Settings.LyricsAutoScroll, Mode=TwoWay}"
+                        OffContent="Off"
+                        OnContent="On" />
+                </Grid>
+            </Border>
+
+            <TextBlock Classes="CategoryHeader" Text="Media info" />
+
+            <Border Classes="SettingCard">
+                <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="CommentText" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Look up album metadata online" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="Query the cuetools database for album information" />
+                    </StackPanel>
+
+                    <ToggleSwitch
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Settings.QueryMetadataOnline, Mode=TwoWay}"
+                        OffContent="Off"
+                        OnContent="On" />
+                </Grid>
+            </Border>
+
+            <Border Classes="SettingCard">
+                <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="Save" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Look up lyrics online" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="Query the lrcdb database for lyrics" />
+                    </StackPanel>
+
+                    <ToggleSwitch
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Settings.QueryLyricsOnline, Mode=TwoWay}"
+                        OffContent="Off"
+                        OnContent="On" />
+                </Grid>
+            </Border>
+
+            <TextBlock Classes="CategoryHeader" Text="Audio" />
+
+            <Border Classes="SettingCard">
+                <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
+                    <ic:SymbolIcon
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Symbol="DarkTheme" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Audio Engine" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="Select the backend that is used to play audio." />
+                    </StackPanel>
+
+                    <ComboBox
+                        Grid.Column="2"
+                        MinWidth="220"
+                        VerticalAlignment="Center"
+                        SelectedIndex="0">
+                        <ComboBoxItem Content="SDL3" />
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <TextBlock Classes="CategoryHeader" Text="About" />
+
+            <Border Classes="SettingCard">
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                    <Grid
+                        Grid.Row="0"
+                        ColumnDefinitions="36, *, Auto"
+                        ColumnSpacing="12">
+                        <ic:SymbolIcon
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            Symbol="Info" />
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="Medium"
+                                Text="Discue" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="© 2026 Hugues Valois. All rights reserved." />
+                        </StackPanel>
+
+                        <TextBlock
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            Text="{Binding Settings.AboutInfo.AppVersion, Mode=OneWay}" />
+                    </Grid>
+
+                    <Rectangle
+                        Grid.Row="1"
+                        Height="1"
+                        Margin="0,16"
+                        HorizontalAlignment="Stretch"
+                        Fill="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+
+                    <Grid
+                        Grid.Row="2"
+                        ColumnDefinitions="36, 200, Auto"
+                        ColumnSpacing="12"
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Framework" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Process architecture" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Runtime identifier" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Operating system" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Avalonia version" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="Audio engine" />
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="{Binding Settings.AboutInfo.DotNetFramework, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="{Binding Settings.AboutInfo.ProcessArchitecture, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="{Binding Settings.AboutInfo.RuntimeIdentifier, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="{Binding Settings.AboutInfo.OperatingSystem, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="{Binding Settings.AboutInfo.AvaloniaVersion, Mode=OneWay}" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            FontSize="14"
+                            Text="SDL3" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <HyperlinkButton Margin="0,8,0,0" NavigateUri="https://github.com/huguesv/AudioPlayer">
+                <TextBlock Text="View on GitHub" />
+            </HyperlinkButton>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</ContentPage>

@@ -1,0 +1,48 @@
+<ContentPage
+    x:Class="Woohoo.Discue.Avalonia.Views.LyricsPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    Header="Lyrics"
+    mc:Ignorable="d">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToBrushConverter x:Key="LyricToForegroundBrushConverter">
+                <converters:BoolToBrushConverter.TrueBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
+                </converters:BoolToBrushConverter.TrueBrush>
+                <converters:BoolToBrushConverter.FalseBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
+                </converters:BoolToBrushConverter.FalseBrush>
+            </converters:BoolToBrushConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollViewer Margin="20">
+        <ItemsRepeater
+            x:Name="LyricsItemsRepeater"
+            IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
+            ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">
+            <ItemsRepeater.Layout>
+                <StackLayout Orientation="Vertical" Spacing="6" />
+            </ItemsRepeater.Layout>
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
+                        Text="{Binding Text, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+    </ScrollViewer>
+
+</ContentPage>

@@ -1,0 +1,100 @@
+<ContentPage
+    x:Class="Woohoo.Discue.Avalonia.Views.PlaylistPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    Header="Playlist"
+    mc:Ignorable="d">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
+            <converters:IsEqualConverter x:Key="IsEqualConverter" />
+            <converters:BoolToBrushConverter x:Key="PlaylistTrackToForegroundBrushConverter">
+                <converters:BoolToBrushConverter.TrueBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
+                </converters:BoolToBrushConverter.TrueBrush>
+                <converters:BoolToBrushConverter.FalseBrush>
+                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
+                </converters:BoolToBrushConverter.FalseBrush>
+            </converters:BoolToBrushConverter>
+            <SolidColorBrush x:Key="PlaylistPlayingTrackBrush" Color="{DynamicResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="PlaylistNonPlayingTrackBrush" Color="{DynamicResource SystemBaseHighColor}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ListBox
+        Margin="20"
+        Padding="5,5,20,5"
+        Background="Transparent"
+        DoubleTapped="PlaylistListBox_DoubleTapped"
+        ItemsSource="{Binding Playlist.Items, Mode=OneWay}"
+        KeyUp="PlaylistListBox_KeyUp">
+        <ListBox.Styles>
+            <Style Selector="ListBoxItem:nth-child(2n+1)">
+                <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+            </Style>
+            <Style Selector="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="Margin" Value="0,1,0,2" />
+                <Setter Property="Padding" Value="5" />
+            </Style>
+        </ListBox.Styles>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid Margin="4">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Margin="0,0,8,0">
+                            <Viewbox Width="16" Height="16">
+                                <Grid>
+                                    <Canvas
+                                        Width="32"
+                                        Height="32"
+                                        IsVisible="{Binding IsActive, Mode=OneWay}">
+                                        <ic:SymbolIcon
+                                            FontSize="32"
+                                            Foreground="{DynamicResource PlaylistPlayingTrackBrush}"
+                                            Symbol="MusicNote2" />
+                                    </Canvas>
+                                    <Canvas
+                                        Width="32"
+                                        Height="32"
+                                        IsVisible="{Binding FileNotFound, Mode=OneWay}">
+                                        <ic:SymbolIcon
+                                            FontSize="32"
+                                            Foreground="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                            Symbol="MusicNote2" />
+                                    </Canvas>
+                                </Grid>
+                            </Viewbox>
+                        </Border>
+                        <TextBlock
+                            MinWidth="24"
+                            Margin="0,0,8,0"
+                            Background="Transparent"
+                            Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                            Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
+                        <TextBlock
+                            Background="Transparent"
+                            Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                            Text="{Binding TrackTitle, Mode=OneWay}" />
+                    </StackPanel>
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                        Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+
+</ContentPage>

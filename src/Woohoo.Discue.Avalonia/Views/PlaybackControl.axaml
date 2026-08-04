@@ -10,10 +10,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
     xmlns:vmd="using:Woohoo.Discue.Avalonia.ViewModels.DesignTime"
-    x:DataType="vm:MainViewModel"
-    mc:Ignorable="d"
+    d:DesignHeight="450"
     d:DesignWidth="800"
-    d:DesignHeight="450">
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
 
     <!--  https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Accents/BaseResources.xaml  -->
     <Design.DataContext>
@@ -91,7 +91,7 @@
 
     <Grid>
         <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-            <Grid RowDefinitions="Auto, *">
+            <Grid RowDefinitions="Auto, *, Auto">
 
                 <!--  Horizontal Divider Line  -->
                 <Rectangle
@@ -321,33 +321,30 @@
 
                                 </Button>
 
-                                <Button
-                                    AutomationProperties.Name="View"
-                                    Classes="MediaBtn"
-                                    Flyout="{StaticResource ViewMenuFlyout}"
-                                    ToolTip.Tip="View">
-                                    <ic:SymbolIcon FontSize="20" Symbol="ContentView" />
-                                </Button>
-
-                                <Button
-                                    AutomationProperties.Name="Open"
-                                    Classes="MediaBtn"
-                                    Command="{Binding BrowseCommand, Mode=OneWay}"
-                                    ToolTip.Tip="Open">
-                                    <ic:SymbolIcon FontSize="20" Symbol="FolderOpen" />
-                                </Button>
-
-                                <Button
-                                    AutomationProperties.Name="Settings"
-                                    Classes="MediaBtn"
-                                    Flyout="{StaticResource SettingsMenuFlyout}"
-                                    ToolTip.Tip="Settings">
-                                    <ic:SymbolIcon FontSize="20" Symbol="Settings" />
-                                </Button>
-
                             </StackPanel>
                         </Grid>
 
+                    </Grid>
+                </Border>
+
+                <Border
+                    Grid.Row="2"
+                    Margin="12"
+                    BorderBrush="{DynamicResource SystemAccentColor}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource ControlCornerRadius}"
+                    IsVisible="{Binding Playback.IsErrorVisible, Mode=OneWay}">
+                    <Grid Margin="12" ColumnDefinitions="*,Auto">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                            Text="{Binding Playback.ErrorMessage, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                        <Button
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            Command="{Binding Playback.DismissErrorMessageCommand, Mode=OneWay}"
+                            Content="OK" />
                     </Grid>
                 </Border>
 

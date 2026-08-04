@@ -2,13 +2,10 @@
     x:Class="Woohoo.Discue.Avalonia.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ic="using:FluentIcons.Avalonia"
     xmlns:local="using:Woohoo.Discue.Avalonia.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:scottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
     xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
     xmlns:vmd="using:Woohoo.Discue.Avalonia.ViewModels.DesignTime"
     Title="Discue"
@@ -25,7 +22,8 @@
     KeyUp="Window_KeyUp"
     mc:Ignorable="d">
 
-    <!--  https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Accents/BaseResources.xaml  -->
+    <!--  Gallery of available icons: https://davidxuang.github.io/FluentIcons/  -->
+
     <Design.DataContext>
         <!--
             This only sets the DataContext for the previewer in an IDE,
@@ -34,130 +32,72 @@
         <vmd:DesignMainViewModel />
     </Design.DataContext>
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <converters:PositionToLabelConverter x:Key="PositionToLabelConverter" />
-            <converters:IsEqualConverter x:Key="IsEqualConverter" />
-            <converters:BoolToBrushConverter x:Key="PlaylistTrackToForegroundBrushConverter">
-                <converters:BoolToBrushConverter.TrueBrush>
-                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
-                </converters:BoolToBrushConverter.TrueBrush>
-                <converters:BoolToBrushConverter.FalseBrush>
-                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
-                </converters:BoolToBrushConverter.FalseBrush>
-            </converters:BoolToBrushConverter>
-            <converters:BoolToBrushConverter x:Key="LyricToForegroundBrushConverter">
-                <converters:BoolToBrushConverter.TrueBrush>
-                    <SolidColorBrush Color="{DynamicResource SystemAccentColor}" />
-                </converters:BoolToBrushConverter.TrueBrush>
-                <converters:BoolToBrushConverter.FalseBrush>
-                    <SolidColorBrush Color="{DynamicResource SystemBaseHighColor}" />
-                </converters:BoolToBrushConverter.FalseBrush>
-            </converters:BoolToBrushConverter>
-            <SolidColorBrush x:Key="PlaylistPlayingTrackBrush" Color="{DynamicResource SystemAccentColor}" />
-            <SolidColorBrush x:Key="PlaylistNonPlayingTrackBrush" Color="{DynamicResource SystemBaseHighColor}" />
-            <MenuFlyout x:Key="ViewMenuFlyout" Placement="TopEdgeAlignedLeft">
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.Home}"
-                    Header="Home"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Home}}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.NowPlaying}"
-                    Header="Now Playing"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.Playlist}"
-                    Header="Playlist"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.VisualizerAmplitude}"
-                    Header="Amplitude Graph"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequency}"
-                    Header="Frequencies Graph"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
-                    Header="Frequencies Bands"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.Lyrics}"
-                    Header="Lyrics"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
-                    IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
-                    ToggleType="Radio" />
-                <MenuItem
-                    Command="{Binding ChangeViewCommand}"
-                    CommandParameter="{x:Static vm:ViewType.About}"
-                    Header="Settings"
-                    IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
-                    ToggleType="Radio" />
-            </MenuFlyout>
-            <MenuFlyout x:Key="SettingsMenuFlyout" Placement="TopEdgeAlignedLeft">
-                <MenuItem
-                    Command="{Binding Settings.ToggleQueryMetadataOnline, Mode=OneWay}"
-                    Header="Fetch Online Metadata"
-                    IsChecked="{Binding Settings.QueryMetadataOnline, Mode=OneWay}"
-                    ToggleType="CheckBox" />
-                <MenuItem
-                    Command="{Binding Settings.ToggleQueryLyricsOnline, Mode=OneWay}"
-                    Header="Fetch Lyrics"
-                    IsChecked="{Binding Settings.QueryLyricsOnline, Mode=OneWay}"
-                    ToggleType="CheckBox" />
-                <Separator />
-                <MenuItem
-                    Command="{Binding Settings.ToggleLyricsAutoScroll, Mode=OneWay}"
-                    Header="_Auto Scroll Lyrics"
-                    IsChecked="{Binding Settings.LyricsAutoScroll, Mode=OneWay}"
-                    ToggleType="CheckBox" />
-            </MenuFlyout>
-            <ac:EnumToBoolConverter x:Key="EnumToBoolConverter" />
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Window.Styles>
-        <!--  Settings Page  -->
-        <Style Selector="HyperlinkButton">
-            <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
-        </Style>
-        <Style Selector="HyperlinkButton:visited /template/ ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource HyperlinkButtonForeground}" />
-        </Style>
-        <Style Selector="Border.SettingCard">
-            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
-            <Setter Property="BorderThickness" Value="1" />
+        <!--  SplitView Navigation ListBoxItem  -->
+        <Style Selector="ListBoxItem.NavItem">
+            <Setter Property="Padding" Value="0" />
+
+            <Setter Property="Margin" Value="4,2" />
             <Setter Property="CornerRadius" Value="4" />
-            <Setter Property="Padding" Value="16,12" />
-            <Setter Property="Margin" Value="0,2" />
         </Style>
-        <Style Selector="Border.SettingCard:pointerover">
-            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+
+        <Style Selector="TextBlock.NavItemLabel">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="8,0,0,0" />
         </Style>
-        <Style Selector="TextBlock.CategoryHeader">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Margin" Value="0,16,0,6" />
+
+        <Style Selector="ic|SymbolIcon.NavItemIcon">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
         </Style>
+
+        <!--  Content Page Header Customization  -->
+        <Style Selector="NavigationPage">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid RowDefinitions="Auto, *">
+                        <Border
+                            x:Name="PART_NavigationBar"
+                            Grid.Row="0"
+                            Height="48"
+                            Padding="8,0"
+                            Background="Transparent"
+                            BorderThickness="0">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Button
+                                    x:Name="PART_BackButton"
+                                    Grid.Column="0"
+                                    Width="32"
+                                    Height="32"
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Background="Transparent"
+                                    IsEnabled="True"
+                                    IsVisible="False">
+                                    <ic:SymbolIcon FontSize="16" Symbol="ArrowLeft" />
+                                </Button>
+
+                                <ContentPresenter
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CurrentPage.Header}"
+                                    FontSize="28" />
+                            </Grid>
+                        </Border>
+
+                        <ContentPresenter
+                            x:Name="PART_SelectedContentPresenter"
+                            Grid.Row="1"
+                            Content="{TemplateBinding CurrentPage}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
     </Window.Styles>
 
     <NativeMenu.Menu>
@@ -201,593 +141,163 @@
                         ToggleType="CheckBox" />
                 </NativeMenu>
             </NativeMenuItem>
-            <NativeMenuItem Header="View">
-                <NativeMenu>
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.NowPlaying}"
-                        Header="Now Playing"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.Playlist}"
-                        Header="Playlist"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.VisualizerAmplitude}"
-                        Header="Amplitude Graph"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.VisualizerFrequency}"
-                        Header="Frequencies Graph"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.VisualizerFrequencyBands}"
-                        Header="Frequencies Bands"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.Lyrics}"
-                        Header="Lyrics"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}"
-                        ToggleType="Radio" />
-                    <NativeMenuItem
-                        Command="{Binding ChangeViewCommand}"
-                        CommandParameter="{x:Static vm:ViewType.About}"
-                        Header="Settings"
-                        IsChecked="{Binding View, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:ViewType.About}}"
-                        ToggleType="Radio" />
-                </NativeMenu>
-            </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
 
-    <!--  =================  Home Page =================  -->
-    <Grid RowDefinitions="*,Auto,Auto">
-        <Grid Grid.Row="0" IsVisible="true">
-            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Home}}">
+    <Grid RowDefinitions="*,Auto">
 
-                <StackPanel IsVisible="{Binding !Home.HasRecentDiscs, Mode=OneWay}" Orientation="Horizontal">
-                    <Image
-                        Width="250"
-                        Margin="30,0"
-                        Source="avares://Woohoo.Discue.Avalonia/Assets/Meet.png" />
-                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                        <TextBlock
-                            Margin="10,0"
-                            HorizontalAlignment="Left"
-                            Text="Meet Discue" />
-                        <TextBlock
-                            MaxWidth="300"
-                            Margin="10"
-                            HorizontalAlignment="Left"
-                            Text="Discue plays music from CDs in bin/cue, zipped bin/cue and chd format."
-                            TextWrapping="Wrap" />
-                        <Button
-                            Margin="10"
-                            HorizontalAlignment="Left"
-                            Command="{Binding BrowseCommand, Mode=OneWay}"
-                            Content="Open" />
-                    </StackPanel>
-                </StackPanel>
+        <SplitView
+            x:Name="NavSplitView"
+            Grid.Row="0"
+            CompactPaneLength="48"
+            DisplayMode="CompactInline"
+            IsPaneOpen="False"
+            OpenPaneLength="240">
 
-                <Grid
-                    Margin="12"
-                    IsVisible="{Binding Home.HasRecentDiscs, Mode=OneWay}"
-                    RowDefinitions="Auto,*">
-                    <TextBlock
+            <SplitView.Pane>
+                <Grid Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" RowDefinitions="Auto, *, Auto">
+
+                    <Border
                         Grid.Row="0"
-                        FontSize="20"
-                        FontWeight="SemiBold"
-                        Text="Recent discs" />
+                        Height="48"
+                        Padding="8,0"
+                        Background="Transparent"
+                        BorderThickness="0">
+                        <StackPanel
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="12">
+                            <Button
+                                x:Name="PaneToggleButton"
+                                Width="32"
+                                Height="32"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Background="Transparent"
+                                Click="OnPaneToggleClicked">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="Navigation" />
+                            </Button>
+
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                Text="Discue" />
+                        </StackPanel>
+                    </Border>
 
                     <ListBox
+                        x:Name="TopNavList"
                         Grid.Row="1"
-                        Margin="0,10,0,0"
-                        Padding="0,0,20,0"
+                        Margin="0,4,0,0"
                         Background="Transparent"
-                        DoubleTapped="RecentDiscsListBox_DoubleTapped"
-                        ItemsSource="{Binding Home.RecentDiscs, Mode=OneWay}"
-                        KeyUp="RecentDiscsListBox_KeyUp">
-                        <ListBox.Styles>
-                            <Style Selector="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="CornerRadius" Value="4" />
-                                <Setter Property="Margin" Value="0,1,0,2" />
-                                <Setter Property="Padding" Value="5" />
-                            </Style>
-                        </ListBox.Styles>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid
-                                    Background="Transparent"
-                                    ColumnDefinitions="Auto,*"
-                                    ColumnSpacing="20">
-                                    <Grid.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Command="{Binding LoadAlbumCommand, Mode=OneWay}" Header="Open" />
-                                            <MenuItem Command="{Binding RemoveFromRecentCommand, Mode=OneWay}" Header="Remove" />
-                                            <Separator />
-                                            <MenuItem Command="{Binding ClearAllFromRecentCommand, Mode=OneWay}" Header="Clear All" />
-                                        </ContextMenu>
-                                    </Grid.ContextMenu>
-                                    <Viewbox
-                                        Grid.Column="0"
-                                        Width="48"
-                                        Height="48"
-                                        IsVisible="{Binding !AlbumArt.HasImage, Mode=OneWay}">
-                                        <ic:SymbolIcon FontSize="32" Symbol="MusicNote2" />
-                                    </Viewbox>
-                                    <Image
-                                        Grid.Column="0"
-                                        Width="48"
-                                        Height="48"
-                                        IsVisible="{Binding AlbumArt.HasImage, Mode=OneWay}"
-                                        Source="{Binding AlbumArt.LocalImage, Mode=OneWay}" />
-                                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                                        <TextBlock
-                                            Background="Transparent"
-                                            FontSize="16"
-                                            FontWeight="SemiBold"
-                                            Text="{Binding FullAlbumTitle, Mode=OneWay}"
-                                            TextWrapping="NoWrap" />
-                                        <TextBlock
-                                            Margin="0,4,0,0"
-                                            Background="Transparent"
-                                            FontSize="12"
-                                            Text="{Binding AlbumFilePath, Mode=OneWay}"
-                                            TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+                        Focusable="True"
+                        SelectionChanged="OnNavSelectionChanged">
+
+                        <ListBoxItem x:Name="HomeNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Home">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="Home" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Home" />
+                            </Grid>
+                        </ListBoxItem>
+
+                        <ListBoxItem x:Name="NowPlayingNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Now Playing">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="MusicNote2" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Now Playing" />
+                            </Grid>
+                        </ListBoxItem>
+
+                        <ListBoxItem x:Name="VisualizationNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Visualization">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="SineWaveDots" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Visualization" />
+                            </Grid>
+                        </ListBoxItem>
+
+                        <ListBoxItem x:Name="LyricsNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Lyrics">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="SlideText" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Lyrics" />
+                            </Grid>
+                        </ListBoxItem>
+
+                        <ListBoxItem x:Name="PlaylistNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Playlist">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="NavigationPlay" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Playlist" />
+                            </Grid>
+                        </ListBoxItem>
+
+                    </ListBox>
+
+                    <ListBox
+                        x:Name="BottomNavList"
+                        Grid.Row="2"
+                        Margin="0,0,0,8"
+                        Background="Transparent"
+                        Focusable="True"
+                        SelectionChanged="OnNavSelectionChanged">
+
+                        <ListBoxItem x:Name="SettingsNavItem" Classes="NavItem">
+                            <Grid
+                                Height="36"
+                                ColumnDefinitions="40, *"
+                                ToolTip.Tip="Settings">
+                                <ic:SymbolIcon Classes="NavItemIcon" Symbol="Settings" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Classes="NavItemLabel"
+                                    IsVisible="{Binding #NavSplitView.IsPaneOpen}"
+                                    Text="Settings" />
+                            </Grid>
+                        </ListBoxItem>
+
                     </ListBox>
                 </Grid>
-            </Grid>
+            </SplitView.Pane>
 
-            <!--  =================  Settings Page  =================  -->
-            <ScrollViewer Padding="24,16,24,0" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.About}}">
-                <StackPanel
-                    Margin="0,0,0,48"
-                    HorizontalAlignment="Stretch"
-                    Spacing="4">
+            <NavigationPage x:Name="NavPage" />
 
-                    <TextBlock Classes="CategoryHeader" Text="Appearance" />
+        </SplitView>
 
-                    <Border Classes="SettingCard">
-                        <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                            <ic:SymbolIcon
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Symbol="CommentText" />
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Auto scroll lyrics" />
-                            </StackPanel>
-
-                            <ToggleSwitch
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.LyricsAutoScroll, Mode=TwoWay}"
-                                OffContent="Off"
-                                OnContent="On" />
-                        </Grid>
-                    </Border>
-
-                    <TextBlock Classes="CategoryHeader" Text="Media info" />
-
-                    <Border Classes="SettingCard">
-                        <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                            <ic:SymbolIcon
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Symbol="CommentText" />
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Look up album metadata online" />
-                                <TextBlock
-                                    FontSize="12"
-                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    Text="Query the cuetools database for album information" />
-                            </StackPanel>
-
-                            <ToggleSwitch
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.QueryMetadataOnline, Mode=TwoWay}"
-                                OffContent="Off"
-                                OnContent="On" />
-                        </Grid>
-                    </Border>
-
-                    <Border Classes="SettingCard">
-                        <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                            <ic:SymbolIcon
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Symbol="Save" />
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Look up lyrics online" />
-                                <TextBlock
-                                    FontSize="12"
-                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    Text="Query the lrcdb database for lyrics" />
-                            </StackPanel>
-
-                            <ToggleSwitch
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Settings.QueryLyricsOnline, Mode=TwoWay}"
-                                OffContent="Off"
-                                OnContent="On" />
-                        </Grid>
-                    </Border>
-
-                    <TextBlock Classes="CategoryHeader" Text="Audio" />
-
-                    <Border Classes="SettingCard">
-                        <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                            <ic:SymbolIcon
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Symbol="DarkTheme" />
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Audio Engine" />
-                                <TextBlock
-                                    FontSize="12"
-                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    Text="Select the backend that is used to play audio." />
-                            </StackPanel>
-
-                            <ComboBox
-                                Grid.Column="2"
-                                MinWidth="220"
-                                VerticalAlignment="Center"
-                                SelectedIndex="0">
-                                <ComboBoxItem Content="SDL3" />
-                            </ComboBox>
-                        </Grid>
-                    </Border>
-
-                    <TextBlock Classes="CategoryHeader" Text="About" />
-
-                    <Border Classes="SettingCard">
-                        <Grid RowDefinitions="Auto,Auto,Auto">
-                            <Grid
-                                Grid.Row="0"
-                                ColumnDefinitions="36, *, Auto"
-                                ColumnSpacing="12">
-                                <ic:SymbolIcon
-                                    VerticalAlignment="Center"
-                                    FontSize="20"
-                                    Symbol="Info" />
-
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock
-                                        FontSize="14"
-                                        FontWeight="Medium"
-                                        Text="Discue" />
-                                    <TextBlock
-                                        FontSize="12"
-                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                        Text="© 2026 Hugues Valois. All rights reserved." />
-                                </StackPanel>
-
-                                <TextBlock
-                                    Grid.Column="2"
-                                    VerticalAlignment="Center"
-                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding Settings.AboutInfo.AppVersion, Mode=OneWay}" />
-                            </Grid>
-
-                            <Rectangle
-                                Grid.Row="1"
-                                Height="1"
-                                Margin="0,16"
-                                HorizontalAlignment="Stretch"
-                                Fill="{DynamicResource SystemControlForegroundBaseLowBrush}" />
-
-                            <Grid
-                                Grid.Row="2"
-                                ColumnDefinitions="36, 200, Auto"
-                                ColumnSpacing="12"
-                                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Framework" />
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Process architecture" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Runtime identifier" />
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Operating system" />
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Avalonia version" />
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="1"
-                                    FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Audio engine" />
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="{Binding Settings.AboutInfo.DotNetFramework, Mode=OneWay}" />
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="{Binding Settings.AboutInfo.ProcessArchitecture, Mode=OneWay}" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="{Binding Settings.AboutInfo.RuntimeIdentifier, Mode=OneWay}" />
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="{Binding Settings.AboutInfo.OperatingSystem, Mode=OneWay}" />
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="{Binding Settings.AboutInfo.AvaloniaVersion, Mode=OneWay}" />
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="2"
-                                    FontSize="14"
-                                    Text="SDL3" />
-                            </Grid>
-                        </Grid>
-                    </Border>
-
-                    <HyperlinkButton Margin="0,8,0,0" NavigateUri="https://github.com/huguesv/AudioPlayer">
-                        <TextBlock Text="View on GitHub" />
-                    </HyperlinkButton>
-
-                </StackPanel>
-            </ScrollViewer>
-
-            <!--  =================  Lyrics Page =================  -->
-            <ScrollViewer IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Lyrics}}">
-                <ItemsRepeater
-                    x:Name="LyricsItemsRepeater"
-                    Margin="8"
-                    VerticalAlignment="Center"
-                    IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
-                    ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">
-                    <ItemsRepeater.Layout>
-                        <StackLayout Orientation="Vertical" Spacing="6" />
-                    </ItemsRepeater.Layout>
-                    <ItemsRepeater.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
-                                Margin="20,0"
-                                HorizontalAlignment="Center"
-                                Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
-                                Text="{Binding Text, Mode=OneWay}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap" />
-                        </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-            </ScrollViewer>
-
-            <!--  =================  Playlist Page =================  -->
-            <ListBox
-                Padding="5,5,20,5"
-                Background="Transparent"
-                DoubleTapped="PlaylistListBox_DoubleTapped"
-                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.Playlist}}"
-                ItemsSource="{Binding Playlist.Items, Mode=OneWay}"
-                KeyUp="PlaylistListBox_KeyUp">
-                <ListBox.Styles>
-                    <Style Selector="ListBoxItem:nth-child(2n+1)">
-                        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-                    </Style>
-                    <Style Selector="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="CornerRadius" Value="4" />
-                        <Setter Property="Margin" Value="0,1,0,2" />
-                        <Setter Property="Padding" Value="5" />
-                    </Style>
-                </ListBox.Styles>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="4">
-                            <StackPanel Orientation="Horizontal">
-                                <Border Margin="0,0,8,0">
-                                    <Viewbox Width="16" Height="16">
-                                        <Grid>
-                                            <Canvas
-                                                Width="32"
-                                                Height="32"
-                                                IsVisible="{Binding IsActive, Mode=OneWay}">
-                                                <ic:SymbolIcon
-                                                    FontSize="32"
-                                                    Foreground="{DynamicResource PlaylistPlayingTrackBrush}"
-                                                    Symbol="MusicNote2" />
-                                            </Canvas>
-                                            <Canvas
-                                                Width="32"
-                                                Height="32"
-                                                IsVisible="{Binding FileNotFound, Mode=OneWay}">
-                                                <ic:SymbolIcon
-                                                    FontSize="32"
-                                                    Foreground="{DynamicResource PlaylistNonPlayingTrackBrush}"
-                                                    Symbol="MusicNote2" />
-                                            </Canvas>
-                                        </Grid>
-                                    </Viewbox>
-                                </Border>
-                                <TextBlock
-                                    MinWidth="24"
-                                    Margin="0,0,8,0"
-                                    Background="Transparent"
-                                    Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                                    Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
-                                <TextBlock
-                                    Background="Transparent"
-                                    Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                                    Text="{Binding TrackTitle, Mode=OneWay}" />
-                            </StackPanel>
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                Background="Transparent"
-                                Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                                Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <!--  =================  Now Playing Page =================  -->
-            <Grid IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.NowPlaying}}">
-                <Grid RowDefinitions="*,Auto">
-                    <Grid
-                        Grid.Row="0"
-                        ColumnDefinitions="1*,1*"
-                        IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
-                        <Image
-                            Grid.Column="0"
-                            Margin="10"
-                            Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
-                            Stretch="Uniform">
-                            <Image.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="10"
-                                    OffsetX="3"
-                                    OffsetY="3"
-                                    Opacity="0.5"
-                                    Color="Black" />
-                            </Image.Effect>
-                        </Image>
-                        <StackPanel
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Vertical"
-                            Spacing="10">
-                            <TextBlock
-                                HorizontalAlignment="Left"
-                                FontSize="24"
-                                Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                HorizontalAlignment="Left"
-                                FontSize="16"
-                                Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Grid>
-                    <StackPanel
-                        Grid.Row="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
-                        Orientation="Vertical"
-                        Spacing="10">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="24"
-                            Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
-                            TextWrapping="Wrap" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="16"
-                            Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                    <TextBlock
-                        Grid.Row="1"
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Text="{Binding NowPlaying.CurrentLyric, Mode=OneWay}"
-                        TextWrapping="NoWrap" />
-                </Grid>
-            </Grid>
-
-            <!--  =================  Visualization Amplitude Page =================  -->
-            <scottPlot:AvaPlot Name="WavePlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerAmplitude}}" />
-
-            <!--  =================  Visualization Frequency Page =================  -->
-            <scottPlot:AvaPlot
-                Name="FftPlot"
-                Margin="10"
-                IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequency}}" />
-
-            <!--  =================  Visualization Frequency Bands Page =================  -->
-            <scottPlot:AvaPlot Name="BandPlot" IsVisible="{Binding View, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static vm:ViewType.VisualizerFrequencyBands}}" />
-        </Grid>
-
-        <!--  =================  Error Notifications =================  -->
-        <Border
-            Grid.Row="1"
-            Margin="12"
-            BorderBrush="{DynamicResource SystemAccentColor}"
-            BorderThickness="1"
-            CornerRadius="{DynamicResource ControlCornerRadius}"
-            IsVisible="{Binding Playback.IsErrorVisible, Mode=OneWay}">
-            <Grid Margin="12" ColumnDefinitions="*,Auto">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
-                    Text="{Binding Playback.ErrorMessage, Mode=OneWay}"
-                    TextWrapping="Wrap" />
-                <Button
-                    Grid.Column="1"
-                    Margin="12,0,0,0"
-                    Command="{Binding Playback.DismissErrorMessageCommand, Mode=OneWay}"
-                    Content="OK" />
-            </Grid>
-        </Border>
-
-        <!--  =================  Playback Controls =================  -->
-        <local:PlaybackControl Grid.Row="2" />
+        <local:PlaybackControl Grid.Row="1" />
 
     </Grid>
 </Window>

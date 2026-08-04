@@ -3,24 +3,16 @@
 
 namespace Woohoo.Discue.Avalonia.Views;
 
-using CommunityToolkit.Mvvm.Messaging;
-using global::Avalonia;
 using global::Avalonia.Controls;
 using global::Avalonia.Input;
-using global::Avalonia.Media;
+using global::Avalonia.Interactivity;
 using global::Avalonia.Platform.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using Woohoo.Audio.Services;
 using Woohoo.Discue.Avalonia.ViewModels;
 
 public partial class MainWindow : Window
 {
-    private readonly double[] plotPsd;
-    private readonly double[] plotWave;
-    private readonly double[] plotBands;
-    private readonly ScottPlot.Bar[] plotBars;
-    private readonly string localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-    private readonly IVisualizationProviderService visualizationProviderService;
+    private bool isNavigatingProgrammatically;
+    private bool isKeyboardSelecting;
 
     public MainWindow()
     {
@@ -28,64 +20,15 @@ public partial class MainWindow : Window
 
         this.AddHandler(DragDrop.DropEvent, this.OnDrop);
 
-        if (App.Current is not null)
-        {
-            App.Current.ActualThemeVariantChanged += this.Current_ActualThemeVariantChanged;
-        }
+        this.NavPage.Popped += (_, _) => this.SyncSidebarSelection();
 
-        this.visualizationProviderService = (App.Current as App)!.Host.Services.GetRequiredService<IVisualizationProviderService>();
-        this.visualizationProviderService.DataAvailable += this.VisualizationProviderService_DataAvailable;
+        // Attach KeyDown with RoutingStrategies.Tunnel and handledEventsToo = true
+        this.TopNavList.AddHandler(KeyDownEvent, this.OnNavKeyDown, RoutingStrategies.Tunnel, true);
+        this.BottomNavList.AddHandler(KeyDownEvent, this.OnNavKeyDown, RoutingStrategies.Tunnel, true);
 
-        this.StylePlots();
-
-        this.plotPsd = new double[257];
-        this.plotWave = new double[441];
-        this.plotBands = new double[8];
-
-        // Media Player Equalizer bands:
-        // 62 Hz, 125 Hz, 250 Hz, 500 Hz, 1 kHz, 2 kHz, 4 kHz, 8 kHz, 16 kHz
-        this.FftPlot.Plot.Axes.SetLimits(0, 44100 / 2, -100, 0);
-        this.FftPlot.Plot.Add.Signal(this.plotPsd, 44100.0 / this.plotPsd.Length);
-        this.FftPlot.Plot.Layout.Frameless();
-        this.FftPlot.Plot.HideGrid();
-        this.FftPlot.Plot.PlotControl?.Menu?.Clear();
-        this.FftPlot.Plot.PlotControl?.UserInputProcessor.Disable();
-        this.FftPlot.Refresh();
-
-        this.WavePlot.Plot.Add.Signal(this.plotWave, 44100.0 / 1000);
-        this.WavePlot.Plot.Axes.SetLimitsY(-1.0, 1.0);
-        this.WavePlot.Plot.Layout.Frameless();
-        this.WavePlot.Plot.HideGrid();
-        this.WavePlot.Plot.PlotControl?.Menu?.Clear();
-        this.WavePlot.Plot.PlotControl?.UserInputProcessor.Disable();
-        this.WavePlot.Refresh();
-
-        // TODO: Check out this Histogram sample code, it can update itself
-        // and bin the data automatically: https://scottplot.net/cookbook/5.0/Histograms/HistogramBars/
-        this.plotBars =
-        [
-            new ScottPlot.Bar() { Value = 0, Position = 1 },
-            new ScottPlot.Bar() { Value = 0, Position = 2 },
-            new ScottPlot.Bar() { Value = 0, Position = 3 },
-            new ScottPlot.Bar() { Value = 0, Position = 4 },
-            new ScottPlot.Bar() { Value = 0, Position = 5 },
-            new ScottPlot.Bar() { Value = 0, Position = 6 },
-            new ScottPlot.Bar() { Value = 0, Position = 7 },
-            new ScottPlot.Bar() { Value = 0, Position = 8 },
-        ];
-
-        this.BandPlot.Plot.Add.Bars(this.plotBars);
-        this.BandPlot.Plot.Axes.SetLimitsY(0, 100);
-        this.BandPlot.Plot.Layout.Frameless();
-        this.BandPlot.Plot.HideGrid();
-        this.BandPlot.Plot.PlotControl?.Menu?.Clear();
-        this.BandPlot.Plot.PlotControl?.UserInputProcessor.Disable();
-        this.BandPlot.Refresh();
-
-        WeakReferenceMessenger.Default.Register<CurrentLyricChangeMessage>(this, (r, m) =>
-        {
-            this.ScrollToLyricLine(m);
-        });
+        // Set Root Page
+        this.TopNavList.SelectedItem = this.HomeNavItem;
+        this.NavPage.Content = new HomePage();
     }
 
     public void OnDrop(object? sender, DragEventArgs e)
@@ -121,41 +64,6 @@ public partial class MainWindow : Window
                 _ = (this.DataContext as MainViewModel)?.OpenFileAsync(filePaths[0], CancellationToken.None);
             }
         }
-    }
-
-    private void VisualizationProviderService_DataAvailable(object? sender, VisualizationEventArgs e)
-    {
-        e.Visualization.CopyTo(this.plotPsd, this.plotBands, this.plotWave);
-
-        for (int i = 0; i < this.plotBars.Length; i++)
-        {
-            this.plotBars[i].Value = 100.0 + this.plotBands[i];
-        }
-
-        this.FftPlot.Refresh();
-        this.WavePlot.Refresh();
-        this.BandPlot.Refresh();
-    }
-
-    private void Current_ActualThemeVariantChanged(object? sender, EventArgs e)
-    {
-        this.StylePlots();
-    }
-
-    private void StylePlots()
-    {
-        var regionColor = ScottPlot.Colors.Yellow;
-        if (Application.Current?.TryGetResource("SystemRegionBrush", this.ActualThemeVariant, out var brush) == true)
-        {
-            if (brush is SolidColorBrush solidBrush)
-            {
-                regionColor = ScottPlot.Color.FromARGB(solidBrush.Color.A << 24 | solidBrush.Color.R << 16 | solidBrush.Color.G << 8 | solidBrush.Color.B);
-            }
-        }
-
-        this.FftPlot.Plot.DataBackground.Color = regionColor;
-        this.WavePlot.Plot.DataBackground.Color = regionColor;
-        this.BandPlot.Plot.DataBackground.Color = regionColor;
     }
 
     private void Window_KeyUp(object? sender, KeyEventArgs e)
@@ -207,61 +115,153 @@ public partial class MainWindow : Window
         }
     }
 
-    private void PlaylistListBox_DoubleTapped(object? sender, TappedEventArgs e)
+    private void OnPaneToggleClicked(object? sender, RoutedEventArgs e)
     {
-        if (sender is ListBox { SelectedItem: PlaylistItemViewModel playlistItem })
-        {
-            playlistItem.PlayCommand.Execute(null);
-        }
+        this.NavSplitView.IsPaneOpen = !this.NavSplitView.IsPaneOpen;
     }
 
-    private void PlaylistListBox_KeyUp(object? sender, KeyEventArgs e)
+    private void OnNavKeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.Key != Key.Enter)
+        if (sender is not ListBox sourceList)
         {
             return;
         }
 
-        if (sender is ListBox { SelectedItem: PlaylistItemViewModel playlistItem })
+        if (e.Key == Key.Down)
         {
-            playlistItem.PlayCommand.Execute(null);
-        }
-    }
+            this.isKeyboardSelecting = true;
 
-    private void RecentDiscsListBox_DoubleTapped(object? sender, TappedEventArgs e)
-    {
-        if (sender is ListBox { SelectedItem: HomeRecentDiscViewModel recentDisc })
-        {
-            if (File.Exists(recentDisc.AlbumFilePath))
+            if (sourceList == this.TopNavList && sourceList.SelectedIndex == sourceList.ItemCount - 1)
             {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
+                e.Handled = true;
+                this.BottomNavList.Focus();
+                this.BottomNavList.SelectedIndex = 0;
             }
         }
+        else if (e.Key == Key.Up)
+        {
+            this.isKeyboardSelecting = true;
+
+            if (sourceList == this.BottomNavList && sourceList.SelectedIndex == 0)
+            {
+                e.Handled = true;
+                this.TopNavList.Focus();
+                this.TopNavList.SelectedIndex = this.TopNavList.ItemCount - 1;
+            }
+        }
+        else if (e.Key == Key.Enter)
+        {
+            this.isKeyboardSelecting = false;
+            this.UpdateMutualExclusion(sourceList);
+            this.NavigateToSelectedPage(sourceList);
+            e.Handled = true;
+        }
     }
 
-    private void RecentDiscsListBox_KeyUp(object? sender, KeyEventArgs e)
+    private void OnNavSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (e.Key != Key.Enter)
+        if (sender is not ListBox sourceList || this.isNavigatingProgrammatically)
         {
             return;
         }
 
-        if (sender is ListBox { SelectedItem: HomeRecentDiscViewModel recentDisc })
+        this.UpdateMutualExclusion(sourceList);
+
+        if (!this.isKeyboardSelecting)
         {
-            if (File.Exists(recentDisc.AlbumFilePath))
-            {
-                _ = (this.DataContext as MainViewModel)?.OpenFileAsync(recentDisc.AlbumFilePath, CancellationToken.None);
-            }
+            this.NavigateToSelectedPage(sourceList);
         }
     }
 
-    private void ScrollToLyricLine(CurrentLyricChangeMessage m)
+    private void UpdateMutualExclusion(ListBox activeList)
     {
-        if (m.AutoScroll)
+        if (this.isNavigatingProgrammatically)
         {
-            this.LyricsItemsRepeater
-                .GetOrCreateElement(Math.Min(m.Index + 1, m.LineCount - 1))?
-                .BringIntoView();
+            return;
         }
+
+        this.isNavigatingProgrammatically = true;
+
+        if (activeList == this.TopNavList)
+        {
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (activeList == this.BottomNavList)
+        {
+            this.TopNavList.SelectedItem = null;
+        }
+
+        this.isNavigatingProgrammatically = false;
+    }
+
+    private async void NavigateToSelectedPage(ListBox sourceList)
+    {
+        if (this.NavPage is null || sourceList.SelectedItem is null)
+        {
+            return;
+        }
+
+        if (sourceList.SelectedItem == this.HomeNavItem && this.NavPage.CurrentPage is not HomePage)
+        {
+            await this.NavPage.PushAsync(new HomePage());
+        }
+        else if (sourceList.SelectedItem == this.NowPlayingNavItem && this.NavPage.CurrentPage is not NowPlayingPage)
+        {
+            await this.NavPage.PushAsync(new NowPlayingPage());
+        }
+        else if (sourceList.SelectedItem == this.VisualizationNavItem && this.NavPage.CurrentPage is not VisualizationPage)
+        {
+            await this.NavPage.PushAsync(new VisualizationPage());
+        }
+        else if (sourceList.SelectedItem == this.LyricsNavItem && this.NavPage.CurrentPage is not LyricsPage)
+        {
+            await this.NavPage.PushAsync(new LyricsPage());
+        }
+        else if (sourceList.SelectedItem == this.PlaylistNavItem && this.NavPage.CurrentPage is not PlaylistPage)
+        {
+            await this.NavPage.PushAsync(new PlaylistPage());
+        }
+        else if (sourceList.SelectedItem == this.SettingsNavItem && this.NavPage.CurrentPage is not SettingsPage)
+        {
+            await this.NavPage.PushAsync(new SettingsPage());
+        }
+    }
+
+    private void SyncSidebarSelection()
+    {
+        this.isNavigatingProgrammatically = true;
+
+        if (this.NavPage.CurrentPage is HomePage)
+        {
+            this.TopNavList.SelectedItem = this.HomeNavItem;
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (this.NavPage.CurrentPage is NowPlayingPage)
+        {
+            this.TopNavList.SelectedItem = this.NowPlayingNavItem;
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (this.NavPage.CurrentPage is VisualizationPage)
+        {
+            this.TopNavList.SelectedItem = this.VisualizationNavItem;
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (this.NavPage.CurrentPage is LyricsPage)
+        {
+            this.TopNavList.SelectedItem = this.LyricsNavItem;
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (this.NavPage.CurrentPage is PlaylistPage)
+        {
+            this.TopNavList.SelectedItem = this.PlaylistNavItem;
+            this.BottomNavList.SelectedItem = null;
+        }
+        else if (this.NavPage.CurrentPage is SettingsPage)
+        {
+            this.BottomNavList.SelectedItem = this.SettingsNavItem;
+            this.TopNavList.SelectedItem = null;
+        }
+
+        this.isNavigatingProgrammatically = false;
     }
 }
