@@ -12,7 +12,7 @@
     Header="Visualization"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid Margin="0,20">
         <scottPlot:AvaPlot Name="WavePlot" />
         <scottPlot:AvaPlot
             Name="FftPlot"
