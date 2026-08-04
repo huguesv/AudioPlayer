@@ -26,6 +26,7 @@
   <Project Path="Woohoo.Discue.Avalonia/Woohoo.Discue.Avalonia.csproj" />
   <Project Path="Woohoo.Discue.Cli/Woohoo.Discue.Cli.csproj" />
   <Project Path="Woohoo.Discue.Consolonia/Woohoo.Discue.Consolonia.csproj" />
+  <Project Path="Woohoo.Discue.Shared.Avalonia/Woohoo.Discue.Shared.Avalonia.csproj" />
   <Project Path="Woohoo.IO.Compression.Chd.UnitTest/Woohoo.IO.Compression.Chd.UnitTest.csproj" />
   <Project Path="Woohoo.IO.Compression.Chd/Woohoo.IO.Compression.Chd.csproj" />
   <Project Path="Woohoo.IO.Compression/Woohoo.IO.Compression.csproj" />
