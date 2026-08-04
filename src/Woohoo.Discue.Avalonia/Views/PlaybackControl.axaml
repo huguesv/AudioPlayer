@@ -1,0 +1,359 @@
+<UserControl
+    x:Class="Woohoo.Discue.Avalonia.Views.PlaybackControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ac="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
+    xmlns:converters="clr-namespace:Woohoo.Discue.Shared.Avalonia.Converters;assembly=Woohoo.Discue.Shared.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:local="using:Woohoo.Discue.Avalonia.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Woohoo.Discue.Avalonia.ViewModels"
+    xmlns:vmd="using:Woohoo.Discue.Avalonia.ViewModels.DesignTime"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d"
+    d:DesignWidth="800"
+    d:DesignHeight="450">
+
+    <!--  https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/Accents/BaseResources.xaml  -->
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vmd:DesignMainViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Style Selector="Button.MediaBtn">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style Selector="Button.MediaBtn:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="Button.MediaBtn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        </Style>
+
+        <Style Selector="Button.MediaBtnPlay">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Height" Value="60" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style Selector="Button.MediaBtnPlay:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="Button.MediaBtnPlay:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        </Style>
+
+        <Style Selector="ToggleButton.MuteBtn ic|SymbolIcon">
+            <Setter Property="Symbol" Value="Speaker2" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+        </Style>
+        <Style Selector="ToggleButton.MuteBtn:checked ic|SymbolIcon">
+            <Setter Property="Symbol" Value="SpeakerMute" />
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+        </Style>
+
+        <Style Selector="ToggleButton.MuteBtn /template/ ContentPresenter, ToggleButton.MuteBtn:checked /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style Selector="ToggleButton.MuteBtn:pointerover /template/ ContentPresenter, ToggleButton.MuteBtn:checked:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        </Style>
+
+        <Style Selector="ToggleButton.MuteBtn:pointerover TextBlock, ToggleButton.MuteBtn:checked:pointerover TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+            <Grid RowDefinitions="Auto, *">
+
+                <!--  Horizontal Divider Line  -->
+                <Rectangle
+                    Grid.Row="0"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    Fill="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+
+                <!--  Media Player Layout Container  -->
+                <Border
+                    Grid.Row="1"
+                    Height="126"
+                    Padding="16,8">
+                    <Grid RowDefinitions="Auto, *" RowSpacing="8">
+
+                        <!--  Top Row: Progress Bar with Timers  -->
+                        <Grid
+                            Grid.Row="0"
+                            Margin="0,4,0,8"
+                            ColumnDefinitions="Auto, *, Auto">
+                            <TextBlock
+                                Grid.Column="0"
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Playback.CurrentTrackPositionAsText, Mode=OneWay}" />
+
+                            <ProgressBar
+                                Grid.Column="1"
+                                Height="4"
+                                VerticalAlignment="Center"
+                                CornerRadius="2"
+                                Maximum="1"
+                                Minimum="0"
+                                Value="{Binding Playback.CurrentTrackPositionAsDouble, Mode=OneWay}" />
+
+                            <TextBlock
+                                Grid.Column="2"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Playback.CurrentTrackDurationAsText, Mode=OneWay}" />
+                        </Grid>
+
+                        <!--  Bottom Row: Artwork, Song Info & Controls  -->
+                        <Grid Grid.Row="1" ColumnDefinitions="*, Auto, Auto">
+
+                            <!--  Left: Artwork & Track Metadata  -->
+                            <Grid
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                ColumnDefinitions="Auto, *">
+
+                                <!--  Artwork  -->
+                                <Border
+                                    Grid.Column="0"
+                                    Width="72"
+                                    Height="72"
+                                    Margin="0,0,12,0"
+                                    ClipToBounds="True"
+                                    CornerRadius="4"
+                                    IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
+                                    <Image Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}" Stretch="UniformToFill" />
+                                </Border>
+
+                                <!--  Track Metadata  -->
+                                <StackPanel
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Spacing="5">
+
+                                    <TextBlock
+                                        FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
+                                        TextTrimming="CharacterEllipsis" />
+
+                                    <TextBlock
+                                        FontSize="14"
+                                        Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
+                                        TextTrimming="CharacterEllipsis" />
+
+                                </StackPanel>
+                            </Grid>
+
+                            <!--  Center: Media Playback Buttons  -->
+                            <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="4">
+
+                                <Button
+                                    AutomationProperties.Name="Previous"
+                                    Classes="MediaBtn"
+                                    Command="{Binding Playback.PreviousTrackCommand, Mode=OneWay}"
+                                    IsEnabled="{Binding Playback.IsPreviousEnabled, Mode=OneWay}"
+                                    ToolTip.Tip="Previous">
+                                    <ic:SymbolIcon FontSize="20" Symbol="Previous" />
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="Seek Backward 15"
+                                    Classes="MediaBtn"
+                                    Command="{Binding Playback.SeekBackwardCommand, Mode=OneWay}"
+                                    IsEnabled="{Binding Playback.IsSeekBackwardEnabled, Mode=OneWay}"
+                                    ToolTip.Tip="Skip Back 15s">
+                                    <ic:SymbolIcon FontSize="20" Symbol="Rewind" />
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="Play/Pause"
+                                    Classes="MediaBtnPlay"
+                                    Command="{Binding Playback.PlayPauseCommand, Mode=OneWay}"
+                                    IsEnabled="{Binding Playback.IsPlayPauseEnabled, Mode=OneWay}"
+                                    ToolTip.Tip="Play/Pause">
+                                    <Grid>
+                                        <ic:SymbolIcon
+                                            FontSize="40"
+                                            IsVisible="{Binding !Playback.IsPlaying, Mode=OneWay}"
+                                            Symbol="Play" />
+                                        <ic:SymbolIcon
+                                            FontSize="40"
+                                            IsVisible="{Binding Playback.IsPlaying, Mode=OneWay}"
+                                            Symbol="Pause" />
+                                    </Grid>
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="Seek Forward 15"
+                                    Classes="MediaBtn"
+                                    Command="{Binding Playback.SeekForwardCommand, Mode=OneWay}"
+                                    IsEnabled="{Binding Playback.IsSeekForwardEnabled, Mode=OneWay}"
+                                    ToolTip.Tip="Skip Forward 15s">
+                                    <ic:SymbolIcon FontSize="20" Symbol="FastForward" />
+                                </Button>
+
+                                <Button
+                                    Margin="0,0,24,0"
+                                    AutomationProperties.Name="Next"
+                                    Classes="MediaBtn"
+                                    Command="{Binding Playback.NextTrackCommand, Mode=OneWay}"
+                                    IsEnabled="{Binding Playback.IsNextEnabled, Mode=OneWay}"
+                                    ToolTip.Tip="Next">
+                                    <ic:SymbolIcon FontSize="20" Symbol="Next" />
+                                </Button>
+
+                            </StackPanel>
+
+                            <!--  Right: Other Buttons  -->
+                            <StackPanel
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Spacing="4">
+
+                                <!--  Volume Button & Flyout  -->
+                                <Button
+                                    AutomationProperties.Name="Volume"
+                                    Classes="MediaBtn"
+                                    IsVisible="{Binding Playback.CanAdjustVolume, Mode=OneWay}"
+                                    ToolTip.Tip="Volume">
+                                    <Grid>
+                                        <ic:SymbolIcon
+                                            FontSize="20"
+                                            IsVisible="{Binding !Playback.IsMuted, Mode=OneWay}"
+                                            Symbol="Speaker2" />
+                                        <ic:SymbolIcon
+                                            FontSize="20"
+                                            IsVisible="{Binding Playback.IsMuted, Mode=OneWay}"
+                                            Symbol="SpeakerMute" />
+                                    </Grid>
+                                    <Button.Flyout>
+                                        <Flyout Placement="TopEdgeAlignedRight">
+                                            <Border Padding="12,0" CornerRadius="8">
+                                                <Grid
+                                                    MinHeight="32"
+                                                    VerticalAlignment="Center"
+                                                    ColumnDefinitions="Auto, Auto, Auto">
+
+                                                    <ToggleButton
+                                                        x:Name="MuteToggle"
+                                                        Grid.Column="0"
+                                                        Width="32"
+                                                        Height="32"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Classes="MediaBtn MuteBtn"
+                                                        Command="{Binding Playback.MuteCommand, Mode=OneWay}"
+                                                        IsChecked="{Binding Playback.IsMuted, Mode=OneWay}"
+                                                        ToolTip.Tip="Toggle Mute">
+                                                        <ic:SymbolIcon
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="16" />
+                                                    </ToggleButton>
+
+                                                    <Slider
+                                                        x:Name="VolumeSlider"
+                                                        Grid.Column="1"
+                                                        Width="140"
+                                                        Margin="0,0,10,0"
+                                                        VerticalAlignment="Center"
+                                                        IsEnabled="{Binding !#MuteToggle.IsChecked}"
+                                                        Maximum="100"
+                                                        Minimum="0"
+                                                        Value="{Binding Playback.Volume, Mode=TwoWay}" />
+
+                                                    <TextBlock
+                                                        x:Name="CurrentVolumeLabel"
+                                                        Grid.Column="2"
+                                                        Width="28"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="14"
+                                                        FontWeight="Medium"
+                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                                        Text="{Binding #VolumeSlider.Value, StringFormat='{}{0:0}'}"
+                                                        TextAlignment="Right" />
+
+                                                </Grid>
+                                            </Border>
+                                        </Flyout>
+                                    </Button.Flyout>
+
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="View"
+                                    Classes="MediaBtn"
+                                    Flyout="{StaticResource ViewMenuFlyout}"
+                                    ToolTip.Tip="View">
+                                    <ic:SymbolIcon FontSize="20" Symbol="ContentView" />
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="Open"
+                                    Classes="MediaBtn"
+                                    Command="{Binding BrowseCommand, Mode=OneWay}"
+                                    ToolTip.Tip="Open">
+                                    <ic:SymbolIcon FontSize="20" Symbol="FolderOpen" />
+                                </Button>
+
+                                <Button
+                                    AutomationProperties.Name="Settings"
+                                    Classes="MediaBtn"
+                                    Flyout="{StaticResource SettingsMenuFlyout}"
+                                    ToolTip.Tip="Settings">
+                                    <ic:SymbolIcon FontSize="20" Symbol="Settings" />
+                                </Button>
+
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</UserControl>
