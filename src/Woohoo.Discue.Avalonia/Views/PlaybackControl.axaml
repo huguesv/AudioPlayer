@@ -42,7 +42,8 @@
         </Style>
 
         <Style Selector="Button.MediaBtn:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
         </Style>
 
         <Style Selector="Button.MediaBtnPlay">
@@ -62,7 +63,8 @@
         </Style>
 
         <Style Selector="Button.MediaBtnPlay:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
         </Style>
 
         <Style Selector="ToggleButton.MuteBtn ic|SymbolIcon">
@@ -81,7 +83,8 @@
         </Style>
 
         <Style Selector="ToggleButton.MuteBtn:pointerover /template/ ContentPresenter, ToggleButton.MuteBtn:checked:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
         </Style>
 
         <Style Selector="ToggleButton.MuteBtn:pointerover TextBlock, ToggleButton.MuteBtn:checked:pointerover TextBlock">
