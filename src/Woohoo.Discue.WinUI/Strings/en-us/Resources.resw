@@ -199,13 +199,13 @@
     <value>License Terms</value>
   </data>
   <data name="SettingsPage_LicenseTermsLink.NavigateUri" xml:space="preserve">
-    <value>https://github.com/huguesv/AudioPlayer/blob/main/LICENSE</value>
+    <value>https://github.com/huguesv/Discue/blob/main/LICENSE</value>
   </data>
   <data name="SettingsPage_SendFeedback.Content" xml:space="preserve">
     <value>Send feedback</value>
   </data>
   <data name="SettingsPage_SendFeedback.NavigateUri" xml:space="preserve">
-    <value>https://github.com/huguesv/AudioPlayer/issues</value>
+    <value>https://github.com/huguesv/Discue/issues</value>
   </data>
   <data name="AppNotificationSamplePayload" xml:space="preserve">
     <value>&lt;toast launch="action=ToastClick"&gt;

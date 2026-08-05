@@ -242,7 +242,7 @@
                 </Grid>
             </Border>
 
-            <HyperlinkButton Margin="0,8,0,0" NavigateUri="https://github.com/huguesv/AudioPlayer">
+            <HyperlinkButton Margin="0,8,0,0" NavigateUri="https://github.com/huguesv/Discue">
                 <TextBlock Text="View on GitHub" />
             </HyperlinkButton>
 

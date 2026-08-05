@@ -9,8 +9,8 @@
     <Authors>Hugues Valois</Authors>
     <Description>Audio Player for CD images in bin/cue or chd format.</Description>
     <Copyright>Copyright (c) Hugues Valois 2025-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
-    <PackageProjectUrl>https://github.com/huguesv/AudioPlayer</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/huguesv/AudioPlayer</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/huguesv/Discue</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/huguesv/Discue</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>audio;music;zip;cuesheet;cue;chd</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

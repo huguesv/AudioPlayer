@@ -24,7 +24,7 @@ public sealed class LrcLibWebClient : ILrcLibWebClient
     {
         // https://lrclib.net/docs
         var version = Assembly.GetExecutingAssembly().GetName().Version;
-        var userAgent = $"Discue v{version} (https://github.com/huguesv/AudioPlayer)";
+        var userAgent = $"Discue v{version} (https://github.com/huguesv/Discue)";
 
         var requestUriString = BaseUrl
             + (allowExternalSources ? "/api/get" : "/api/get-cached")
