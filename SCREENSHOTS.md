@@ -50,6 +50,20 @@ Linux - Light Theme
 
 ![Linux Light Amplitude](images/linux-light-amplitude.png?raw=true "Linux Light Amplitude")
 
+## Terminal UI Player
+
+![Terminal Meet Discue](images/consolonia-meet.png?raw=true "Terminal Meet Discue")
+
+![Terminal Home](images/consolonia-home.png?raw=true "Terminal Home")
+
+![Terminal Now Playing](images/consolonia-now.png?raw=true "Terminal Now Playing")
+
+![Terminal Visualization](images/consolonia-viz.png?raw=true "Terminal Visualization")
+
+![Terminal Lyrics](images/consolonia-lyrics.png?raw=true "Terminal Lyrics")
+
+![Terminal Playlist](images/consolonia-playlist.png?raw=true "Terminal Playlist")
+
 ## Console Player
 
 Windows Terminal

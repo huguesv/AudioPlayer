@@ -36,7 +36,7 @@ Using a local LRCLIB sqlite3 database is also supported.
 
 ## Terminal UI Player
 
-![TUI Player on Windows Terminal](images/windows-tui.png?raw=true "TUI Player on Windows Terminal")
+![TUI Player on Windows Terminal](images/consolonia-now.png?raw=true "TUI Player on Windows Terminal")
 
 ## Console Player
 
