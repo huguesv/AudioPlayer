@@ -25,7 +25,7 @@
             <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
             <Setter Property="Padding" Value="16,12" />
             <Setter Property="Margin" Value="0,2" />
         </Style>
@@ -36,6 +36,25 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="0,16,0,6" />
+        </Style>
+        <Style Selector="TextBlock.SettingTitle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+        <Style Selector="TextBlock.SettingDescription">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style Selector="TextBlock.PropName">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+        <Style Selector="TextBlock.PropVal">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style Selector="ic|SymbolIcon.SettingCardIcon">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="20" />
         </Style>
 
     </ContentPage.Styles>
@@ -50,16 +69,10 @@
 
             <Border Classes="SettingCard">
                 <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                    <ic:SymbolIcon
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Symbol="CommentText" />
+                    <ic:SymbolIcon Classes="SettingCardIcon" Symbol="PhoneVerticalScroll" />
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Auto scroll lyrics" />
+                        <TextBlock Classes="SettingTitle" Text="Auto scroll lyrics" />
                     </StackPanel>
 
                     <ToggleSwitch
@@ -75,20 +88,11 @@
 
             <Border Classes="SettingCard">
                 <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                    <ic:SymbolIcon
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Symbol="CommentText" />
+                    <ic:SymbolIcon Classes="SettingCardIcon" Symbol="DatabaseSearch" />
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Look up album metadata online" />
-                        <TextBlock
-                            FontSize="12"
-                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                            Text="Query the cuetools database for album information" />
+                        <TextBlock Classes="SettingTitle" Text="Look up album metadata online" />
+                        <TextBlock Classes="SettingDescription" Text="Query the cuetools database for album information" />
                     </StackPanel>
 
                     <ToggleSwitch
@@ -102,20 +106,11 @@
 
             <Border Classes="SettingCard">
                 <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                    <ic:SymbolIcon
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Symbol="Save" />
+                    <ic:SymbolIcon Classes="SettingCardIcon" Symbol="SlideText" />
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Look up lyrics online" />
-                        <TextBlock
-                            FontSize="12"
-                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                            Text="Query the lrcdb database for lyrics" />
+                        <TextBlock Classes="SettingTitle" Text="Look up lyrics online" />
+                        <TextBlock Classes="SettingDescription" Text="Query the lrcdb database for lyrics" />
                     </StackPanel>
 
                     <ToggleSwitch
@@ -131,20 +126,11 @@
 
             <Border Classes="SettingCard">
                 <Grid ColumnDefinitions="36, *, Auto" ColumnSpacing="12">
-                    <ic:SymbolIcon
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Symbol="DarkTheme" />
+                    <ic:SymbolIcon Classes="SettingCardIcon" Symbol="SoundWaveCircle" />
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Audio Engine" />
-                        <TextBlock
-                            FontSize="12"
-                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                            Text="Select the backend that is used to play audio." />
+                        <TextBlock Classes="SettingTitle" Text="Audio Engine" />
+                        <TextBlock Classes="SettingDescription" Text="Select the backend that is used to play audio." />
                     </StackPanel>
 
                     <ComboBox
@@ -165,20 +151,11 @@
                         Grid.Row="0"
                         ColumnDefinitions="36, *, Auto"
                         ColumnSpacing="12">
-                        <ic:SymbolIcon
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Symbol="Info" />
+                        <ic:SymbolIcon Classes="SettingCardIcon" Symbol="Info" />
 
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock
-                                FontSize="14"
-                                FontWeight="Medium"
-                                Text="Discue" />
-                            <TextBlock
-                                FontSize="12"
-                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                Text="© 2026 Hugues Valois. All rights reserved." />
+                            <TextBlock Classes="SettingTitle" Text="Discue" />
+                            <TextBlock Classes="SettingDescription" Text="© 2026 Hugues Valois. All rights reserved." />
                         </StackPanel>
 
                         <TextBlock
@@ -203,69 +180,63 @@
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Framework" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Process architecture" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Runtime identifier" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Operating system" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Avalonia version" />
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="1"
-                            FontSize="14"
-                            FontWeight="Medium"
+                            Classes="PropName"
                             Text="Audio engine" />
 
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="{Binding Settings.AboutInfo.DotNetFramework, Mode=OneWay}" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="{Binding Settings.AboutInfo.ProcessArchitecture, Mode=OneWay}" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="{Binding Settings.AboutInfo.RuntimeIdentifier, Mode=OneWay}" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="{Binding Settings.AboutInfo.OperatingSystem, Mode=OneWay}" />
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="{Binding Settings.AboutInfo.AvaloniaVersion, Mode=OneWay}" />
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="2"
-                            FontSize="14"
+                            Classes="PropVal"
                             Text="SDL3" />
                     </Grid>
                 </Grid>

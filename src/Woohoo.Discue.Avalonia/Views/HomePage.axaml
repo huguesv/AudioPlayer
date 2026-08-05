@@ -59,7 +59,7 @@
                 <ListBox.Styles>
                     <Style Selector="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="CornerRadius" Value="4" />
+                        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
                         <Setter Property="Margin" Value="0,1,0,2" />
                         <Setter Property="Padding" Value="5" />
                     </Style>

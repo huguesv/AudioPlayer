@@ -29,7 +29,7 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
             <Setter Property="Width" Value="36" />
             <Setter Property="Height" Value="36" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -50,7 +50,7 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
             <Setter Property="Width" Value="60" />
             <Setter Property="Height" Value="60" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -127,7 +127,7 @@
                                 Grid.Column="1"
                                 Height="4"
                                 VerticalAlignment="Center"
-                                CornerRadius="2"
+                                CornerRadius="{DynamicResource ControlCornerRadius}"
                                 Maximum="1"
                                 Minimum="0"
                                 Value="{Binding Playback.CurrentTrackPositionAsDouble, Mode=OneWay}" />
@@ -157,7 +157,7 @@
                                     Height="72"
                                     Margin="0,0,12,0"
                                     ClipToBounds="True"
-                                    CornerRadius="4"
+                                    CornerRadius="{DynamicResource ControlCornerRadius}"
                                     IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
                                     <Image Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border>
@@ -272,7 +272,7 @@
                                     </Grid>
                                     <Button.Flyout>
                                         <Flyout Placement="TopEdgeAlignedRight">
-                                            <Border Padding="12,0" CornerRadius="8">
+                                            <Border Padding="12,0">
                                                 <Grid
                                                     MinHeight="32"
                                                     VerticalAlignment="Center"
