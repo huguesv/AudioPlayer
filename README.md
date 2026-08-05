@@ -1,10 +1,8 @@
-# Audio Player
+# Discue - Audio Player for Windows, Linux and MacOS
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/huguesv/AudioPlayer/build-and-test.yml)
 
-This is an audio player for Windows, Linux and MacOS.
-
-It is designed to play audio CDs dumped to raw bin/cue or chd files.
+Discue is for playing audio tracks from CDs dumped to raw bin/cue or chd files.
 
 The bin/cue files can be loaded from a folder on disk, or from a zip archive.
 
@@ -78,7 +76,7 @@ You can optionally use a local version of the LRCLIB database:
 
 ## Usage (Desktop Player)
 
-1. Click the **Open** button at the bottom left of the application.
+1. Click the **Open file** button in the home page.
    Also available from the **File** menu on MacOS.
 
 1. Select a .cue file, a .zip file that contains a .cue file, or a .chd file.
@@ -89,15 +87,11 @@ You can optionally use a local version of the LRCLIB database:
 1. You can only load one album at a time. When you load another, the current
    playlist is replaced with the tracks from the new album.
 
-1. Click the **Change View** button (also **View** menu on MacOS) to switch
-   between different views: currently playing, playlist, waveform view and
-   spectrum views.
+1. Click the **Settings** button (also **Settings** menu on MacOS) to change
+   the **Fetch Online Metadata** setting, which is off by default.
 
 1. Click the **Settings** button (also **Settings** menu on MacOS) to change
-   settings such as **Fetch Online Metadata** and **Show Album Art**.
-
-1. Click the **Settings** button (also **Settings** menu on MacOS) to change
-   **Fetch Lyrics** setting.
+   the **Fetch Lyrics** setting, which is off by default.
    Note that this requires metadata to be available for your tracks, either
    from CDTEXT in the cue file, or from CueToolsDB.
 
@@ -122,25 +116,25 @@ You can optionally use a local version of the LRCLIB database:
 
 1. For help on command line options, run:
    ```shell
-   Woohoo.Audio.Player.Cli -h
+   Woohoo.Discue.Cli -h
    ```
 
 1. Run the executable and pass a path to a .cue file, a .zip file that contains
    a .cue file, or a .chd file.
    ```shell
-   Woohoo.Audio.Player.Cli "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   Woohoo.Discue.Cli "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Optionally pass in `-m` or `--metadata` to fetch metadata from CueToolsDB.
    ```shell
-   Woohoo.Audio.Player.Cli -m "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   Woohoo.Discue.Cli -m "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Optionally pass in `-l` or `--lyrics` to fetch lyrics from LRCLIB.net.
    Note that this requires metadata to be available for your tracks, either
    from CDTEXT in the cue file, or from CueToolsDB.
    ```shell
-   Woohoo.Audio.Player.Cli -m -l "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   Woohoo.Discue.Cli -m -l "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Optionally pass in `-ldb <path>` or `--lyrics-db <path>` to use a local LRCLIB
@@ -149,7 +143,7 @@ You can optionally use a local version of the LRCLIB database:
    When specified, lyrics will be fetched from the local database first, and fall
    back to the online service if no match is found locally.
    ```shell
-   Woohoo.Audio.Player.Cli -m -l -ldb "C:\path\to\lrclib.sqlite3" "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
+   Woohoo.Discue.Cli -m -l -ldb "C:\path\to\lrclib.sqlite3" "Life Is Strange - Before the Storm - Original Soundtrack (USA, Europe) (PS4 Game Bundle).zip"
    ```
 
 1. Press the following keys to control the player:
@@ -175,12 +169,12 @@ dotnet build
 
 To run the desktop player, use the following command from the `\src` folder:
 ```
-dotnet run --project Woohoo.Audio.Player
+dotnet run --project Woohoo.Discue.Avalonia
 ```
 
 To run the terminal UI player, use the following command from the `\src` folder:
 ```
-dotnet run --project Woohoo.Audio.Player.Tui
+dotnet run --project Woohoo.Discue.Consolonia
 ```
 
 To run the unit tests, use the following command from the `\src` folder:

@@ -1,4 +1,4 @@
-# Audio Player Screenshots
+# Discue Screenshots
 
 ## Desktop Player
 
