@@ -12,13 +12,23 @@
     Header="Visualization"
     mc:Ignorable="d">
 
-    <Grid Margin="0,20">
-        <scottPlot:AvaPlot Name="WavePlot" />
-        <scottPlot:AvaPlot
-            Name="FftPlot"
-            Margin="10"
-            IsVisible="False" />
-        <scottPlot:AvaPlot Name="BandPlot" IsVisible="False" />
+    <Grid>
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding !IsAlbumLoaded, Mode=OneWay}"
+            Text="No album loaded" />
+
+        <Grid Margin="0,20" IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}">
+            <scottPlot:AvaPlot Name="WavePlot" />
+            <scottPlot:AvaPlot
+                Name="FftPlot"
+                Margin="10"
+                IsVisible="False" />
+            <scottPlot:AvaPlot Name="BandPlot" IsVisible="False" />
+        </Grid>
+
     </Grid>
 
 </ContentPage>

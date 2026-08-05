@@ -30,71 +30,81 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ListBox
-        Margin="20"
-        Padding="5,5,20,5"
-        Background="Transparent"
-        DoubleTapped="PlaylistListBox_DoubleTapped"
-        ItemsSource="{Binding Playlist.Items, Mode=OneWay}"
-        KeyUp="PlaylistListBox_KeyUp">
-        <ListBox.Styles>
-            <Style Selector="ListBoxItem:nth-child(2n+1)">
-                <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-            </Style>
-            <Style Selector="ListBoxItem">
-                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-                <Setter Property="Margin" Value="0,1,0,2" />
-                <Setter Property="Padding" Value="5" />
-            </Style>
-        </ListBox.Styles>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Grid Margin="4">
-                    <StackPanel Orientation="Horizontal">
-                        <Border Margin="0,0,8,0">
-                            <Viewbox Width="16" Height="16">
-                                <Grid>
-                                    <Canvas
-                                        Width="32"
-                                        Height="32"
-                                        IsVisible="{Binding IsActive, Mode=OneWay}">
-                                        <ic:SymbolIcon
-                                            FontSize="32"
-                                            Foreground="{DynamicResource PlaylistPlayingTrackBrush}"
-                                            Symbol="MusicNote2" />
-                                    </Canvas>
-                                    <Canvas
-                                        Width="32"
-                                        Height="32"
-                                        IsVisible="{Binding FileNotFound, Mode=OneWay}">
-                                        <ic:SymbolIcon
-                                            FontSize="32"
-                                            Foreground="{DynamicResource PlaylistNonPlayingTrackBrush}"
-                                            Symbol="MusicNote2" />
-                                    </Canvas>
-                                </Grid>
-                            </Viewbox>
-                        </Border>
+    <Grid Margin="20">
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding !IsAlbumLoaded, Mode=OneWay}"
+            Text="No album loaded" />
+
+        <ListBox
+            Padding="5,5,20,5"
+            Background="Transparent"
+            DoubleTapped="PlaylistListBox_DoubleTapped"
+            IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}"
+            ItemsSource="{Binding Playlist.Items, Mode=OneWay}"
+            KeyUp="PlaylistListBox_KeyUp">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem:nth-child(2n+1)">
+                    <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+                </Style>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+                    <Setter Property="Margin" Value="0,1,0,2" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="4">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Margin="0,0,8,0">
+                                <Viewbox Width="16" Height="16">
+                                    <Grid>
+                                        <Canvas
+                                            Width="32"
+                                            Height="32"
+                                            IsVisible="{Binding IsActive, Mode=OneWay}">
+                                            <ic:SymbolIcon
+                                                FontSize="32"
+                                                Foreground="{DynamicResource PlaylistPlayingTrackBrush}"
+                                                Symbol="MusicNote2" />
+                                        </Canvas>
+                                        <Canvas
+                                            Width="32"
+                                            Height="32"
+                                            IsVisible="{Binding FileNotFound, Mode=OneWay}">
+                                            <ic:SymbolIcon
+                                                FontSize="32"
+                                                Foreground="{DynamicResource PlaylistNonPlayingTrackBrush}"
+                                                Symbol="MusicNote2" />
+                                        </Canvas>
+                                    </Grid>
+                                </Viewbox>
+                            </Border>
+                            <TextBlock
+                                MinWidth="24"
+                                Margin="0,0,8,0"
+                                Background="Transparent"
+                                Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                                Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
+                            <TextBlock
+                                Background="Transparent"
+                                Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
+                                Text="{Binding TrackTitle, Mode=OneWay}" />
+                        </StackPanel>
                         <TextBlock
-                            MinWidth="24"
-                            Margin="0,0,8,0"
+                            HorizontalAlignment="Right"
                             Background="Transparent"
                             Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                            Text="{Binding TrackNumber, StringFormat={}{0:00}.}" />
-                        <TextBlock
-                            Background="Transparent"
-                            Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                            Text="{Binding TrackTitle, Mode=OneWay}" />
-                    </StackPanel>
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        Background="Transparent"
-                        Foreground="{Binding IsActive, Converter={StaticResource PlaylistTrackToForegroundBrushConverter}}"
-                        Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
-                </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+                            Text="{Binding TrackSize, Converter={StaticResource PositionToLabelConverter}}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
 
 </ContentPage>

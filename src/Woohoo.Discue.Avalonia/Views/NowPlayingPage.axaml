@@ -12,67 +12,77 @@
     Header="Now Playing"
     mc:Ignorable="d">
 
-    <Grid Margin="20" RowDefinitions="*,Auto">
-        <Grid
-            Grid.Row="0"
-            ColumnDefinitions="1*,1*"
-            IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
-            <Image
-                Grid.Column="0"
-                Margin="10"
-                Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
-                Stretch="Uniform">
-                <Image.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        OffsetX="3"
-                        OffsetY="3"
-                        Opacity="0.5"
-                        Color="Black" />
-                </Image.Effect>
-            </Image>
+    <Grid Margin="20">
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding !IsAlbumLoaded, Mode=OneWay}"
+            Text="No album loaded" />
+
+        <Grid IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}" RowDefinitions="*,Auto">
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="1*,1*"
+                IsVisible="{Binding NowPlaying.AlbumArt.HasImage, Mode=OneWay}">
+                <Image
+                    Grid.Column="0"
+                    Margin="10"
+                    Source="{Binding NowPlaying.AlbumArt.LocalImage, Mode=OneWay}"
+                    Stretch="Uniform">
+                    <Image.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            OffsetX="3"
+                            OffsetY="3"
+                            Opacity="0.5"
+                            Color="Black" />
+                    </Image.Effect>
+                </Image>
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Spacing="10">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        FontSize="24"
+                        Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        FontSize="16"
+                        Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
             <StackPanel
-                Grid.Column="1"
+                Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
                 Orientation="Vertical"
                 Spacing="10">
                 <TextBlock
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     FontSize="24"
                     Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
                     TextWrapping="Wrap" />
                 <TextBlock
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     FontSize="16"
                     Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
                     TextWrapping="Wrap" />
             </StackPanel>
+            <TextBlock
+                Grid.Row="1"
+                Margin="10"
+                HorizontalAlignment="Center"
+                Text="{Binding NowPlaying.CurrentLyric, Mode=OneWay}"
+                TextWrapping="NoWrap" />
         </Grid>
-        <StackPanel
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding !NowPlaying.AlbumArt.HasImage, Mode=OneWay}"
-            Orientation="Vertical"
-            Spacing="10">
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="24"
-                Text="{Binding NowPlaying.TrackTitle, Mode=OneWay}"
-                TextWrapping="Wrap" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="16"
-                Text="{Binding NowPlaying.FullAlbumTitle, Mode=OneWay}"
-                TextWrapping="Wrap" />
-        </StackPanel>
-        <TextBlock
-            Grid.Row="1"
-            Margin="10"
-            HorizontalAlignment="Center"
-            Text="{Binding NowPlaying.CurrentLyric, Mode=OneWay}"
-            TextWrapping="NoWrap" />
+
     </Grid>
 
 </ContentPage>

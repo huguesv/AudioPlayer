@@ -26,23 +26,33 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollViewer Margin="20">
-        <ItemsRepeater
-            x:Name="LyricsItemsRepeater"
-            IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
-            ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">
-            <ItemsRepeater.Layout>
-                <StackLayout Orientation="Vertical" Spacing="6" />
-            </ItemsRepeater.Layout>
-            <ItemsRepeater.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock
-                        Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
-                        Text="{Binding Text, Mode=OneWay}"
-                        TextWrapping="Wrap" />
-                </DataTemplate>
-            </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
-    </ScrollViewer>
+    <Grid Margin="20">
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsVisible="{Binding !IsAlbumLoaded, Mode=OneWay}"
+            Text="No album loaded" />
+
+        <ScrollViewer IsVisible="{Binding IsAlbumLoaded, Mode=OneWay}">
+            <ItemsRepeater
+                x:Name="LyricsItemsRepeater"
+                IsVisible="{Binding Lyrics.HasLyrics, Mode=OneWay}"
+                ItemsSource="{Binding Lyrics.Lines, Mode=OneWay}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Orientation="Vertical" Spacing="6" />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Foreground="{Binding IsCurrent, Converter={StaticResource LyricToForegroundBrushConverter}}"
+                            Text="{Binding Text, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+    </Grid>
 
 </ContentPage>
