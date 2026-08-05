@@ -44,11 +44,35 @@ MacOS - Light Theme
 
 Linux - Dark Theme
 
-![Linux Dark Empty](images/linux-dark-empty.png?raw=true "Linux Dark Empty")
+![Linux Dark Meet Discue](images/linux-dark-meet.png?raw=true "Linux Dark Meet Discue")
+
+![Linux Dark Home](images/linux-dark-home.png?raw=true "Linux Dark Home")
+
+![Linux Dark Now Playing](images/linux-dark-now.png?raw=true "Linux Dark Now Playing")
+
+![Linux Dark Visualization](images/linux-dark-viz.png?raw=true "Linux Dark Visualization")
+
+![Linux Dark Lyrics](images/linux-dark-lyrics.png?raw=true "Linux Dark Lyrics")
+
+![Linux Dark Playlist](images/linux-dark-playlist.png?raw=true "Linux Dark Playlist")
+
+![Linux Dark Settings](images/linux-dark-settings.png?raw=true "Linux Dark Settings")
 
 Linux - Light Theme
 
-![Linux Light Amplitude](images/linux-light-amplitude.png?raw=true "Linux Light Amplitude")
+![Linux Light Meet Discue](images/linux-light-meet.png?raw=true "Linux Light Meet Discue")
+
+![Linux Light Home](images/linux-light-home.png?raw=true "Linux Light Home")
+
+![Linux Light Now Playing](images/linux-light-now.png?raw=true "Linux Light Now Playing")
+
+![Linux Light Visualization](images/linux-light-viz.png?raw=true "Linux Light Visualization")
+
+![Linux Light Lyrics](images/linux-light-lyrics.png?raw=true "Linux Light Lyrics")
+
+![Linux Light Playlist](images/linux-light-playlist.png?raw=true "Linux Light Playlist")
+
+![Linux Light Settings](images/linux-light-settings.png?raw=true "Linux Light Settings")
 
 ## Terminal UI Player
 
