@@ -32,6 +32,8 @@ Using a local LRCLIB sqlite3 database is also supported.
 
 ![Desktop Player on Windows Screenshot](images/windows-dark-now.png?raw=true "Desktop Player on Windows Screenshot")
 
+![Desktop Player on Mac Screenshot](images/macos-dark-now.png?raw=true "Desktop Player on Windows Screenshot")
+
 ## Terminal UI Player
 
 ![TUI Player on Windows Terminal](images/consolonia-now.png?raw=true "TUI Player on Windows Terminal")

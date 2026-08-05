@@ -36,11 +36,11 @@ Windows - Light Theme
 
 MacOS - Dark Theme
 
-![MacOS Dark Now Playing](images/macos-dark-nowplaying.png?raw=true "MacOS Dark Now Playing")
+![MacOS Dark Now Playing](images/macos-dark-now.png?raw=true "MacOS Dark Now Playing")
 
 MacOS - Light Theme
 
-![MacOS Light Amplitude](images/macos-light-amplitude.png?raw=true "MacOS Light Amplitude")
+![MacOS Light Now Playing](images/macos-light-now.png?raw=true "MacOS Light Now Playing")
 
 Linux - Dark Theme
 
