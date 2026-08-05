@@ -7,6 +7,7 @@ using global::Avalonia.Controls;
 using global::Avalonia.Input;
 using global::Avalonia.Interactivity;
 using global::Avalonia.Platform.Storage;
+using Woohoo.Discue.Avalonia.Helpers;
 using Woohoo.Discue.Avalonia.ViewModels;
 
 public partial class MainWindow : Window
@@ -29,6 +30,10 @@ public partial class MainWindow : Window
         // Set Root Page
         this.TopNavList.SelectedItem = this.HomeNavItem;
         this.NavPage.Content = new HomePage();
+
+        WindowStateHelper.TrackWindow(
+            this,
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Woohoo.Discue.Avalonia", "WindowSettings.json"));
     }
 
     public void OnDrop(object? sender, DragEventArgs e)
