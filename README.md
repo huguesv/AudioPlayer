@@ -32,7 +32,7 @@ Using a local LRCLIB sqlite3 database is also supported.
 
 ## Desktop Player
 
-![Desktop Player on Windows Screenshot](images/windows-dark-nowplaying.png?raw=true "Desktop Player on Windows Screenshot")
+![Desktop Player on Windows Screenshot](images/windows-dark-now.png?raw=true "Desktop Player on Windows Screenshot")
 
 ## Terminal UI Player
 

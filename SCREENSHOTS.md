@@ -4,21 +4,35 @@
 
 Windows - Dark Theme
 
-![Windows Dark Now Playing](images/windows-dark-nowplaying.png?raw=true "Windows Dark Now Playing")
+![Windows Dark Meet Discue](images/windows-dark-meet.png?raw=true "Windows Dark Meet Discue")
 
-![Windows Dark Amplitude](images/windows-dark-amplitude.png?raw=true "Windows Dark Amplitude")
+![Windows Dark Home](images/windows-dark-home.png?raw=true "Windows Dark Home")
+
+![Windows Dark Now Playing](images/windows-dark-now.png?raw=true "Windows Dark Now Playing")
+
+![Windows Dark Visualization](images/windows-dark-viz.png?raw=true "Windows Dark Visualization")
 
 ![Windows Dark Lyrics](images/windows-dark-lyrics.png?raw=true "Windows Dark Lyrics")
 
+![Windows Dark Playlist](images/windows-dark-playlist.png?raw=true "Windows Dark Playlist")
+
+![Windows Dark Settings](images/windows-dark-settings.png?raw=true "Windows Dark Settings")
+
 Windows - Light Theme
 
-![Windows Light Album Art](images/windows-light-art.png?raw=true "Windows Light Playlist")
+![Windows Light Meet Discue](images/windows-light-meet.png?raw=true "Windows Light Meet Discue")
+
+![Windows Light Home](images/windows-light-home.png?raw=true "Windows Light Home")
+
+![Windows Light Now Playing](images/windows-light-now.png?raw=true "Windows Light Now Playing")
+
+![Windows Light Visualization](images/windows-light-viz.png?raw=true "Windows Light Visualization")
+
+![Windows Light Lyrics](images/windows-light-lyrics.png?raw=true "Windows Light Lyrics")
 
 ![Windows Light Playlist](images/windows-light-playlist.png?raw=true "Windows Light Playlist")
 
-![Windows Light Frequencies](images/windows-light-frequencies.png?raw=true "Windows Light Frequencies")
-
-![Windows Light Lyrics](images/windows-light-lyrics.png?raw=true "Windows Light Lyrics")
+![Windows Light Settings](images/windows-light-settings.png?raw=true "Windows Light Settings")
 
 MacOS - Dark Theme
 
